@@ -11,7 +11,7 @@ from APP_PRINCIPAL.views.sobre_nosotros import sobre_nosotros
 
 urlpatterns = [
     # Página principal del sistema
-    path('', pagina_principal, name='pagina_principal'),
+    path('pagina_principal/', pagina_principal, name='pagina_principal'),
     # Registro de administrador
     path('registrarse/', registrar_cliente, name='registrarse'),
     # Login de usuario

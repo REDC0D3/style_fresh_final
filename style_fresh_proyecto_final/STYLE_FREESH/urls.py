@@ -14,6 +14,8 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.shortcuts import redirect
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -21,10 +23,11 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('APP_PRINCIPAL.urls')), 
+    path('app/', include('APP_PRINCIPAL.urls')), 
     path('cliente/', include('CLIENTE.urls')),
     path('adminstrador/', include('ADMINISTRADOR.urls')),
     path('barbero/', include('BARBERO.urls')),
+    path('', lambda request: redirect('/app/pagina_principal')),
     # Esto hace que la página principal sea la de tu app
 ]
 
