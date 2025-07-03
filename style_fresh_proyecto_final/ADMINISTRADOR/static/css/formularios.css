@@ -1,0 +1,270 @@
+/* formularios.css - Estilos EXCLUSIVOS para formularios DENTRO de los modales de Creación/Actualización y para la funcionalidad de Contraseña */
+
+/* --- ESTILOS PARA TÍTULOS Y TEXTOS DENTRO DE LOS MODALES DE ADMINISTRACIÓN --- */
+
+/* Estilos para los títulos h3 dentro de los formularios de los modales (e.g., "Registrar Cliente") */
+/* Estos h3 están dentro de los formularios de los modales de creación y actualización (create-form, update-form) */
+#createItemModal .modal-content form h3,
+#updateItemModal .modal-content form h3 {
+    color: #e0f2f7; /* Color actualizado para combinar con el nuevo estilo "chimba" */
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 1.3rem; /* Tamaño extra pequeño */
+    font-weight: 800; /* Más negrita */
+    letter-spacing: 0.6px;
+    text-shadow: 0 0 4px rgba(0, 230, 255, 0.2);
+}
+
+/* Estilo para el párrafo de "Deja las contraseñas en blanco..." en el modal de actualización */
+#updateItemModal .modal-content form p {
+    color: #b3e0ff; /* Color azul claro más suave */
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 0.85rem; /* Fuente extra pequeña */
+    line-height: 1.3;
+    font-style: italic; /* Texto en cursiva para un toque diferente */
+}
+
+/* --- ESTILOS PARA INPUTS, TEXTAREAS Y SELECTS DENTRO DE LOS MODALES DE ADMINISTRACIÓN --- */
+#createItemModal .modal-content input[type="text"],
+#createItemModal .modal-content input[type="number"],
+#createItemModal .modal-content input[type="email"],
+#createItemModal .modal-content input[type="password"],
+#createItemModal .modal-content input[type="date"],
+#createItemModal .modal-content input[type="time"],
+#createItemModal .modal-content textarea,
+#createItemModal .modal-content select,
+#updateItemModal .modal-content input[type="text"],
+#updateItemModal .modal-content input[type="number"],
+#updateItemModal .modal-content input[type="email"],
+#updateItemModal .modal-content input[type="password"],
+#updateItemModal .modal-content input[type="date"],
+#updateItemModal .modal-content input[type="time"],
+#updateItemModal .modal-content textarea,
+#updateItemModal .modal-content select {
+    width: calc(100% - 20px); /* Ajuste de ancho */
+    background-color: #101010; /* Fondo aún más oscuro */
+    border: 1px solid #00bfff; /* Borde más delgado */
+    color: #e0f2f7; /* Texto blanco azulado */
+    padding: 10px 12px; /* Padding extra reducido */
+    border-radius: 6px; /* Bordes más sutiles */
+    font-size: 0.9rem; /* Fuente extra pequeña */
+    box-sizing: border-box;
+    margin-bottom: 12px; /* Margen reducido */
+    transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+    box-shadow: inset 0 0 4px rgba(0, 191, 255, 0.08); /* Sombra interna ajustada */
+}
+
+/* Estilo para el placeholder de los inputs y textareas dentro de los modales */
+#createItemModal .modal-content input::placeholder,
+#createItemModal .modal-content textarea::placeholder,
+#updateItemModal .modal-content input::placeholder,
+#updateItemModal .modal-content textarea::placeholder {
+    color: #aaddff; /* Placeholder más visible y azulado */
+    opacity: 0.6; /* Ligeramente más transparente */
+}
+
+/* Estilo para el foco (cuando se selecciona) de los inputs y textareas en modales */
+#createItemModal .modal-content input:focus,
+#createItemModal .modal-content textarea:focus,
+#createItemModal .modal-content select:focus,
+#updateItemModal .modal-content input:focus,
+#updateItemModal .modal-content textarea:focus,
+#updateItemModal .modal-content select:focus {
+    border-color: #00e6ff; /* Borde cian vibrante al enfocar */
+    box-shadow: 0 0 10px rgba(0, 230, 255, 0.6), inset 0 0 5px rgba(0, 230, 255, 0.25); /* Sombras ajustadas */
+    background-color: #080808; /* Fondo aún más oscuro al enfocar */
+    outline: none;
+}
+
+/* Estilo para las etiquetas (labels) dentro de los modales (e.g., "Foto de Perfil:") */
+#createItemModal .modal-content form label,
+#updateItemModal .modal-content form label {
+    display: block;
+    margin-bottom: 6px; /* Margen reducido */
+    color: #e0f2f7;
+    font-weight: 700;
+    text-align: left;
+    font-size: 0.85rem; /* Fuente extra pequeña */
+    text-shadow: 0 0 2px rgba(0, 191, 255, 0.15);
+}
+
+
+/* --- ESTILOS ESPECÍFICOS: GRUPOS DE CONTRASEÑA Y SU ÍCONO DE OJO EN MODALES --- */
+#createItemModal .modal-content .password-group,
+#updateItemModal .modal-content .password-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px; /* Espacio reducido */
+    margin-bottom: 12px; /* Margen reducido */
+}
+
+#createItemModal .modal-content .password-group .password-container,
+#updateItemModal .modal-content .password-group .password-container {
+    flex: 1;
+    min-width: 200px; /* Ancho mínimo ajustado */
+    position: relative;
+}
+
+/* Asegura que el input de contraseña tenga espacio para el ícono */
+#createItemModal .modal-content .password-group input[type="password"],
+#updateItemModal .modal-content .password-group input[type="password"] {
+    width: 100%;
+    padding-right: 40px; /* Padding ajustado */
+}
+
+/* Estilo para el ícono de ojo de alternar visibilidad de contraseña */
+#createItemModal .modal-content .password-group .toggle-password,
+#updateItemModal .modal-content .password-group .toggle-password {
+    position: absolute;
+    right: 10px; /* Posición ajustada */
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #00e6ff;
+    font-size: 1.05rem; /* Tamaño de ícono ajustado */
+    transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+    text-shadow: 0 0 4px rgba(0, 230, 255, 0.3);
+}
+
+#createItemModal .modal-content .password-group .toggle-password:hover,
+#updateItemModal .modal-content .password-group .toggle-password:hover {
+    color: #fff;
+    transform: translateY(-50%) scale(1.05); /* Escala ajustada */
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 230, 255, 0.6);
+}
+
+
+/* --- ESTILOS ESPECÍFICOS: PREVISUALIZACIÓN DE IMAGEN EN EL MODAL DE ACTUALIZACIÓN --- */
+#updateItemModal .modal-content .current-image-preview {
+    margin-top: 15px; /* Margen reducido */
+    margin-bottom: 10px; /* Margen reducido */
+    text-align: center;
+}
+
+#updateItemModal .modal-content .current-image-preview img {
+    max-width: 100px; /* Tamaño de imagen extra reducido */
+    max-height: 100px; /* Tamaño de imagen extra reducido */
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00e6ff; /* Borde más delgado */
+    box-shadow: 0 0 10px rgba(0, 230, 255, 0.5); /* Sombra ajustada */
+    transition: transform 0.25s ease-out, box-shadow 0.25s ease-out, border-color 0.25s ease-out;
+}
+
+#updateItemModal .modal-content .current-image-preview img:hover {
+    transform: scale(1.02) rotate(0.5deg); /* Escala y rotación ajustadas */
+    box-shadow: 0 0 15px rgba(0, 230, 255, 0.6);
+    border-color: #fff;
+}
+
+/* --- CLASES DE UTILIDAD ESPECÍFICAS PARA MODALES (si se usan, como en tu HTML) --- */
+.full-width {
+    width: 100%;
+}
+
+/* --- ESTILOS PARA MENSAJES DENTRO DE LOS MODALES --- */
+.modal-messages {
+    margin-bottom: 15px; /* Espacio debajo de los mensajes */
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.4;
+    max-height: 80px; /* Limitar altura para no desbordar */
+    overflow-y: auto; /* Scroll si el mensaje es muy largo */
+    /* Asegúrate de que no tenga un display: none por defecto o que sea anulado */
+}
+
+.modal-messages p {
+    margin: 0; /* Eliminar margen de párrafo por defecto */
+}
+
+.modal-messages.success {
+    background-color: #1a4a2a; /* Fondo verde oscuro */
+    color: #a8edb8; /* Texto verde claro */
+    border: 1px solid #4CAF50;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+.modal-messages.error {
+    background-color: #5c1f1f; /* Fondo rojo oscuro */
+    color: #ffbaba; /* Texto rojo claro */
+    border: 1px solid #f44336;
+    box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+}
+
+
+/* --- RESPONSIVE ADJUSTMENTS PARA FORMULARIOS DENTRO DE MODALES --- */
+@media (max-width: 600px) {
+    #createItemModal .modal-content form h3,
+    #updateItemModal .modal-content form h3 {
+        font-size: 1.2rem;
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+    #updateItemModal .modal-content form p {
+        font-size: 0.75rem;
+        margin-bottom: 12px;
+    }
+    #createItemModal .modal-content input[type="text"],
+    #createItemModal .modal-content input[type="number"],
+    #createItemModal .modal-content input[type="email"],
+    #createItemModal .modal-content input[type="password"],
+    #createItemModal .modal-content input[type="date"],
+    #createItemModal .modal-content input[type="time"],
+    #createItemModal .modal-content textarea,
+    #createItemModal .modal-content select,
+    #updateItemModal .modal-content input[type="text"],
+    #updateItemModal .modal-content input[type="number"],
+    #updateItemModal .modal-content input[type="email"],
+    #updateItemModal .modal-content input[type="password"],
+    #updateItemModal .modal-content input[type="date"],
+    #updateItemModal .modal-content input[type="time"],
+    #updateItemModal .modal-content textarea,
+    #updateItemModal .modal-content select {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+        border-radius: 5px;
+    }
+    #createItemModal .modal-content form label,
+    #updateItemModal .modal-content form label {
+        font-size: 0.8rem;
+        margin-bottom: 5px;
+    }
+    #createItemModal .modal-content .password-group,
+    #updateItemModal .modal-content .password-group {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    #createItemModal .modal-content .password-group .password-container,
+    #updateItemModal .modal-content .password-group .password-container {
+        width: 100%;
+        min-width: unset;
+    }
+    #createItemModal .modal-content .password-group input[type="password"],
+    #updateItemModal .modal-content .password-group input[type="password"] {
+        padding-right: 35px;
+    }
+    #createItemModal .modal-content .password-group .toggle-password,
+    #updateItemModal .modal-content .password-group .toggle-password {
+        font-size: 0.9rem;
+        right: 8px;
+    }
+    #updateItemModal .modal-content .current-image-preview img {
+        max-width: 80px;
+        max-height: 80px;
+        border-width: 2px;
+        margin-top: 12px;
+        margin-bottom: 8px;
+    }
+
+    .modal-messages {
+        font-size: 0.8em; /* Fuente aún más pequeña en móviles */
+        padding: 8px 10px;
+    }
+}

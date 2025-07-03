@@ -1,0 +1,97 @@
+/* Fondo general */
+body {
+    background: linear-gradient(120deg, #232526 0%, #414345 100%);
+    color: #f0f0f0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/* Título */
+h2 {
+    color: #00baff;
+    text-align: center;
+    margin-top: 32px;
+    margin-bottom: 32px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+/* Tabla de historial */
+table {
+    width: 90%;
+    margin: 0 auto 40px auto;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #181d23;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+}
+
+thead tr {
+    background: linear-gradient(90deg, #003e6b 60%, #00baff 100%);
+}
+
+th, td {
+    padding: 16px 12px;
+    text-align: left;
+}
+
+th {
+    color: #ffffff;
+    font-size: 1.1em;
+    font-weight: bold;
+    border-bottom: 2px solid #00baff;
+    background: transparent;
+}
+
+tbody tr {
+    border-bottom: 1px solid #222;
+    transition: background 0.2s;
+}
+
+tbody tr:hover {
+    background: #222c38;
+}
+
+td {
+    color: #f0f0f0;
+    font-size: 1em;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+/* Mensaje vacío */
+td[colspan="5"] {
+    text-align: center;
+    color: #aaa;
+    font-style: italic;
+    padding: 32px 0;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+    thead tr {
+        display: none;
+    }
+    td {
+        padding: 12px 8px;
+        border: none;
+        position: relative;
+    }
+    td:before {
+        content: attr(data-label);
+        color: #00baff;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 4px;
+    }
+}

@@ -1,0 +1,545 @@
+{% load static %}
+{% load dictkey %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Barbero</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/home_barbero.css' %}">
+    <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+    <link rel="stylesheet" href="{% static 'css/citas.css' %}"> {# Este CSS contiene los estilos del carrusel #}
+    <link rel="stylesheet" href="{% static 'css/historial_cali.css' %}"> {# Reutilizamos este CSS para las calificaciones del barbero #}
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+    <link rel="stylesheet" href="{% static 'css/perfil_admin_modal.css' %}">
+
+    <style>
+        /* Estilos básicos para la paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        .pagination a, .pagination span {
+            padding: 8px 12px;
+            border: 1px solid #00bfff;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #00bfff;
+            background-color: #1a1e26;
+            transition: all 0.3s ease;
+        }
+        .pagination a:hover {
+            background-color: #00bfff;
+            color: #1a1e26;
+        }
+        .pagination .current {
+            background-color: #00bfff;
+            color: #1a1e26;
+            font-weight: bold;
+        }
+        .pagination .disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-perfil">
+        <button class="btn-perfil" onclick="toggleMenuPerfil()" aria-expanded="false">
+            <img src="{% if barbero.foto_perfil %}{{ barbero.foto_perfil.url }}{% else %}{% static 'img/default_profile.png' %}{% endif %}" class="foto-perfil">
+            <span class="nombre-perfil">
+            Mr {{ barbero.nombre }} {{ barbero.apellido }}<br>
+            <small class="rol-usuario">Barbero</small>
+            </span>
+            <span class="flecha">&#9662;</span>
+        </button>
+
+        <div class="menu-perfil" id="menu-perfil">
+            <a href="#" onclick="abrirEditarPerfilBarberoModal(); return false;">Editar perfil</a>
+            <a href="{% url 'logout' %}">Cerrar Sesión</a>
+        </div>
+    </div>
+
+    <div class="layout-container">
+        <nav>
+            <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" width="80" height="80">
+            <ul>
+                <li class="menu-title">Menú</li>
+                <li id="menu-citas" class="menu-item" onclick="mostrarSeccion('citas')">Citas</li>
+                <li id="menu-historial" class="menu-item" onclick="mostrarSeccion('historial')">Historial Cortes</li>
+                <li id="menu-disenos" class="menu-item" onclick="mostrarSeccion('disenos')">Diseños de Cliente</li>
+                <li id="menu-calificaciones" class="menu-item" onclick="mostrarSeccion('calificaciones')">Calificaciones</li>
+            </ul>
+        </nav>
+        <main class="main-content">
+
+            {# SECCIÓN PRINCIPAL DE CITAS #}
+            <section id="citas-section" class="content-section" {% if seccion_activa != 'citas' %}style="display:none;"{% endif %}>
+                <h2>Gestión de Citas</h2>
+
+                <h3>Citas para Hoy</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackHoy', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackHoy">
+                        {% if "Hoy" in fechas_ordenadas %}
+                            {% for evento in eventos_por_fecha.Hoy %}
+                                <div class="carrusel-card">
+                                    <h4>{{ evento.titulo }}</h4>
+                                    <ul class="reserva-info">
+                                        {% if evento.persona %}
+                                            <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                        {% else %}
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                        {% endif %}
+                                        <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                        {% if evento.descripcion %}
+                                            <li>
+                                                <span class="icon">📝</span>
+                                                <strong>Descripción:</strong>
+                                                <button class="btn-ver-desc"
+                                                        data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                    Ver
+                                                </button>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>¡Libre de Citas Hoy!</h4>
+                                <p>No hay citas programadas para hoy.</p>
+                                <p>Disfruta de tu día o toma un café.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackHoy', 1)">&#8250;</button>
+                </div>
+
+                <h3>Citas para Mañana</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackManana', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackManana">
+                        {% if "Mañana" in fechas_ordenadas %}
+                            {% for evento in eventos_por_fecha.Mañana %}
+                                <div class="carrusel-card">
+                                    <h4>{{ evento.titulo }}</h4>
+                                    <ul class="reserva-info">
+                                        {% if evento.persona %}
+                                            <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                        {% else %}
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                        {% endif %}
+                                        <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                        {% if evento.descripcion %}
+                                            <li>
+                                                <span class="icon">📝</span>
+                                                <strong>Descripción:</strong>
+                                                <button class="btn-ver-desc"
+                                                        data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                    Ver
+                                                </button>
+                                            </li>
+                                        {% endif %}
+
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>Mañana tranquila...</h4>
+                                <p>No hay citas programadas para mañana.</p>
+                                <p>¡Es un buen momento para planificar!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackManana', 1)">&#8250;</button>
+                </div>
+
+                <h3>Próximas Citas (días futuros)</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackProximos', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackProximos">
+                        {% for fecha in fechas_ordenadas %}
+                            {% if fecha != "Hoy" and fecha != "Mañana" %}
+                                {% for evento in eventos_por_fecha|dictkey:fecha %}
+                                    <div class="carrusel-card">
+                                        <h4>{{ fecha }} - {{ evento.titulo }}</h4>
+                                        <ul class="reserva-info">
+                                            {% if evento.persona %}
+                                                <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                                <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                                <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                                <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                            {% else %}
+                                                <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                                <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                                <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                            {% endif %}
+                                            <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                            {% if evento.descripcion %}
+                                                <li>
+                                                    <span class="icon">📝</span>
+                                                    <strong>Descripción:</strong>
+                                                    <button class="btn-ver-desc"
+                                                            data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                        Ver
+                                                    </button>
+                                                </li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% empty %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>¡Sin Próximas Citas!</h4>
+                                <p>No hay citas programadas para días futuros.</p>
+                                <p>¡Es un buen momento para promocionar tus servicios!</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackProximos', 1)">&#8250;</button>
+                </div>
+
+            </section>
+
+            {# SECCIÓN: HISTORIAL CORTES #}
+            <section id="historial-section" class="content-section" {% if seccion_activa != 'historial' %}style="display:none;"{% endif %}>
+                <h2>Historial de Cortes</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="historial">
+                    <input type="text" name="buscar_historial" placeholder="Buscar cita (título, nombre, teléfono)..." value="{{ request.GET.buscar_historial|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+
+                <div class="ordenar-botones-container">
+                    <button type="button" class="ordenar-historial-btn" data-orden="-inicio"
+                            {% if orden_actual_historial == "-inicio" %}disabled{% endif %}>
+                        Más Reciente
+                    </button>
+                    <button type="button" class="ordenar-historial-btn" data-orden="inicio"
+                            {% if orden_actual_historial == "inicio" %}disabled{% endif %}>
+                        Más Antiguo
+                    </button>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Evento</th>
+                            <th>Título Cita</th>
+                            <th>Cliente</th>
+                            <th>Usuario Cliente</th>
+                            <th>Teléfono Cliente</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for evento in historial_cortes %} {# This 'historial_cortes' is now a Page object #}
+                        <tr>
+                            <td>{{ evento.id }}</td>
+                            <td>{{ evento.titulo }}</td>
+                            <td>
+                                {% if evento.persona %}
+                                    {{ evento.persona.nombre }} {{ evento.persona.apellido }}
+                                {% else %}
+                                    Desconocido
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if evento.persona %}
+                                    {{ evento.persona.username }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if evento.persona %}
+                                    {{ evento.persona.telefono }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>{{ evento.inicio|date:"Y-m-d H:i" }}</td>
+                            <td>{{ evento.fin|date:"Y-m-d H:i" }}</td>
+                            
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="8">No hay historial de cortes registrado o que coincida con la búsqueda.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                {# Pagination Controls for Historial Cortes #}
+                <div class="pagination">
+                    {% if historial_cortes.has_previous %}
+                        <a href="?seccion=historial&historial_page={{ historial_cortes.previous_page_number }}&buscar_historial={{ buscar_historial_query }}&ordenar_historial={{ orden_actual_historial }}">Anterior</a>
+                    {% else %}
+                        <span class="disabled">Anterior</span>
+                    {% endif %}
+
+                    <span>
+                        Página {{ historial_cortes.number }} de {{ historial_cortes.paginator.num_pages }}.
+                    </span>
+
+                    {% if historial_cortes.has_next %}
+                        <a href="?seccion=historial&historial_page={{ historial_cortes.next_page_number }}&buscar_historial={{ buscar_historial_query }}&ordenar_historial={{ orden_actual_historial }}">Siguiente</a>
+                    {% else %}
+                        <span class="disabled">Siguiente</span>
+                    {% endif %}
+                </div>
+
+            </section>
+
+            {# SECCIÓN: DISEÑOS DE CLIENTE #}
+            <section id="disenos-section" class="content-section" {% if seccion_activa != 'disenos' %}style="display:none;"{% endif %}>
+                <h2>Diseños de Cliente</h2>
+                <p>Aquí el barbero puede ver y gestionar los diseños de sus clientes.</p>
+            </section>
+
+            {# SECCIÓN: CALIFICACIONES DEL BARBERO #}
+            <section id="calificaciones-section" class="content-section" {% if seccion_activa != 'calificaciones' %}style="display:none;"{% endif %}>
+                <h2>Mis Calificaciones</h2>
+                {% if calificaciones_barbero %}
+                    <div class="contenedor-cards-cali">
+                        {% for cal in calificaciones_barbero %} {# This 'calificaciones_barbero' is now a Page object #}
+                            <div class="card-cali">
+                                <div class="card-cali-header">
+                                    <span class="card-cali-titulo">{{ cal.evento.titulo }}</span>
+                                    <span class="card-cali-fecha">{{ cal.evento.inicio|date:"Y-m-d H:i" }}</span>
+                                </div>
+                                <div class="card-cali-cliente">
+                                    <strong>Cliente:</strong> {{ cal.cliente.persona.nombre }} {{ cal.cliente.persona.apellido }}
+                                </div>
+                                <div class="card-cali-estrellas">
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= cal.puntuacion %}
+                                            <span class="estrella-cali">&#9733;</span>
+                                        {% else %}
+                                            <span class="estrella-cali estrella-cali-off">&#9733;</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <div class="card-cali-comentario">
+                                    <strong>Comentario:</strong> {{ cal.comentario|default:"Sin comentario" }}
+                                </div>
+                                {% if cal.no_molestar %}
+                                    <div class="card-cali-no-molestar">
+                                        <span class="no-molestar">No molestar (solicitud del cliente)</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    {# Pagination Controls for Calificaciones Barbero #}
+                    <div class="pagination">
+                        {% if calificaciones_barbero.has_previous %}
+                            <a href="?seccion=calificaciones&calificaciones_page={{ calificaciones_barbero.previous_page_number }}">Anterior</a>
+                        {% else %}
+                            <span class="disabled">Anterior</span>
+                        {% endif %}
+
+                        <span>
+                            Página {{ calificaciones_barbero.number }} de {{ calificaciones_barbero.paginator.num_pages }}.
+                        </span>
+
+                        {% if calificaciones_barbero.has_next %}
+                            <a href="?seccion=calificaciones&calificaciones_page={{ calificaciones_barbero.next_page_number }}">Siguiente</a>
+                        {% else %}
+                            <span class="disabled">Siguiente</span>
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <p style="text-align:center;">Aún no tienes calificaciones registradas.</p>
+                {% endif %}
+            </section>
+
+        </main>
+    </div>
+    {# ——— MODAL EDITAR PERFIL BARBERO ——— #}
+    <div id="editarPerfilBarberoModal" class="modal modal-perfil">
+        <div class="modal-content-perfil">
+
+            <!-- Botón cerrar -->
+            <span id="closeEditarPerfilBarberoModal" class="close-button">&times;</span>
+
+            <h2>Editando Perfil...</h2>
+
+            <!-- Mensajes de Django -->
+            <div id="form-messages-barbero" class="form-messages">
+            {% if messages %}
+                <ul id="form-messages-list-barbero" class="messages">
+                {% for m in messages %}
+                    <li{% if m.tags %} class="{{ m.tags }}"{% endif %}>{{ m }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+            </div>
+
+            <!-- FORMULARIO -->
+            <form id="form-editar-perfil-barbero"
+                method="POST"
+                action="{% url 'editar_perfil_barbero' %}"
+                enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Datos básicos -->
+            <input type="text"  name="nombre"    placeholder="Nombre"
+                    value="{{ form_data.nombre|default:barbero.nombre }}" required>
+            <input type="text"  name="apellido"  placeholder="Apellido"
+                    value="{{ form_data.apellido|default:barbero.apellido }}" required>
+            <input type="tel"   name="telefono"  placeholder="Teléfono"
+                    value="{{ form_data.telefono|default:barbero.telefono }}" required>
+            <input type="text"  name="username"  placeholder="Usuario"
+                    value="{{ form_data.username|default:barbero.username }}" required>
+            <input type="email" name="email"     placeholder="Correo"
+                    value="{{ form_data.email|default:barbero.email }}"    required>
+
+            <!-- Contraseñas -->
+            <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+
+            <div class="password-group">
+                <div class="password-container">
+                <input type="password" name="old_password"
+                        id="barbero_old_password" placeholder="Contraseña actual"
+                        value="{{ form_data.old_password|default:'' }}">
+                <i class="fas fa-eye toggle-password"
+                    data-target="barbero_old_password"></i>
+                </div>
+
+                <div class="password-container">
+                <input type="password" name="new_password"
+                        id="barbero_new_password" placeholder="Nueva contraseña"
+                        value="{{ form_data.new_password|default:'' }}">
+                <i class="fas fa-eye toggle-password"
+                    data-target="barbero_new_password"></i>
+                </div>
+
+                <div class="password-container">
+                <input type="password" name="new_password2"
+                        id="barbero_new_password2" placeholder="Confirmar contraseña"
+                        value="{{ form_data.new_password2|default:'' }}">
+                <i class="fas fa-eye toggle-password"
+                    data-target="barbero_new_password2"></i>
+                </div>
+            </div>
+
+            <!-- Foto de perfil -->
+            <label for="editar_barbero_foto_perfil">Foto de Perfil:</label>
+            <div class="file-input-container">
+                <input type="file" name="foto_perfil"
+                    id="editar_barbero_foto_perfil" accept="image/*">
+                <label for="editar_barbero_foto_perfil">Seleccionar archivo</label>
+                <span class="file-name-display">Sin archivos seleccionados</span>
+            </div>
+
+            {% if barbero.foto_perfil %}
+            <div class="current-image-preview">
+                <img src="{{ barbero.foto_perfil.url }}" alt="Foto actual">
+            </div>
+            {% endif %}
+
+            <!-- Botones -->
+            <div class="form-buttons">
+                <button type="submit"  class="confirm-btn">Comfirmar</button>
+                <button type="button"  class="cancel-btn"
+                        id="cancelarEditarPerfilBarberoBtn">Cancelar</button>
+            </div>
+            </form>
+
+        </div>
+    </div>
+    <div id="modalDescripcion" class="desc-modal">       <!-- overlay -->
+        <div class="desc-modal__box">                      <!-- caja -->
+            <button id="cerrarModalDesc" class="desc-modal__close">&times;</button>
+            <h3>Descripción de la cita</h3>
+            <div id="textoDescripcion"></div>
+        </div>
+    </div>
+
+
+
+
+    {# Carga el JavaScript al final del body #}
+    <script src="{% static 'js/citas.js' %}"></script>
+    <script src="{% static 'JS/ver_descripcion.js' %}"></script>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const seccionActiva = "{{ seccion_activa }}";
+            mostrarSeccion(seccionActiva);
+
+            // Listener para los botones de ordenar historial
+            document.querySelectorAll('.ordenar-historial-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('ordenar_historial', this.dataset.orden);
+                    url.searchParams.set('seccion', 'historial');
+                    url.searchParams.delete('historial_page'); // Reset to first page on sort change
+                    window.location.href = url.toString();
+                });
+            });
+        });
+
+        function mostrarSeccion(seccionId) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            const targetSection = document.getElementById(seccionId + '-section');
+            if (targetSection) {
+                targetSection.style.display = 'block';
+            }
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            const activeMenuItem = document.getElementById('menu-' + seccionId);
+            if (activeMenuItem) {
+                activeMenuItem.classList.add('active');
+            }
+        }
+    </script>
+    <script>
+    function toggleMenuPerfil() {
+        const menu = document.getElementById("menu-perfil");
+        const flecha = document.querySelector(".flecha");
+        const visible = menu.style.display === "flex";
+
+        menu.style.display = visible ? "none" : "flex";
+        flecha.style.transform = visible ? "rotate(0deg)" : "rotate(180deg)";
+    }
+
+    window.addEventListener("click", function (e) {
+        const perfil = document.querySelector(".header-perfil");
+        if (!perfil.contains(e.target)) {
+        document.getElementById("menu-perfil").style.display = "none";
+        document.querySelector(".flecha").style.transform = "rotate(0deg)";
+        }
+    });
+    </script>
+    <script src="{% static 'js/modal_perfil_barbero.js' %}"></script>
+
+
+</body>
+</html>

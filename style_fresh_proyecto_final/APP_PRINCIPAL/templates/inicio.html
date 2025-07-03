@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Inicio de Sesión - Style Fresh</title>
+  <link rel="stylesheet" href="{% static 'css/inicio.css' %}">
+  <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <div class="left">
+      <img src="{% static 'img/Logo.png' %}" alt="Logo Fresh Style">
+      <h1>Bienvenido a Style Fresh</h1>
+      <p>Esperamos estés bien, ¿ya nos seguiste en nuestras redes sociales?</p>
+      <div class="socials">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-whatsapp"></i> 
+        <i class="fab fa-instagram"></i>
+      </div>
+    </div>
+    <div class="right">
+      <h2>Inicia Sesión</h2>
+      {% if mensaje %}
+        <div class="error">{{ mensaje }}</div> {# Cambiado a div.error para usar el estilo general #}
+      {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="input-icon">
+          <img src="{% static 'img/Inicio_sesion/icono_ini.png' %}" alt="user">
+          <input type="text" name="username" value="{{ username }}" required>
+        </div>
+        
+        <div class="password-container"> {# Nuevo contenedor para la contraseña y el ojo #}
+          <div class="input-icon"> {# Mantiene el estilo de input-icon dentro del password-container #}
+            <img src="{% static 'img/Inicio_sesion/icono_1_ini.png' %}" alt="password">
+            <input type="password" name="password" id="password" placeholder="¿Cuál es tu contraseña?" required>
+            <i class="fas fa-eye toggle-password" data-target="password"></i> {# Ícono del ojo #}
+          </div>
+          {% if errores.password %}
+            <div class="error">{{ errores.password }}</div>
+          {% endif %}
+        </div>
+
+        <div class="remember-forgot">
+          <label><input type="checkbox" name="recordar"> ¿Quieres que te recuerde?</label>
+          <a href="#">¿Olvidaste tu contraseña?</a>
+        </div>
+        <button type="submit">Iniciar</button>
+        <button type="button" class="btn-volver" onclick="window.location.href='{% url 'pagina_principal' %}'">Volver</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const togglePassword = document.querySelector('.toggle-password'); // Solo hay un campo de contraseña aquí
+      const passwordInput = document.getElementById('password');
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+          // Alternar el tipo de input entre 'password' y 'text'
+          if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            this.classList.remove('fa-eye');
+            this.classList.add('fa-eye-slash');
+          } else {
+            passwordInput.type = 'password';
+            this.classList.remove('fa-eye-slash');
+            this.classList.add('fa-eye');
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

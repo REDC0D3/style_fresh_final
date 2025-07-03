@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos</title>
+    <link rel="stylesheet" href="{% static 'css/productos.css' %}"> 
+    <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+</head>
+<body>
+  <header class="navbar">
+    <img src="{% static 'img/Logo.png' %}" alt="Logo Fresh Style" class="logo">
+    <input type="text" class="search-bar" placeholder="Busca tu barbería...">
+    <nav class="nav-links">
+      <a href="{% url 'pagina_principal' %}">Inicio</a>
+      <a href="#">Contactos</a>
+      <a href="#">Sobre Nosotros</a>
+      <a href="{% url 'servicios_cliente' %}">Servicios</a>
+    </nav>
+    <a href="#" class="btn-reserva" onclick="irAReserva()">Reserva Aquí</a>
+  </header>
+
+  <main>
+    <!-- Sección Barbería -->
+    <section class="carousel-section">
+      <h2>Productos de Barbería</h2>
+      <div class="carousel-container" id="barberia">
+        {% for producto in productos_barberia %}
+          <div class="product">
+            {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            {% else %}
+              <img src="{% static 'img/default_producto.png' %}" alt="Sin imagen">
+            {% endif %}
+            <h3>{{ producto.nombre }}</h3>
+            <h3>{{ servicio.descripcion }}</h3>
+            <p>${{ producto.precio }}</p>
+          </div>
+        {% empty %}
+          <p>No hay productos disponibles.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Sección Bebidas -->
+    <section class="carousel-section">
+      <h2>Bebidas</h2>
+      <div class="carousel-container" id="bebidas">
+        {% for producto in productos_bebidas %}
+          <div class="product">
+            {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            {% else %}
+              <img src="{% static 'img/default_producto.png' %}" alt="Sin imagen">
+            {% endif %}
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ servicio.descripcion }}</p>
+            <p>${{ producto.precio }}</p>
+          </div>
+        {% empty %}
+          <p>No hay productos disponibles.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Sección Empaquetados -->
+    <section class="carousel-section">
+      <h2>Empaquetados</h2>
+      <div class="carousel-container" id="empaquetados">
+        {% for producto in productos_empaquetados %}
+          <div class="product">
+            {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            {% else %}
+              <img src="{% static 'img/default_producto.png' %}" alt="Sin imagen">
+            {% endif %}
+            <h3>{{ producto.nombre }}</h3>
+            <p>{{ producto.descripcion }}</p>
+            <p>${{ producto.precio }}</p>
+          </div>
+        {% empty %}
+          <p>No hay productos disponibles.</p>
+        {% endfor %}
+      </div>
+    </section>
+
+    <!-- Sección Merch   -->
+    <section class="carousel-section">
+      <h2>Merch</h2>
+      <div class="carousel-container" id="merch">
+        {% for producto in productos_merch %}
+          <div class="product">
+            {% if producto.imagen %}
+              <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}">
+            {% else %}
+              <img src="{% static 'img/default_producto.png' %}" alt="Sin imagen">
+            {% endif %}
+            <h3>{{ producto.nombre }}</h3>
+            <p>${{ producto.precio }}</p>
+          </div>
+        {% empty %}
+          <p>No hay productos disponibles.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-section">
+      <img src="{% static 'img/Logo.png' %}" alt="Fresh Style Logo" class="logo-footer" />
+      <p class="descripcion">Peluquerías de servicio completo y peluquería masculina.</p>
+      <p><strong>LUN-VIER:</strong> 09:00 am - 9:00 pm</p>
+      <p><strong>SÁB-DOM:</strong> 09:00 am - 8:00 pm</p>
+    </div>
+    
+    <div class="footer-section">
+      <h2>Ubicación</h2>
+      <p>Nos ubicamos en el barrio<br>nueva aventura en popayán cauca</p>
+      <h2>Contáctanos a</h2>
+      <p>NUMERO TELEFONICO: 57 314 6380511</p>
+      <p>CORREO: kcamilo664@gmail.com</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fas fa-times"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+    
+    <div class="footer-section">
+      <div class="whatsapp-contenido">
+        <img src="{% static 'img/FOOTER/whasa.png' %}" class="whatsapp-logo" alt="WhatsApp">
+        <h3 class="texto-whatsapp">¿Preguntas?</h3>
+        <p class="texto-whatsapp">Agreguenos en WhatsApp y envíe consultas para obtener una respuesta instantánea.</p>
+        <a href="https://wa.me/3146380511" class="btn-whatsapp">IR AL CHAT</a>
+      </div>
+      <img src="{% static 'img/FOOTER/sena.png' %}" class="sena-logo" alt="SENA">
+    </div>
+  <script src="productos.js"></script>
+</body>
+</html>

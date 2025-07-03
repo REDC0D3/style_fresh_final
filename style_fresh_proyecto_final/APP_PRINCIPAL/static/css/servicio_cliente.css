@@ -1,0 +1,321 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    background-image: url( "../img/FOOTER/fondo_p.png");
+  }
+  
+  header {
+    background-color: #111;
+    color: white;
+    text-align: center;
+    padding: 1.5rem;
+  }
+  
+  .carousel-section {
+    padding: 2rem;
+    margin: 2rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Sombra elegante */
+    transition: all 0.3s ease;
+  }
+  
+  
+  .carousel {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    background-color: transparent;
+  }
+  
+  .carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    width: 100%;
+    background-color: transparent;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .product {
+  border-left: none !important;
+  box-shadow: none !important;
+  min-width: 150px;
+  margin: 0 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.9); /* Fondo claro */
+  border-radius: 15px;
+  text-align: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1.5px solid #eaf6fb;
+  }
+  
+  .carousel-btn {
+    background-color: #ffffff00;
+    color: rgb(255, 255, 255);
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+.product::before,
+.product::after {
+  display: none !important;
+}
+
+  
+  footer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+  }
+
+  .product img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .product h3 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0 0.2rem;
+    color: #333;
+  }
+  
+  .product p {
+    color: #00000099;
+    font-weight: bold;
+  }
+  
+  .product:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .carousel-section {
+    background: transparent;
+  }
+  
+  @media (max-width: 768px) {
+    .product {
+      min-width: 150px; 
+    }
+  
+    .product Img {
+      height: 120px; 
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .product {
+      min-width: 120px; 
+    }
+  
+    .product Img {
+      height: 100px; 
+    }
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  .logo {
+    height: 70px;
+    object-fit: contain;
+    border-radius: 5%; 
+}
+
+header.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000000aa;
+  padding: 16px 30px;
+  border-bottom: 3px solid #00bfff;
+  flex-wrap: wrap;
+  border-radius: 0 0 20px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  z-index: 10; /* Por encima del fondo */
+}
+
+.search-bar {
+  flex: 1 1 300px;
+  max-width: 650px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin: 10px 20px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-reserva {
+  background-color: #00bfff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.btn-reserva:hover {
+  background-color: #009ccc;
+}
+
+.carousel-section h2{
+  color: #ffffff;
+}
+
+.footer {
+  background-color: #000;
+  color:  white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 30px 30px;
+  font-family: 'Roboto', Arial, sans-serif;
+  min-height: 300px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+  margin: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-section h2 {
+  margin: 25px 0 10px;
+  font-size: 20px;
+  color: white;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #d2b48c;
+  margin: 0;
+}
+
+.logo-footer {
+  width: 380px;
+  margin: 0 auto 12px;
+  object-fit: contain;
+}
+
+
+.descripcion {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.social-icons i {
+  font-size: 24px;
+  color: #d2b48c;
+  transition: color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #ffffff;
+}
+
+/* Sección de WhatsApp */
+.contacto-whatsapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+.whatsapp-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+  gap: 5px;
+}
+
+.whatsapp-logo {
+  width: 160px;
+  margin: -5px 0 10px;
+}
+
+.texto-whatsapp {
+  font-size: 14px;
+  color: #d2b48c;
+  margin-bottom: 1px;
+}
+
+.btn-whatsapp {
+  background-color: #0074cc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.btn-whatsapp:hover {
+  background-color: #005fa3;
+}
+
+.sena-logo {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  width: 70px;
+}
+
+main {
+  margin-top: 130px; /* Ajusta según el alto real de tu navbar */
+}

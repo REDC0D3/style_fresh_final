@@ -1,0 +1,153 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mi Historial de Cortes</title>
+
+  <link rel="stylesheet" href="{% static 'css/historial_cortes.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style_1.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/1.png' %}">
+
+  <!-- —— Estilos rápidos para el modal y el botón —— -->
+  <style>
+    .btn-ver {
+      background:#00bfff;
+      color:#fff;
+      border:none;
+      border-radius:6px;
+      padding:.3rem .7rem;
+      font-size:.85rem;
+      cursor:pointer;
+      transition:all .2s ease;
+    }
+    .btn-ver:hover { background:#00a6d6; transform:scale(1.05); }
+
+    /* overlay */
+    .modal-overlay{
+      position:fixed;inset:0;
+      background:rgba(0,0,0,.60);
+      display:none;align-items:center;justify-content:center;
+      z-index:1000;
+    }
+    /* caja */
+    .modal-box{
+      background:#111;color:#fff;
+      max-width:480px;max-height:70vh;
+      width:90%;padding:1.5rem 2rem;
+      border-radius:14px;
+      overflow-y:auto;
+      box-shadow:0 0 25px rgba(0,0,0,.45);
+      animation:fadeIn .4s ease-out;
+    }
+    .modal-box h3{margin-top:0;font-size:1.1rem}
+    .modal-box .btn-cerrar{
+      display:block;margin:1rem auto 0;
+      background:#444;border:none;border-radius:6px;
+      color:#fff;padding:.4rem 1.2rem;cursor:pointer;
+    }
+    @keyframes fadeIn{from{opacity:0;transform:translateY(15px)} to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+
+<body>
+  <!-- -------- barra superior -------- -->
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}"
+         alt="Logo Fresh Style" class="logo">
+    <nav class="nav-links">
+      <a href="{% url 'home_cliente' %}">Inicio</a>
+    </nav>
+  </header>
+
+  <h2>Mi Historial de Cortes</h2>
+
+  <!-- -------- tabla -------- -->
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Título</th>
+        <th>Barbero</th>
+        <th>Fecha de Inicio</th>
+        <th>Fecha de Fin</th>
+        <th>Descripción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for evento in historial %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ evento.titulo }}</td>
+        <td>
+          {% if evento.barbero %}
+            {{ evento.barbero.nombre }} {{ evento.barbero.apellido }}
+          {% else %} Sin asignar {% endif %}
+        </td>
+        <td>{{ evento.inicio|date:"Y-m-d H:i" }}</td>
+        <td>{{ evento.fin|date:"Y-m-d H:i" }}</td>
+        <td>
+          {% if evento.descripcion %}
+            <button class="btn-ver"
+                    data-descripcion="{{ evento.descripcion|escapejs }}">
+              Ver
+            </button>
+          {% else %}
+            Sin descripción
+          {% endif %}
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="6">No tienes cortes registrados.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- -------- Modal oculto -------- -->
+  <div id="modalDescripcion" class="modal-overlay">
+    <div class="modal-box">
+      <h3>Descripción del corte</h3>
+      <div id="textoDescripcion"></div>
+      <button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- -------- Script -------- -->
+    <script>
+        /* --- 1. Función auxiliar: de “mini‑Markdown” a HTML --- */
+        function limpiarMarkdown(str){
+        return str
+            // **negritas**  → <strong>negritas</strong>
+            .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+            // * item        → • item   (líneas que empiezan en * o -)
+            .replace(/^\s*[-*]\s+/gm, '• ')
+            // saltos de línea → <br>
+            .replace(/\n/g, '<br>');
+        }
+
+        /* --- 2. Escucha el clic del botón “Ver” --- */
+        document.addEventListener('click', e => {
+        if (e.target.classList.contains('btn-ver')) {
+            const raw = e.target.dataset.descripcion;           // texto escapado
+            const textoPlano = JSON.parse('"' + raw + '"');      // des‑escapa \u0022 etc.
+            const htmlFinal  = limpiarMarkdown(textoPlano);      // quita asteriscos
+
+            document.getElementById('textoDescripcion').innerHTML = htmlFinal;
+            document.getElementById('modalDescripcion').style.display = 'flex';
+        }
+        });
+
+        /* --- 3. Cerrar modal (sin cambios) --- */
+        function cerrarModal(){
+        document.getElementById('modalDescripcion').style.display='none';
+        }
+        window.addEventListener('click', e=>{
+        const modal = document.getElementById('modalDescripcion');
+        if (e.target === modal) modal.style.display='none';
+        });
+    </script>
+
+
+</body>
+</html>

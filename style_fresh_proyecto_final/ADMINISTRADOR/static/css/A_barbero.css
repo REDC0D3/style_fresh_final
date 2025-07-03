@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+body {
+    background: linear-gradient(120deg, #ff6b6b 0%, #feda75 100%); /* Un degradado cálido para barberos */
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Bebas Neue', Arial, sans-serif;
+    color: #222f3e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    display: flex;
+    background: rgba(255, 255, 255, 0.97);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(30, 39, 46, 0.18);
+    overflow: hidden;
+    max-width: 900px;
+    width: 100%;
+    margin: 40px 0;
+}
+
+.left {
+    background: #d2691e; /* Un color tierra, asociado a barberías clásicas */
+    color: #fff;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 320px;
+    min-width: 220px;
+    justify-content: center;
+}
+
+.left img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    margin-bottom: 18px;
+    border: 3px solid #fff;
+    object-fit: cover;
+}
+
+.left h1 {
+    font-size: 2.1rem;
+    margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+
+.left p {
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.right {
+    flex: 1;
+    padding: 40px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.right h2 {
+    color: #d2691e; /* Manteniendo la coherencia de color */
+    margin-bottom: 18px;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+input,
+textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1.5px solid #d2691e; /* Coherencia en el borde */
+    font-size: 1rem;
+    background: #f5f6fa;
+    color: #222f3e;
+    outline: none;
+    transition: border 0.2s;
+}
+
+input:focus,
+textarea:focus {
+    border: 2px solid #feda75; /* Un toque del color secundario al enfocar */
+}
+
+input[type="file"] {
+    background: transparent;
+    border: none;
+    color: #d2691e; /* Coherencia en el color del texto */
+    padding: 0;
+}
+
+label {
+    color: #d2691e; /* Coherencia en el color de la etiqueta */
+    font-size: 1.08rem;
+    margin-bottom: 2px;
+}
+
+.foto-perfil {
+    display: block;
+    margin: 10px auto 0 auto;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 2px solid #d2691e; /* Coherencia en el borde de la foto */
+}
+
+button[type="submit"] {
+    background: linear-gradient(90deg, #d2691e 0%, #feda75 100%); /* Degradado cálido para el botón */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 0;
+    font-size: 1.1rem;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.2s, transform 0.2s;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(90deg, #feda75 0%, #d2691e 100%); /* Inversión del degradado al pasar el ratón */
+    transform: scale(1.04);
+}
+
+.success {
+    background: #27ae60;
+    color: #fff;
+    padding: 10px 0;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}
+
+@media (max-width: 900px) {
+    .container {
+        flex-direction: column;
+        max-width: 98vw;
+    }
+
+    .left,
+    .right {
+        width: 100%;
+        min-width: unset;
+        padding: 30px 10px;
+    }
+}

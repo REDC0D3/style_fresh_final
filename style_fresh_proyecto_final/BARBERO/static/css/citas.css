@@ -1,0 +1,316 @@
+/* ==========================================================================
+   CSS Variables
+   ========================================================================== */
+:root {
+    /* Colors */
+    --primary-blue: #00bfff; /* Deep Sky Blue */
+    --secondary-blue: #00e6ff; /* Cyan-ish blue */
+    --dark-bg: #1a1a1a;
+    --card-bg-start: #1f1f1f;
+    --card-bg-end: #2e2e2e;
+    --card-no-citas-start: #3d3d3d;
+    --card-no-citas-end: #505050;
+    --text-light: #f0f0f0;
+    --text-medium: #e0e0e0;
+    --text-darker: #ccc;
+    --border-color: #444;
+    --button-bg: #333;
+    --button-hover-bg: #555;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.4);
+    --shadow-heavy: rgba(0, 0, 0, 0.5);
+
+    /* Spacing */
+    --gap-size: 32px; /* Matches JS gap */
+    --padding-card: 28px 22px;
+    --margin-section-top: 30px;
+    --margin-carrusel-vertical: 20px auto 40px auto;
+
+    /* Sizes */
+    --card-width-desktop: 280px;
+    --card-min-height-desktop: 300px; /* Adjusted from 340px */
+    --button-size: 46px;
+
+    /* Transitions */
+    --transition-fast: 0.3s ease;
+    --transition-medium: 0.5s ease-in-out;
+
+    /* Border Radius */
+    --border-radius-card: 16px;
+    --border-radius-button: 50%;
+}
+
+/* ==========================================================================
+   General Layout & Typography
+   ========================================================================== */
+h2 {
+    text-align: center;
+    margin-top: var(--margin-section-top);
+    color: var(--primary-blue);
+    font-size: 2.2rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 1px;
+}
+
+h3 {
+    color: var(--secondary-blue);
+    font-size: 1.6rem;
+    margin-top: var(--margin-section-top);
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.8px;
+}
+
+/* ==========================================================================
+   Carousel Container
+   ========================================================================== */
+.carrusel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: var(--margin-carrusel-vertical);
+    overflow: hidden; /* CRUCIAL: Hides cards outside the view */
+    background: transparent;
+    padding: 10px;
+    box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
+}
+
+/* ==========================================================================
+   Carousel Track
+   ========================================================================== */
+.carrusel-track {
+    display: flex;
+    transition: transform var(--transition-medium);
+    will-change: transform; /* Hint to browsers for performance optimization */
+    gap: var(--gap-size); /* CRUCIAL: Matches JS gap */
+    padding-bottom: 10px; /* Space for scrollbar or shadow if content is long */
+}
+
+/* ==========================================================================
+   Carousel Card
+   ========================================================================== */
+.carrusel-card {
+    flex: 0 0 auto; /* Ensures it doesn't shrink or grow */
+    width: var(--card-width-desktop); /* Fixed width for each card */
+    background: linear-gradient(135deg, var(--card-bg-start) 60%, var(--card-bg-end) 100%);
+    border-radius: var(--border-radius-card);
+    box-shadow: 0 6px 20px var(--shadow-medium);
+    padding: var(--padding-card);
+    min-height: var(--card-min-height-desktop); /* Adjusted minimum height */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+    box-sizing: border-box; /* CRUCIAL: Includes padding and border in total width */
+    overflow: hidden;
+    color: var(--text-light);
+}
+
+.carrusel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 36px var(--shadow-heavy);
+}
+
+/* Card titles */
+.carrusel-card h4 {
+    color: var(--secondary-blue);
+    font-size: 1.3rem;
+    margin-top: 0;
+    margin-bottom: 15px;
+    text-align: center;
+    width: 100%; /* Ensures it takes full width of the card */
+}
+
+/* ==========================================================================
+   No Citas Card Specific Styles
+   ========================================================================== */
+.carrusel-card.no-citas-card {
+    background: linear-gradient(135deg, var(--card-no-citas-start) 60%, var(--card-no-citas-end) 100%);
+    text-align: center;
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    font-style: italic;
+    color: var(--text-darker);
+}
+
+.carrusel-card.no-citas-card h4 {
+    color: var(--primary-blue);
+    margin-bottom: 10px;
+}
+
+.carrusel-card.no-citas-card p {
+    font-size: 0.9em;
+}
+
+/* ==========================================================================
+   Event/Reservation Info within Cards
+   ========================================================================== */
+.reserva-info {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%; /* Ensures list takes full width */
+}
+
+.reserva-info li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    color: var(--text-medium);
+}
+
+.reserva-info li:last-child {
+    margin-bottom: 0;
+}
+
+.reserva-info strong {
+    color: var(--primary-blue);
+    margin-left: 5px; /* Space after icon */
+}
+
+.reserva-info .icon {
+    font-size: 1.1em;
+    margin-right: 8px;
+    color: var(--secondary-blue);
+    min-width: 20px; /* Ensures consistent spacing for icons */
+    text-align: center;
+}
+
+/* Additional styling for long descriptions/titles to prevent overflow */
+.evento-card {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    max-width: 100%;
+    white-space: normal;
+    padding-top: 14px;
+    margin-top: 10px;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--text-medium);
+}
+
+.evento-card strong {
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+}
+
+
+/* ==========================================================================
+   Carousel Navigation Buttons
+   ========================================================================== */
+.carrusel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--button-bg);
+    color: var(--primary-blue);
+    border: none;
+    border-radius: var(--border-radius-button);
+    width: var(--button-size);
+    height: var(--button-size);
+    font-size: 1.6rem;
+    cursor: pointer;
+    box-shadow: 0 4px 12px var(--shadow-light);
+    z-index: 2;
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none; /* Prevent text selection on buttons */
+}
+
+.carrusel-btn:hover {
+    background: var(--button-hover-bg);
+    transform: translateY(-50%) scale(1.05); /* Subtle hover effect */
+}
+
+.carrusel-btn:active {
+    transform: translateY(-50%) scale(0.98); /* Click feedback */
+}
+
+.carrusel-btn.prev {
+    left: -10px;
+}
+
+.carrusel-btn.next {
+    right: -10px;
+}
+
+/* ==========================================================================
+   Responsive Adjustments (Media Queries)
+   ========================================================================== */
+
+/* Tablets and larger phones */
+@media (max-width: 768px) {
+    :root {
+        --gap-size: 24px; /* Slightly smaller gap */
+        --card-width-desktop: calc(50% - (var(--gap-size) / 2)); /* Two cards per view */
+        --button-size: 40px; /* Smaller buttons */
+        --card-min-height-desktop: 280px; /* Adjusted for tablets */
+    }
+
+    .carrusel-card {
+        min-height: var(--card-min-height-desktop); /* Use the updated variable */
+        padding: 24px 18px;
+    }
+    .carrusel-container {
+        padding: 10px 30px;
+        margin: 15px auto 30px auto;
+    }
+    .carrusel-btn.prev { left: 5px; }
+    .carrusel-btn.next { right: 5px; }
+
+    h2 { font-size: 1.8rem; }
+    h3 { font-size: 1.3rem; }
+    .carrusel-card h4 { font-size: 1.2rem; }
+    .reserva-info li { font-size: 0.9em; }
+}
+
+/* Smaller phones */
+@media (max-width: 600px) {
+    :root {
+        --gap-size: 20px;
+        --card-width-desktop: 90vw; /* One card per view, 90% of viewport width */
+        --button-size: 36px;
+        --card-min-height-desktop: 250px; /* Adjusted for mobiles */
+    }
+
+    .carrusel-card {
+        margin: 0 auto; /* Center the single card */
+        min-height: var(--card-min-height-desktop); /* Use the updated variable */
+        padding: 20px 15px;
+    }
+    .carrusel-track {
+        justify-content: flex-start; /* Align cards to the start when only one is fully visible */
+    }
+    .carrusel-container {
+        max-width: 100%;
+        padding: 10px 10px;
+        margin: 10px auto 20px auto;
+    }
+    .carrusel-btn.prev { left: -5px; }
+    .carrusel-btn.next { right: -5px; }
+    .carrusel-btn { font-size: 1.4rem; }
+
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.2rem; }
+    .carrusel-card h4 { font-size: 1.1rem; }
+    .reserva-info li { font-size: 0.85em; }
+}
+
+/* ==========================================================================
+   Accessibility & Usability (Optional additions)
+   ========================================================================== */
+/* Focus styles for keyboard navigation */
+.carrusel-btn:focus-visible {
+    outline: 2px solid var(--primary-blue);
+    outline-offset: 3px;
+}
+
+.carrusel-card:focus-within {
+    box-shadow: 0 0 0 3px var(--primary-blue), 0 12px 36px var(--shadow-heavy);
+    transform: translateY(-4px);
+}

@@ -1,0 +1,1013 @@
+{% load static %}
+{% load dictkey %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    
+    <link rel="stylesheet" href="{% static 'css/Home_admin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/modal.css' %}">
+    <link rel="stylesheet" href="{% static 'css/citas_tarjetas.css' %}">
+    <link rel="stylesheet" href="{% static 'css/formularios.css' %}">
+    <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+    <link rel="stylesheet" href="{% static 'css/perfil_admin_modal.css' %}">
+
+    <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+
+    <script src="{% static 'js/citas.js' %}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    {# Define django_urls globalmente ANTES de cargar home_admin.js #}
+    <script>
+        var django_urls = {
+            'eliminar_cliente_url': "{% url 'eliminar_cliente' 0 %}",
+            'eliminar_barbero_url': "{% url 'eliminar_barbero' 0 %}",
+            'eliminar_administrador_url': "{% url 'eliminar_administrador' 0 %}",
+            'eliminar_producto_url': "{% url 'eliminar_producto' 0 %}",
+            'eliminar_servicio_url': "{% url 'eliminar_servicio' 0 %}",
+            'crear_cliente_url': "{% url 'crear_cliente' %}",
+            'crear_barbero_url': "{% url 'crear_barbero' %}",
+            'crear_administrador_url': "{% url 'crear_administrador' %}",
+            'crear_producto_url': "{% url 'crear_producto' %}",
+            'crear_servicio_url': "{% url 'crear_servicio' %}",
+            // Rutas base para AJAX de actualización (el ID se reemplaza en JS)
+            'actualizar_cliente_url_base': "{% url 'actualizar_cliente' 0 %}",
+            'actualizar_barbero_url_base': "{% url 'actualizar_barbero' 0 %}",
+            'actualizar_administrador_url_base': "{% url 'actualizar_administrador' 0 %}",
+            'actualizar_producto_url_base': "{% url 'actualizar_producto' 0 %}",
+            'actualizar_servicio_url_base': "{% url 'actualizar_servicio' 0 %}"
+        };
+        // Opcionalmente, si seccion_activa viene del contexto de Django, la puedes pasar aquí
+        // var seccion_activa_django = "{{ seccion_activa|default:'clientes' }}";
+    </script>
+</head>
+<body>
+    <div class="header-perfil">
+        <button class="btn-perfil" onclick="toggleMenuPerfil()" aria-expanded="false">
+            <img src="{% if admin.foto_perfil %}{{ admin.foto_perfil.url }}{% else %}{% static 'img/default_profile.png' %}{% endif %}" class="foto-perfil">
+            <span class="nombre-perfil">
+            MR {{ admin.nombre }} {{ admin.apellido }}<br>
+                <small class="rol-usuario">Administrador</small>
+            </span>
+            <span class="flecha">&#9662;</span>
+        </button>
+
+        <div class="menu-perfil" id="menu-perfil">
+            <a href="#" onclick="abrirEditarPerfilAdminModal(); return false;">Editar perfil</a>
+            <a href="{% url 'logout' %}">Cerrar sesión</a>
+        </div>
+    </div>
+
+
+
+
+    <div style="display: flex;">
+        <nav>
+            <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" width="80" height="80">
+            <ul>
+                <li style="font-size:1.5rem; font-weight:bold; color:#00bfff; cursor:default; margin-bottom: 18px;">Menú</li>
+                <li onclick="mostrarSeccion('clientes')" style="cursor:pointer;">Clientes</li>
+                <li onclick="mostrarSeccion('barberos')" style="cursor:pointer;">Barberos</li>
+                <li onclick="mostrarSeccion('admins')" style="cursor:pointer;">Administradores</li>
+                <li onclick="mostrarSeccion('productos')" style="cursor:pointer;">Productos</li>
+                <li onclick="mostrarSeccion('servicios')" style="cursor:pointer;">Servicios</li>
+                <li onclick="mostrarSeccion('citas')" style="cursor:pointer;">Citas</li>
+                <li onclick="mostrarSeccion('historial')" style="cursor:pointer;">Historial Cortes</li>
+                <li onclick="mostrarSeccion('configuracion')" style="cursor:pointer;">Configuracion</li>
+                <li onclick="mostrarSeccion('horario')" style="cursor:pointer;">Horario de Atención</li>
+                <li ondblclick="mostrarSeccion('calificaciones')" style="cursor:pointer;">Calificaciones</li>
+            </ul>
+        </nav>
+        <main style="flex:1; padding: 40px;">
+
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {# SECCIÓN CLIENTES #}
+            <section id="clientes-section" class="content-section" style="display:block;">
+                <h2>Clientes</h2>
+                <form method="get" style="margin-bottom: 15px;">
+                    <input type="text" name="buscar_cliente" placeholder="Buscar cliente..." value="{{ request.GET.buscar_cliente }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <button type="button" class="boton-crear" data-form-type="cliente">
+                    + Crear Cliente
+                </button>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Foto</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Teléfono</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for cliente in clientes %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% if cliente.foto_perfil %}<img src="{{ cliente.foto_perfil.url }}" alt="Foto" class="tabla-foto-perfil">{% else %}<img src="{% static 'img/default_user.png' %}" alt="Sin foto" class="tabla-foto-perfil">{% endif %}</td>
+                            <td>{{ cliente.nombre }}</td><td>{{ cliente.apellido }}</td><td>{{ cliente.email }}</td><td>{{ cliente.telefono }}</td>
+                            <td>
+                                {# Botón para abrir el modal de Actualización de Cliente #}
+                                <button type="button" class="editar-item-btn" data-item-id="{{ cliente.id }}" data-item-tipo="cliente" data-item-seccion="clientes">Editar</button>
+                                <a href="#" class="eliminar-item-btn" data-item-id="{{ cliente.id }}" data-item-nombre="{{ cliente.nombre }} {{ cliente.apellido }}" data-item-tipo="cliente">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr><td colspan="7">No hay clientes registrados o que coincidan con la búsqueda.</td></tr>
+                    {% endfor %}
+                </table>
+            </section>
+
+            {# SECCIÓN BARBEROS #}
+            <section id="barberos-section" class="content-section" style="display:none;">
+                <h2>Barberos</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="barberos">
+                    <input type="text" name="buscar_barbero" placeholder="Buscar barbero..." value="{{ request.GET.buscar_barbero|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <button type="button" class="boton-crear" data-form-type="barbero">
+                    + Crear Barbero
+                </button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Foto</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Teléfono</th><th>Especialidad</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for barbero in barberos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% if barbero.foto_perfil %}<img src="{{ barbero.foto_perfil.url }}" alt="Foto" class="tabla-foto-perfil">{% else %}<img src="{% static 'img/default_user.png' %}" alt="Sin foto" class="tabla-foto-perfil">{% endif %}</td>
+                            <td>{{ barbero.nombre }}</td><td>{{ barbero.apellido }}</td><td>{{ barbero.email }}</td><td>{{ barbero.telefono }}</td><td>{{ barbero.especialidad }}</td>
+                            <td>
+                                {# Botón para abrir el modal de Actualización de Barbero #}
+                                <button type="button" class="editar-item-btn" data-item-id="{{ barbero.id }}" data-item-tipo="barbero" data-item-seccion="barberos">Editar</button> |
+                                <a href="#" class="eliminar-item-btn" data-item-id="{{ barbero.id }}" data-item-nombre="{{ barbero.nombre }} {{ barbero.apellido }}" data-item-tipo="barbero">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN ADMINISTRADORES #}
+            <section id="admins-section" class="content-section" style="display:none;">
+                <h2>Administradores</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="admins">
+                    <input type="text" name="buscar_admin" placeholder="Buscar admin..." value="{{ request.GET.buscar_admin|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <button type="button" class="boton-crear" data-form-type="administrador">
+                    + Crear Admin
+                </button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Foto</th><th>Nombre</th><th>Apellido</th><th>Email</th><th>Teléfono</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for admin in admins %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% if admin.foto_perfil %}<img src="{{ admin.foto_perfil.url }}" alt="Foto" class="tabla-foto-perfil">{% else %}<img src="{% static 'img/default_user.png' %}" alt="Sin foto" class="tabla-foto-perfil">{% endif %}</td>
+                            <td>{{ admin.nombre }}</td><td>{{ admin.apellido }}</td><td>{{ admin.email }}</td><td>{{ admin.telefono }}</td>
+                            <td>
+                                {# Botón para abrir el modal de Actualización de Administrador #}
+                                <button type="button" class="editar-item-btn" data-item-id="{{ admin.id }}" data-item-tipo="administrador" data-item-seccion="admins">Editar</button> |
+                                <a href="#" class="eliminar-item-btn" data-item-id="{{ admin.id }}" data-item-nombre="{{ admin.nombre }} {{ admin.apellido }}" data-item-tipo="administrador">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN PRODUCTOS #}
+            <section id="productos-section" class="content-section" style="display:none;">
+                <h2>Productos</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="productos">
+                    <input type="text" name="buscar_producto" placeholder="Buscar producto..." value="{{ request.GET.buscar_producto|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <button type="button" class="boton-crear" data-form-type="producto">
+                    + Crear Producto
+                </button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Foto</th><th>Nombre</th><th>Stock</th><th>Precio</th><th>Tipo</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% if producto.imagen %}<img src="{{ producto.imagen.url }}" alt="Imagen" class="tabla-foto-perfil">{% else %}<img src="{% static 'img/default_producto.png' %}" alt="Sin imagen" class="tabla-foto-perfil">{% endif %}</td>
+                            <td>{{ producto.nombre }}</td><td>{{ producto.stock }}</td><td>{{ producto.precio }}</td><td>{{ producto.tipo }}</td>
+                            <td>
+                                {# Botón para abrir el modal de Actualización de Producto #}
+                                <button type="button" class="editar-item-btn" data-item-id="{{ producto.id }}" data-item-tipo="producto" data-item-seccion="productos">Editar</button> |
+                                <a href="#" class="eliminar-item-btn" data-item-id="{{ producto.id }}" data-item-nombre="{{ producto.nombre }}" data-item-tipo="producto">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN SERVICIOS #}
+            <section id="servicios-section" class="content-section" style="display:none;">
+                <h2>Servicios</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="servicios">
+                    <input type="text" name="buscar_servicio" placeholder="Buscar servicio..." value="{{ request.GET.buscar_servicio|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+                <button type="button" class="boton-crear" data-form-type="servicio">
+                    + Crear Servicio
+                </button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th><th>Foto</th><th>Nombre</th><th>Descripción</th><th>Duración</th><th>Precio</th><th>Tipo</th><th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for servicio in servicios %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{% if servicio.imagen %}<img src="{{ servicio.imagen.url }}" alt="Imagen" class="tabla-foto-perfil">{% else %}<img src="{% static 'img/default_servicio.png' %}" alt="Sin imagen" class="tabla-foto-perfil">{% endif %}</td>
+                            <td>{{ servicio.nombre }}</td><td>{{ servicio.descripcion }}</td><td>{{ servicio.duracion }}</td><td>{{ servicio.precio }}</td><td>{{ servicio.tipo }}</td>
+                            <td>
+                                {# Botón para abrir el modal de Actualización de Servicio #}
+                                <button type="button" class="editar-item-btn" data-item-id="{{ servicio.id }}" data-item-tipo="servicio" data-item-seccion="servicios">Editar</button>
+                                <a href="#" class="eliminar-item-btn" data-item-id="{{ servicio.id }}" data-item-nombre="{{ servicio.nombre }}" data-item-tipo="servicio">Eliminar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN PRINCIPAL DE CITAS #}
+            <section id="citas-section" class="content-section" {% if seccion_activa != 'citas' %}style="display:none;"{% endif %}>
+                <h2>Gestión de Citas</h2>
+
+                <h3>Citas para Hoy</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackHoy', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackHoy">
+                        {% if "Hoy" in fechas_ordenadas %}
+                            {% for evento in eventos_por_fecha.Hoy %}
+                                <div class="carrusel-card">
+                                    <h4>{{ evento.titulo }}</h4>
+                                    <ul class="reserva-info">
+                                        {% if evento.persona %}
+                                            <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                            <li><span class="icon">👤</span> <strong>Barbero</strong> {{ evento.barbero.nombre }} {{ evento.barbero.apellido }}</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                        {% else %}
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                        {% endif %}
+                                        <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                            {% if evento.descripcion %}
+                                                <li>
+                                                    <span class="icon">📝</span>
+                                                    <strong>Descripción:</strong>
+                                                    <button class="btn-ver-desc"
+                                                            data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                        Ver
+                                                    </button>
+                                                </li>
+                                            {% endif %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>¡Libre de Citas Hoy!</h4>
+                                <p>No hay citas programadas para hoy.</p>
+                                <p>Disfruta de tu día o toma un café.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackHoy', 1)">&#8250;</button>
+                </div>
+
+                <h3>Citas para Mañana</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackManana', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackManana">
+                        {% if "Mañana" in fechas_ordenadas %}
+                            {% for evento in eventos_por_fecha.Mañana %}
+                                <div class="carrusel-card">
+                                    <h4>{{ evento.titulo }}</h4>
+                                    <ul class="reserva-info">
+                                        {% if evento.persona %}
+                                            <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                            <li><span class="icon">👤</span> <strong>Barbero</strong> {{ evento.barbero.nombre }} {{ evento.barbero.apellido }}</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                        {% else %}
+                                            <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                            <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                            <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                        {% endif %}
+                                        <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                            {% if evento.descripcion %}
+                                                <li>
+                                                    <span class="icon">📝</span>
+                                                    <strong>Descripción:</strong>
+                                                    <button class="btn-ver-desc"
+                                                            data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                        Ver
+                                                    </button>
+                                                </li>
+                                            {% endif %}
+                                    </ul>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>Mañana tranquila...</h4>
+                                <p>No hay citas programadas para mañana.</p>
+                                <p>¡Es un buen momento para planificar!</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackManana', 1)">&#8250;</button>
+                </div>
+
+                <h3>Próximas Citas (días futuros)</h3>
+                <div class="carrusel-container">
+                    <button class="carrusel-btn prev" onclick="moverCarrusel('carruselTrackProximos', -1)">&#8249;</button>
+                    <div class="carrusel-track" id="carruselTrackProximos">
+                        {% for fecha in fechas_ordenadas %}
+                            {% if fecha != "Hoy" and fecha != "Mañana" %}
+                                {% for evento in eventos_por_fecha|dictkey:fecha %}
+                                    <div class="carrusel-card">
+                                        <h4>{{ fecha }} - {{ evento.titulo }}</h4>
+                                        <ul class="reserva-info">
+                                            {% if evento.persona %}
+                                                <li><span class="icon">🆔</span> <strong>ID Cliente:</strong> {{ evento.persona.id }}</li>
+                                                <li><span class="icon">👤</span> <strong>Cliente:</strong> {{ evento.persona.nombre }} {{ evento.persona.apellido }}</li>
+                                                <li><span class="icon">👤</span> <strong>Barbero</strong> {{ evento.barbero.nombre }} {{ evento.barbero.apellido }}</li>
+                                                <li><span class="icon">📞</span> <strong>Teléfono:</strong> {{ evento.persona.telefono }}</li>
+                                                <li><span class="icon">👤</span> <strong>Usuario:</strong> {{evento.persona.username}}</li>
+                                            {% else %}
+                                                <li><span class="icon">👤</span> <strong>Cliente:</strong> Desconocido</li>
+                                                <li><span class="icon">📞</span> <strong>Teléfono:</strong> N/A</li>
+                                                <li><span class="icon">👤</span> <strong>Usuario:</strong> N/A</li>
+                                            {% endif %}
+                                            <li><span class="icon">⏰</span> <strong>Hora:</strong> {{ evento.inicio|time:"H:i" }}</li>
+                                                                                        {% if evento.descripcion %}
+                                                <li>
+                                                    <span class="icon">📝</span>
+                                                    <strong>Descripción:</strong>
+                                                    <button class="btn-ver-desc"
+                                                            data-descripcion="{{ evento.descripcion|escapejs }}">
+                                                        Ver
+                                                    </button>
+                                                </li>
+                                            {% endif %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            {% endif %}
+                        {% empty %}
+                            <div class="carrusel-card no-citas-card">
+                                <h4>¡Sin Próximas Citas!</h4>
+                                <p>No hay citas programadas para días futuros.</p>
+                                <p>¡Es un buen momento para promocionar tus servicios!</p>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button class="carrusel-btn next" onclick="moverCarrusel('carruselTrackProximos', 1)">&#8250;</button>
+                </div>
+
+            </section>
+
+            {# SECCIÓN: HISTORIAL CORTES #}
+            <section id="historial-section" class="content-section">
+                <h2>Historial de Cortes</h2>
+                <form method="get">
+                    <input type="hidden" name="seccion" value="historial">
+                    <input type="text" name="buscar_historial" placeholder="Buscar cita (título, nombre, teléfono)..." value="{{ request.GET.buscar_historial|default:'' }}">
+                    <button type="submit">Buscar</button>
+                </form>
+
+                <div class="ordenar-botones-container">
+                    <button type="button" class="ordenar-historial-btn" data-orden="-inicio"
+                            {% if orden_actual_historial == "-inicio" %}disabled{% endif %}>
+                        Más Reciente
+                    </button>
+                    <button type="button" class="ordenar-historial-btn" data-orden="inicio"
+                            {% if orden_actual_historial == "inicio" %}disabled{% endif %}>
+                        Más Antiguo
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th><th>Titulo</th><th>Fecha de Inicio</th><th>Fecha de Fin</th><th>ID Cliente</th><th>Cliente</th><th>Usuario (Username)</th><th>Teléfono</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for evento in historial_cortes %}
+                        <tr>
+                            <td>{{ evento.id }}</td>
+                            <td>{{ evento.titulo }}</td>
+                            <td>{{ evento.inicio|date:"Y-m-d H:i" }}</td>
+                            <td>{{ evento.fin|date:"Y-m-d H:i" }}</td>
+                            <td>{{ evento.persona.id|default:"N/A" }}</td>
+                            <td>{{ evento.persona.nombre|default:"N/A" }} {{ evento.persona.apellido|default:"" }}</td>
+                            <td>{{ evento.persona.username|default:"N/A" }}</td>
+                            <td>{{ evento.persona.telefono|default:"N/A" }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="9">No hay historial de cortes registrado o que coincida con la búsqueda.</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN CONFIGURACIÓN #}
+            <section id="configuracion-section" class="content-section">
+                <h2>Configuración</h2>
+                <p>Aquí puedes ajustar la configuración de tu barbería, como horario y más.</p>
+                <form method="post" action="{% url 'configurar_barberia' %}" name="form_horario">
+                    {% csrf_token %}
+                    <label for="horario">Horario de atención:</label>
+                    <input type="text" id="horario" name="horario" value="{{ configuracion.horario|default:'' }}" placeholder="Ej: Lunes a Viernes 9:00 - 18:00">
+                    <button type="submit" name="submit_horario">Guardar Horario</button>
+                </form>
+                <form method="post" action="{% url 'configurar_barberia' %}" name="form_ubicacion">
+                    {% csrf_token %}
+                    <label for="ubicacion">Ubicación de la barbería:</label>
+                    <input type="text" id="ubicacion" name="ubicacion" value="{{ configuracion.ubicacion|default:'' }}" placeholder="Ej: Calle Falsa 123">
+                    <button type="submit" name="submit_ubicacion">Guardar Ubicación</button>
+                </form>
+                <form method="post" action="{% url 'configurar_barberia' %}" name="form_telefono">
+                    {% csrf_token %}
+                    <label for="telefono">Teléfono de contacto:</label>
+                    <input type="text" id="telefono" name="telefono" value="{{ configuracion.telefono|default:'' }}" placeholder="Ej: +123456789">
+                    <button type="submit" name="submit_telefono">Guardar Teléfono</button>
+                </form>
+                <form method="post" action="{% url 'configurar_barberia' %}" name="form_email">
+                    {% csrf_token %}
+                    <label for="email">Email de contacto:</label>
+                    <input type="email" id="email" name="email" value="{{ configuracion.email|default:'' }}" placeholder="Ej: Fresh_style@gmail.com">
+                    <button type="submit" name="submit_email">Guardar Email</button>
+                </form>
+                <form method="post" action="{% url 'configurar_barberia' %}" name="form_redes_sociales">
+                    {% csrf_token %}
+                    <label for="redes_sociales">Redes Sociales:</label>
+                    <input type="text" id="redes_sociales" name="redes_sociales" value="{{ configuracion.redes_sociales|default:'' }}" placeholder="Ej: Facebook, Instagram">
+                    <button type="submit" name="submit_redes_sociales">Guardar Redes Sociales</button>
+                </form>
+            </section>
+
+            {# SECCIÓN HORARIO DE ATENCIÓN #}
+            <section id="horario-section" class="content-section">
+                <h2>Editar Horario Existente</h2>
+                <form method="post" action="{% url 'modificar_horario' %}" class="form-horario">
+                    {% csrf_token %}
+                    <label for="dia">Día:</label>
+                    <select name="dia" id="dia-select" required>
+                        {% for h in horarios %}
+                            <option value="{{ h.dia }}" data-apertura="{{ h.apertura }}" data-cierre="{{ h.cierre }}">{{ h.dia|title }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="hora_apertura">Hora de Apertura:</label>
+                    <input type="time" name="hora_apertura" id="hora_apertura" required>
+
+                    <label for="hora_cierre">Hora de Cierre:</label>
+                    <input type="time" name="hora_cierre" id="hora_cierre" required>
+
+                    <button type="submit">Guardar Cambios</button>
+                </form>
+                <h3>Horarios Registrados</h3>
+                <table class="tabla-horarios">
+                    <thead>
+                        <tr>
+                            <th>Día</th>
+                            <th>Apertura</th>
+                            <th>Cierre</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for h in horarios %}
+                        <tr>
+                            <td>{{ h.dia|title }}</td>
+                            <td>{{ h.apertura }}</td>
+                            <td>{{ h.cierre }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+
+            {# SECCIÓN CALIFICACIONES #}
+            <section id="calificaciones-section" class="content-section">
+                <h2>Gestión de Calificaciones</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID Calificación</th>
+                            <th>Cliente</th>
+                            <th>Barbero (Cita)</th>
+                            <th>Servicio (Cita)</th>
+                            <th>Puntuación</th>
+                            <th>Comentario</th>
+                            <th>Fecha de Creación</th>
+                            {# ¡Eliminada la columna "Acciones"! #}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for calificacion in calificaciones %}
+                        <tr>
+                            <td>{{ calificacion.id }}</td>
+                            <td>{% if calificacion.cliente %}{{ calificacion.cliente.nombre }} {{ calificacion.cliente.apellido }}{% else %}N/A{% endif %}</td>
+                            <td>{% if calificacion.evento.barbero %}{{ calificacion.evento.barbero.nombre }} {{ calificacion.evento.barbero.apellido }}{% else %}N/A{% endif %}</td>
+                            <td>{% if calificacion.evento.servicio %}{{ calificacion.evento.servicio.nombre }}{% else %}N/A{% endif %}</td>
+                            <td>{{ calificacion.puntuacion|default:"N/A" }}</td>
+                            <td>{{ calificacion.comentario|default:"Sin comentario" }}</td>
+                            <td>{{ calificacion.creado_fecha_hora|date:"d M Y H:i" }}</td>
+                            {# ¡Eliminado el td con el botón de eliminar! #}
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="7">No hay calificaciones registradas.</td></tr> {# ¡Colspan ajustado a 7! #}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+            
+            {# MODAL DE ELIMINACIÓN #}
+            <div id="eliminarItemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button">&times;</span>
+                    <h2>¿Estás seguro que deseas eliminar
+                        <span id="item-tipo-a-eliminar">el</span> <span id="item-nombre-a-eliminar" class="cliente-nombre"></span>?
+                    </h2>
+                    <form id="form-eliminar-item" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="confirm-btn">Sí, eliminar</button>
+                        <button type="button" class="cancel-btn" id="cancelar-eliminar-btn">Cancelar</button>
+                    </form>
+                </div>
+            </div>
+
+            {# MODAL DE CREACIÓN GENERAL #}
+            <div id="createItemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" id="closeCreateModal">&times;</span>
+                    <h2 id="createModalTitle">Crear Nuevo Elemento</h2>
+                    <div id="createModalFormContainer">
+                        {# Formulario de Cliente #}
+                        <form id="form-cliente" method="POST" enctype="multipart/form-data" style="display:none;" class="create-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" placeholder="Apellido" required>
+                            <input type="text" name="telefono" pattern="\d{10}" minlingth="10" maxlength="10" placeholder="Teléfono" required>
+                            <input type="text" name="username" placeholder="Nombre De Usuario" required>
+                            <input type="email" name="email" placeholder="Correo electrónico" class="full-width" required>
+                            <div class="password-group full-width">
+                                <div class="password-container">
+                                    <input type="password" name="password" id="modal_password_cliente" placeholder="Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password_cliente"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="password2" id="modal_password2_cliente" placeholder="Confirmar contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password2_cliente"></i>
+                                </div>
+                            </div>
+                            <label for="foto_perfil_cliente">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="foto_perfil_cliente" accept="image/*">
+                            
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Registrar Cliente</button>
+                                <button type="button" class="cancel-btn close-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Barbero #}
+                        <form id="form-barbero" method="POST" enctype="multipart/form-data" style="display:none;" class="create-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" placeholder="Apellido" required>
+                            <input type="text" name="username" placeholder="Nombre De Usuario" required>
+                            <input type="text" name="telefono" pattern="\d{10}" minlingth="10" maxlength="10" placeholder="Teléfono" required>
+                            <input type="email" name="email" placeholder="Correo electrónico" required>
+                            <label for="fecha_nacimiento_barbero">Fecha de Nacimiento:</label>
+                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento_barbero" required>
+                            <input type="text" name="especialidad" placeholder="Especialidad" required>
+                            <div class="password-group full-width">
+                                <div class="password-container">
+                                    <input type="password" name="password" id="modal_password_barbero" placeholder="Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password_barbero"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="password2" id="modal_password2_barbero" placeholder="Confirmar contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password2_barbero"></i>
+                                </div>
+                            </div>
+                            <label for="foto_perfil_barbero">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="foto_perfil_barbero" accept="image/*">
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Registrar Barbero</button>
+                                <button type="button" class="cancel-btn close-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Administrador #}
+                        <form id="form-administrador" method="POST" enctype="multipart/form-data" style="display:none;" class="create-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="text" name="nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" placeholder="Apellido" required>
+                            <input type="text" name="username" placeholder="Nombre De Usuario" required>
+                            <input type="email" name="email" placeholder="Correo electrónico" required>
+                             <div class="password-group full-width">
+                                <div class="password-container">
+                                    <input type="password" name="password" id="modal_password_admin" placeholder="Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password_admin"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="password2" id="modal_password2_admin" placeholder="Confirmar contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="modal_password2_admin"></i>
+                                </div>
+                            </div>
+                            <label for="foto_perfil_admin">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="foto_perfil_admin" accept="image/*">
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Registrar Administrador</button>
+                                <button type="button" class="cancel-btn close-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Producto #}
+                        <form id="form-producto" method="POST" enctype="multipart/form-data" style="display:none;" class="create-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div> 
+                            <input type="text" name="nombre" placeholder="Nombre del Producto" required>
+                            <input type="number" name="stock" placeholder="Stock" min="0" required>
+                            <input type="number" name="precio" placeholder="Precio" step="0.01" min="0" required>
+                            <textarea name="descripcion" placeholder="Descripción del Producto" rows="4" required></textarea>
+                            <select name="tipo" required> {# El ID no es necesario aquí para create #}
+                                <option value="">Tipo de producto</option>
+                                <option value="merch">Merch</option>
+                                <option value="comestible">Comestible</option>
+                                <option value="bebida">Bebida</option>
+                                <option value="belleza">Belleza</option>
+                            </select>
+                            <label for="imagen_producto">Imagen del Producto:</label>
+                            <input type="file" name="imagen" id="imagen_producto" accept="image/*">
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Registrar Producto</button>
+                                <button type="button" class="cancel-btn close-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Servicio #}
+                        <form id="form-servicio" method="POST" enctype="multipart/form-data" style="display:none;" class="create-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="text" name="nombre" placeholder="Nombre del Servicio" required>
+                            <textarea name="descripcion" placeholder="Descripción del Servicio" rows="4" required></textarea>
+                            <input type="number" name="duracion" placeholder="Duración en Minutos" min="1" required>
+                            <input type="number" name="precio" placeholder="Precio" step="0.01" min="0" required>
+                            <select name="tipo" required>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="vip">VIP</option>
+                                <option value="normal">Normal</option>
+                                <option value="otro">Otro</option>
+                            </select>
+                            <label for="imagen_servicio">Imagen del Servicio:</label>
+                            <input type="file" name="imagen" id="imagen_servicio" accept="image/*">
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Registrar Servicio</button>
+                                <button type="button" class="cancel-btn close-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {# NUEVO: MODAL DE ACTUALIZACIÓN GENERAL #}
+            <div id="updateItemModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-button" id="closeUpdateModal">&times;</span>
+                    <h2 id="updateModalTitle">Actualizar Elemento</h2>
+                    <div id="updateModalFormContainer">
+                        {# Formulario de Cliente para Actualizar #}
+                        <form id="form-update-cliente" method="POST" enctype="multipart/form-data" style="display:none;" class="update-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="hidden" name="id" id="update_cliente_id">
+                            <input type="text" name="nombre" id="update_cliente_nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" id="update_cliente_apellido" placeholder="Apellido" required>
+                            <input type="text" name="telefono" id="update_cliente_telefono" placeholder="Teléfono" required>
+                            <input type="text" name="username" id="update_cliente_username" placeholder="Nombre De Usuario" required>
+                            <input type="email" name="email" id="update_cliente_email" placeholder="Correo electrónico" class="full-width" required>
+                            
+                            <div class="password-group full-width">
+                                <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+                                <div class="password-container">
+                                    <input type="password" name="old_password" id="update_cliente_old_password" placeholder="Contraseña Actual">
+                                    <i class="fas fa-eye toggle-password" data-target="update_cliente_old_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password" id="update_cliente_new_password" placeholder="Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_cliente_new_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password2" id="update_cliente_new_password2" placeholder="Confirmar Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_cliente_new_password2"></i>
+                                </div>
+                            </div>
+                            <label for="update_cliente_foto_perfil">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="update_cliente_foto_perfil" accept="image/*">
+                            <div class="current-image-preview" style="margin-top: 10px;">
+                                <img id="update_cliente_current_photo" src="" alt="Foto actual" style="max-width: 100px; max-height: 100px; display: none;">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Actualizar Cliente</button>
+                                <button type="button" class="cancel-btn close-update-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Barbero para Actualizar #}
+                        <form id="form-update-barbero" method="POST" enctype="multipart/form-data" style="display:none;" class="update-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="hidden" name="id" id="update_barbero_id">
+                            <input type="text" name="nombre" id="update_barbero_nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" id="update_barbero_apellido" placeholder="Apellido" required>
+                            <input type="text" name="username" id="update_barbero_username" placeholder="Nombre De Usuario" required>
+                            <input type="text" name="telefono" id="update_barbero_telefono" placeholder="Teléfono" required>
+                            <input type="email" name="email" id="update_barbero_email" placeholder="Correo electrónico" required>
+                            <label for="update_barbero_fecha_nacimiento">Fecha de Nacimiento:</label>
+                            <input type="date" name="fecha_nacimiento" id="update_barbero_fecha_nacimiento" required>
+                            <input type="text" name="especialidad" id="update_barbero_especialidad" placeholder="Especialidad" required>
+                            
+                            <div class="password-group full-width">
+                                <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+                                <div class="password-container">
+                                    <input type="password" name="old_password" id="update_barbero_old_password" placeholder="Contraseña Actual">
+                                    <i class="fas fa-eye toggle-password" data-target="update_barbero_old_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password" id="update_barbero_new_password" placeholder="Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_barbero_new_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password2" id="update_barbero_new_password2" placeholder="Confirmar Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_barbero_new_password2"></i>
+                                </div>
+                            </div>
+                            <label for="update_barbero_foto_perfil">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="update_barbero_foto_perfil" accept="image/*">
+                            <div class="current-image-preview" style="margin-top: 10px;">
+                                <img id="update_barbero_current_photo" src="" alt="Foto actual" style="max-width: 100px; max-height: 100px; display: none;">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Actualizar Barbero</button>
+                                <button type="button" class="cancel-btn close-update-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Administrador para Actualizar #}
+                        <form id="form-update-administrador" method="POST" enctype="multipart/form-data" style="display:none;" class="update-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="hidden" name="id" id="update_administrador_id">
+                            <input type="text" name="nombre" id="update_administrador_nombre" placeholder="Nombre" required>
+                            <input type="text" name="apellido" id="update_administrador_apellido" placeholder="Apellido" required>
+                            <input type="text" name="username" id="update_administrador_username" placeholder="Nombre De Usuario" required>
+                            <input type="email" name="email" id="update_administrador_email" placeholder="Correo electrónico" required>
+                            
+                            <div class="password-group full-width">
+                                <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+                                <div class="password-container">
+                                    <input type="password" name="old_password" id="update_administrador_old_password" placeholder="Contraseña Actual">
+                                    <i class="fas fa-eye toggle-password" data-target="update_administrador_old_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password" id="update_administrador_new_password" placeholder="Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_administrador_new_password"></i>
+                                </div>
+                                <div class="password-container">
+                                    <input type="password" name="new_password2" id="update_administrador_new_password2" placeholder="Confirmar Nueva Contraseña">
+                                    <i class="fas fa-eye toggle-password" data-target="update_administrador_new_password2"></i>
+                                </div>
+                            </div>
+                            <label for="update_administrador_foto_perfil">Foto de Perfil:</label>
+                            <input type="file" name="foto_perfil" id="update_administrador_foto_perfil" accept="image/*">
+                            <div class="current-image-preview" style="margin-top: 10px;">
+                                <img id="update_administrador_current_photo" src="" alt="Foto actual" style="max-width: 100px; max-height: 100px; display: none;">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Actualizar Administrador</button>
+                                <button type="button" class="cancel-btn close-update-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Producto para Actualizar #}
+                        <form id="form-update-producto" method="POST" enctype="multipart/form-data" style="display:none;" class="update-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="hidden" name="id" id="update_producto_id">
+                            <input type="text" name="nombre" id="update_producto_nombre" placeholder="Nombre del Producto" required>
+                            <input type="number" name="stock" id="update_producto_stock" placeholder="Stock" min="0" required>
+                            <input type="number" name="precio" id="update_producto_precio" placeholder="Precio" step="0.01" min="0" required>
+                            <textarea name="descripcion" id="update_producto_descripcion" placeholder="Descripción del Producto" rows="4" required></textarea>
+                            <select name="tipo" id="update_producto_tipo" required>
+                                <option value="">Tipo de producto</option>
+                                <option value="merch" {% if producto.tipo == "merch" %}selected{% endif %}>Merch</option>
+                                <option value="comestible" {% if producto.tipo == "comestible" %}selected{% endif %}>Comestible</option>
+                                <option value="bebida" {% if producto.tipo == "bebida" %}selected{% endif %}>Bebida</option>
+                                <option value="belleza" {% if producto.tipo == "belleza" %}selected{% endif %}>Belleza</option>
+                            </select>
+                            <label for="update_producto_imagen">Imagen del Producto:</label>
+                            <input type="file" name="imagen" id="update_producto_imagen" accept="image/*">
+                            <div class="current-image-preview" style="margin-top: 10px;">
+                                <img id="update_producto_current_photo" src="" alt="Imagen actual" style="max-width: 100px; max-height: 100px; display: none;">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Actualizar Producto</button>
+                                <button type="button" class="cancel-btn close-update-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+
+                        {# Formulario de Servicio para Actualizar #}
+                        <form id="form-update-servicio" method="POST" enctype="multipart/form-data" style="display:none;" class="update-form">
+                            {% csrf_token %}
+                            <div class="modal-messages"></div>
+                            <input type="hidden" name="id" id="update_servicio_id">
+                            <input type="text" name="nombre" id="update_servicio_nombre" placeholder="Nombre del Servicio" required>
+                            <textarea name="descripcion" id="update_servicio_descripcion" placeholder="Descripción del Servicio" rows="4" required></textarea>
+                            <input type="number" name="duracion" id="update_servicio_duracion" placeholder="Duración en Minutos" min="1" required>
+                            <input type="number" name="precio" id="update_servicio_precio" placeholder="Precio" step="0.01" min="0" required>
+                            {# INICIO: CORRECCIÓN DEL SELECT PARA SERVICIOS #}
+                            <select name="tipo" id="update_servicio_tipo" required>
+                                <option value="">Selecciona un tipo</option>
+                                <option value="vip" {% if servicio.tipo == "vip" %}selected{% endif %}>VIP</option>
+                                <option value="normal" {% if servicio.tipo == "normal" %}selected{% endif %}>Normal</option>
+                                <option value="otro" {% if servicio.tipo == "otro" %}selected{% endif %}>Otro</option>
+                            </select>
+                            {# FIN: CORRECCIÓN DEL SELECT PARA SERVICIOS #}
+                            <label for="update_servicio_imagen">Imagen del Servicio:</label>
+                            <input type="file" name="imagen" id="update_servicio_imagen" accept="image/*">
+                            <div class="current-image-preview" style="margin-top: 10px;">
+                                <img id="update_servicio_current_photo" src="" alt="Imagen actual" style="max-width: 100px; max-height: 100px; display: none;">
+                            </div>
+                            <div class="form-buttons">
+                                <button type="submit" class="confirm-btn">Actualizar Servicio</button>
+                                <button type="button" class="cancel-btn close-update-modal-btn">Cancelar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <div id="editarPerfilAdminModal" class="modal modal-perfil">
+    <div class="modal-content modal-content-perfil">
+        <span class="close-button" id="closeEditarPerfilAdminModal">&times;</span>
+        <h2>Editando Perfil...</h2>
+
+        {# Bloque de mensajes desde Django #}
+        <div id="form-messages-admin" class="form-messages">
+        {% if messages %}
+            <ul id="form-messages-list-admin" class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+        </div>
+
+        <form id="form-editar-perfil-admin"
+            method="POST"
+            action="{% url 'editar_perfil_admin' %}"
+            enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <input type="text" name="nombre" placeholder="Nombre"
+                value="{{ form_data.nombre|default:admin.nombre }}" required>
+        <input type="text" name="apellido" placeholder="Apellido"
+                value="{{ form_data.apellido|default:admin.apellido }}" required>
+        <input type="tel" name="telefono" placeholder="Teléfono"
+                value="{{ form_data.telefono|default:admin.telefono }}" required>
+        <input type="text" name="username" placeholder="Usuario"
+                value="{{ form_data.username|default:admin.username }}" required>
+        <input type="email" name="email" placeholder="Correo electrónico"
+                value="{{ form_data.email|default:admin.email }}" required>
+
+        <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+
+        <div class="password-group full-width">
+            <div class="password-container">
+            <input type="password" name="old_password"
+                    id="admin_old_password" placeholder="Contraseña Actual"
+                    value="{{ form_data.old_password|default:'' }}">
+            <i class="fas fa-eye toggle-password"
+                data-target="admin_old_password"></i>
+            </div>
+
+            <div class="password-container">
+            <input type="password" name="new_password"
+                    id="admin_new_password" placeholder="Nueva Contraseña"
+                    value="{{ form_data.new_password|default:'' }}">
+            <i class="fas fa-eye toggle-password"
+                data-target="admin_new_password"></i>
+            </div>
+
+            <div class="password-container">
+            <input type="password" name="new_password2"
+                    id="admin_new_password2" placeholder="Confirmar Nueva Contraseña"
+                    value="{{ form_data.new_password2|default:'' }}">
+            <i class="fas fa-eye toggle-password"
+                data-target="admin_new_password2"></i>
+            </div>
+        </div>
+
+        <label for="editar_admin_foto_perfil">Foto de Perfil:</label>
+        <div class="file-input-container">
+            <input type="file" name="foto_perfil"
+                id="editar_admin_foto_perfil" accept="image/*">
+            <label for="editar_admin_foto_perfil">Seleccionar archivo</label>
+            <span class="file-name-display">Sin archivos seleccionados</span>
+        </div>
+
+        {% if admin.foto_perfil %}
+        <div class="current-image-preview">
+            <img src="{{ admin.foto_perfil.url }}" alt="Foto actual" class="foto-actual">
+        </div>
+        {% endif %}
+
+        <div class="form-buttons">
+            <button type="submit" class="confirm-btn">Confirmar</button>
+            <button type="button" class="cancel-btn" id="cancelarEditarPerfilAdminBtn">Cancelar</button>
+        </div>
+        </form>
+    </div>
+    </div>
+
+    <div id="modalDescripcion" class="desc-modal">       <!-- overlay -->
+        <div class="desc-modal__box">                      <!-- caja -->
+            <button id="cerrarModalDesc" class="desc-modal__close">&times;</button>
+            <h3>Descripción de la cita</h3>
+            <div id="textoDescripcion"></div>
+        </div>
+    </div>
+
+    
+
+    {# Carga el archivo JavaScript externo al final del body para asegurar que el DOM esté cargado #}
+    <script src="{% static 'js/home_admin.js' %}"></script>
+    <script src="{% static 'js/modal_perfil_admin.js' %}"></script>
+    <script src="{% static 'JS/ver_descripcion.js' %}"></script>
+
+    <script>
+    function toggleMenuPerfil() {
+        const menu = document.getElementById("menu-perfil");
+        const flecha = document.querySelector(".flecha");
+        const visible = menu.style.display === "flex";
+
+        menu.style.display = visible ? "none" : "flex";
+        flecha.style.transform = visible ? "rotate(0deg)" : "rotate(180deg)";
+    }
+
+    window.addEventListener("click", function (e) {
+        const perfil = document.querySelector(".header-perfil");
+        if (!perfil.contains(e.target)) {
+        document.getElementById("menu-perfil").style.display = "none";
+        document.querySelector(".flecha").style.transform = "rotate(0deg)";
+        }
+    });
+    </script>
+    
+</body>
+</html>

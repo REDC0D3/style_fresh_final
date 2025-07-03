@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Horario de Atencion</title>
+    <link rel="stylesheet" href="{% static 'css/horario.css' %}">
+    <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="navbar">
+      <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+      <input type="text" class="search-bar" placeholder="Busca tu barbería...">
+      <nav class="nav-links">
+        <a href="{% url 'pagina_principal' %}">Inicio</a>
+        <a href="#"></a>
+      </nav>
+    </header>
+
+    <main class="main-content"> {# Wrap main content in a div for padding #}
+        <h2>Horario de Atencion</h2>
+        <table>
+            <tr>
+                <th>Día</th>
+                <th>Hora de Apertura</th>
+                <th>Hora de Cierre</th>
+            </tr>
+            {% for h in horarios %}
+            <tr>
+                <td>{{ h.dia }}</td>
+                <td>{{ h.apertura|time:"h:i A" }}</td> {# Format time for display #}
+                <td>{{ h.cierre|time:"h:i A" }}</td>   {# Format time for display #}
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3">No hay horarios registrados.</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </main>
+ 
+    <footer class="footer">
+      <div class="footer-section">
+        <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Fresh Style Logo" class="logo_1" />
+        <p class="descripcion">Barberia de tiempo completo, que esperas para vivir una excelente experiencia.</p>
+        <p><strong>LUN-VIER:</strong> 09:00 am - 9:00 pm</p>
+        <p><strong>SÁB-DOM:</strong> 09:00 am - 8:00 pm</p>
+      </div>
+      
+      <div class="footer-section">
+        <h2>Ubicación</h2>
+        <p>Nos ubicamos en el barrio<br>nueva aventura en popayán cauca</p>
+        <h2>Contáctanos a</h2>
+        <p>NUMERO TELEFONICO: 57 314 6380511</p>
+        <p>CORREO: kcamilo664@gmail.com</p>
+        <div class="social-icons">
+          <i class="fab fa-facebook"></i>
+          <i class="fab fa-twitter"></i> {# Corrected icon #}
+          <i class="fab fa-whatsapp"></i>
+        </div>
+      </div>
+      
+      <div class="footer-section">
+        <div class="whatsapp-contenido">
+          <img src="{% static 'img/FOOTER/whasa.png' %}" class="whatsapp-logo" alt="WhatsApp">
+          <h3 class="texto-whatsapp">¿Preguntas?</h3>
+          <p class="texto-whatsapp">Agreguenos en WhatsApp y envíe consultas para obtener una respuesta instantánea.</p>
+          <a href="#" class="btn-whatsapp">IR AL CHAT</a>
+        </div>
+        <img src="{% static 'img/FOOTER/sena.png' %}" class="sena-logo" alt="SENA">
+      </div>
+    </footer>
+</body>
+</html>

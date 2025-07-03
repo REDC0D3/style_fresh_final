@@ -1,0 +1,848 @@
+/* Fondo general - Con degradado suave y sutil */
+body {
+    /* Un degradado más suave, con colores profundos pero menos "dramáticos" */
+    background: linear-gradient(135deg, #1A1A2E 0%, #1F2833 50%, #2A3845 100%);
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #E0E0E0;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Título de la página del calendario */
+.titulo-calendario {
+    text-align: center;
+    font-size: 3rem; /* Tamaño intermedio */
+    font-family: 'Montserrat', sans-serif;
+    color: #64FFDA; /* Un verde-cian brillante pero no "neón" */
+    margin-top: 50px;
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(100, 255, 218, 0.4); /* Sombra más suave */
+    font-weight: 800;
+    text-transform: uppercase;
+    /* Eliminamos el background-clip para un color sólido en el título */
+    display: block; /* Para que ocupe su propio bloque sin padding de container */
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none; /* Sin sombra de "contenedor" en el título */
+}
+
+
+/* Contenedor del calendario FullCalendar */
+#calendar {
+    max-width: 950px; /* Ancho ajustado para ser un poco más ancho */
+    margin: 40px auto;
+    background: rgba(1, 19, 44, 0.85); /* Fondo oscuro semitransparente, ligeramente menos opaco */
+    border-radius: 20px; /* Bordes redondeados */
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6); /* Sombra más profunda pero no exagerada */
+    padding: 35px 30px 25px 30px;
+    border: 1px solid rgba(100, 255, 218, 0.2); /* Borde sutil brillante */
+    backdrop-filter: blur(6px); /* Desenfoque ligeramente menos intenso */
+    -webkit-backdrop-filter: blur(6px);
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out; /* Transición más rápida */
+}
+
+#calendar:hover {
+    transform: translateY(-3px); /* Menos elevación */
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.7); /* Sombra más suave en hover */
+}
+
+/* Título de la barra de herramientas del calendario (Mes, Semana, Día) */
+.fc-toolbar-title {
+    color: #00e6ff; /* Un azul cian brillante */
+    font-size: 2.3rem; /* Tamaño ajustado */
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-shadow: 0 0 10px rgba(0, 230, 255, 0.3);
+    text-align: center;
+    width: 100%;
+}
+
+/* Botones del calendario (Prev, Next, Today, Month, Week, Day) */
+.fc-button {
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%) !important; /* Degradado azul de Home_admin */
+    border: none !important;
+    color: #fff !important;
+    font-weight: 700;
+    border-radius: 12px !important; /* Ligeramente menos redondeado */
+    transition: all 0.2s ease !important; /* Transición más rápida y simple */
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2); /* Sombra más suave */
+    font-size: 1em; /* Tamaño ajustado */
+    padding: 0.7em 1.4em; /* Padding ajustado */
+    margin: 0 6px; /* Espacio ajustado */
+    text-transform: capitalize; /* Volvemos a capitalizar */
+    letter-spacing: 0.5px;
+    cursor: pointer;
+}
+.fc-button:hover, .fc-button-active {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%) !important;
+    color: #fff !important;
+    transform: translateY(-2px) scale(1.03); /* Menos elevación y escala */
+    box-shadow: 0 8px 20px rgba(0, 191, 255, 0.4); /* Sombra más suave en hover */
+}
+
+/* Cabecera de los días (Lun, Mar, Mié, etc.) */
+.fc-col-header-cell {
+    background: linear-gradient(90deg, #1F456F 0%, #163255 100%);
+    color: #00e6ff; /* Cian brillante */
+    font-weight: 700;
+    border: none;
+    padding: 12px 0;
+    border-bottom: 2px solid #0F3460; /* Borde más suave */
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+/* Contenido de los días del calendario */
+.fc-daygrid-day {
+    background: #1F2833;
+    border: 1px solid #0F3460;
+    transition: background 0.2s ease-out;
+    color: #E0E0E0;
+}
+.fc-daygrid-day:hover {
+    background: #2A3845;
+    box-shadow: inset 0 0 8px rgba(0, 255, 255, 0.08); /* Sombra interna más sutil */
+}
+
+/* Número del día */
+.fc-daygrid-day-number {
+    color: #E0E0E0;
+    font-weight: 600;
+    font-size: 1.1em;
+    padding: 8px;
+    text-shadow: none; /* Eliminamos la sombra para un aspecto más limpio */
+}
+
+/* Eventos en el calendario */
+.fc-event {
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%) !important; /* Volvemos a tu degradado azul original de botones */
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important; /* Menos redondeado */
+    font-weight: 500;
+    box-shadow: 0 3px 10px rgba(0, 191, 255, 0.3); /* Sombra más suave */
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
+    text-transform: capitalize;
+}
+
+.fc-event:hover {
+    transform: translateY(-2px) scale(1.01); /* Menos elevación y escala */
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.4);
+    filter: brightness(1.05); /* Ligeramente más brillante */
+}
+
+
+/* Día actual */
+.fc-day-today {
+    background: rgba(0, 191, 255, 0.1) !important; /* Un azul translúcido más sutil */
+    border-radius: 8px;
+    border: 1px solid #00bfff !important; /* Borde azul */
+    box-shadow: inset 0 0 10px rgba(0, 191, 255, 0.2); /* Sombra interna más suave */
+}
+
+/* Scrollbar personalizado */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #1A1A2E;
+}
+::-webkit-scrollbar-thumb {
+    background: #00bfff; /* Color azul sólido */
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #0099ff; /* Azul más oscuro en hover */
+}
+
+
+/* Modal de reserva */
+.modal {
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.7); /* Fondo más suave */
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(6px); /* Desenfoque más suave */
+    -webkit-backdrop-filter: blur(6px);
+    animation: fadeInBackground 0.2s forwards; /* Animación más rápida */
+}
+
+@keyframes fadeInBackground {
+    from { background: rgba(0,0,0,0); backdrop-filter: blur(0px); }
+    to { background: rgba(0,0,0,0.7); backdrop-filter: blur(6px); }
+}
+
+.modal-content {
+    /* Fondo del modal más oscuro con un degradado sutil */
+    background: linear-gradient(135deg, #1F2833 0%, #16213E 100%);
+    padding: 30px 40px; /* Menos altura, un poco más ancho */
+    border-radius: 15px; /* Menos redondeado */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6); /* Sombra intensa pero no "exagerada" */
+    color: #E0E0E0;
+    min-width: 480px; /* ¡Más ancho! */
+    max-width: 90%;
+    position: relative;
+    border: 1px solid #0F3460; /* Borde oscuro y nítido */
+    animation: scaleIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards; /* Animación más rápida */
+}
+
+@keyframes scaleIn {
+    from { transform: scale(0.9); opacity: 0; } /* Empieza un poco más grande */
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Botón de cierre del modal */
+.close {
+    position: absolute;
+    right: 20px; top: 15px;
+    font-size: 2.5rem; /* Tamaño ajustado */
+    color: #00e6ff; /* Color cian brillante */
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 300;
+}
+.close:hover {
+    color: #fff;
+    transform: rotate(90deg) scale(1.05); /* Menos rotación y escala */
+}
+
+/* Título del formulario del modal (opcional, si lo añades en HTML) */
+.modal-content h3 {
+    color: #00e6ff;
+    font-size: 1.8rem; /* Tamaño ajustado */
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-shadow: 0 0 8px rgba(0, 230, 255, 0.3);
+}
+
+
+/* Labels del formulario de reserva */
+#formReserva label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 1.05em;
+    color: #B0C4DE;
+    letter-spacing: 0.5px;
+    text-transform: none; /* No mayúsculas */
+}
+
+/* Inputs del formulario de reserva */
+#formReserva input[type="text"],
+#formReserva input[type="tel"],
+#formReserva input[type="time"],
+#formReserva textarea {
+    width: calc(100% - 30px); /* Ancho ajustado */
+    padding: 14px; /* Padding ajustado */
+    margin-top: 0;
+    border-radius: 10px; /* Menos redondeado */
+    border: 2px solid #0F3460;
+    margin-bottom: 18px; /* Espacio ajustado */
+    background-color: #16213E;
+    color: #E0E0E0;
+    font-size: 0.95em;
+    transition: all 0.2s ease;
+    resize: vertical;
+    min-height: 45px; /* Altura mínima ajustada */
+    box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.3); /* Sombra interna más sutil */
+}
+/* Placeholder Styling */
+#formReserva input::placeholder,
+#formReserva textarea::placeholder {
+    color: rgba(224, 224, 224, 0.5); /* Color de placeholder más sutil */
+}
+
+
+#formReserva input[type="text"]:focus,
+#formReserva input[type="tel"]:focus,
+#formReserva input[type="time"]:focus,
+#formReserva textarea:focus {
+    border-color: #00e6ff; /* Borde brillante cian al enfocar */
+    box-shadow: 0 0 0 4px rgba(0, 230, 255, 0.3), inset 0 1px 5px rgba(0, 0, 0, 0.4); /* Sombra de foco más suave */
+    outline: none;
+    background-color: #1F2833;
+}
+
+
+/* Botón de envío del formulario */
+#formReserva button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%); /* Volvemos a tu degradado azul original */
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 12px; /* Menos redondeado */
+    padding: 14px; /* Padding ajustado */
+    font-size: 1.1rem; /* Tamaño ajustado */
+    margin-top: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 5px 15px rgba(0, 191, 255, 0.2); /* Sombra más suave */
+    letter-spacing: 0.5px;
+    text-transform: capitalize;
+}
+#formReserva button[type="submit"]:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+    color: #fff;
+    transform: translateY(-3px); /* Menos elevación */
+    box-shadow: 0 8px 20px rgba(0, 191, 255, 0.4);
+}
+
+/* Modal de confirmación/mensaje */
+#mensajeConfirmacion {
+    position: fixed;
+    z-index: 1001;
+    left: 0; top: 0; width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.7);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: fadeInBackground 0.2s forwards;
+}
+
+#mensajeConfirmacion .modal-content {
+    background: linear-gradient(135deg, #16213E 0%, #0F3460 100%);
+    padding: 35px 45px; /* Menos padding que la anterior */
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    border: 1px solid #00e6ff; /* Borde cian */
+    animation: scaleIn 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+}
+
+#textoConfirmacion {
+    font-size: 1.3rem; /* Tamaño ajustado */
+    color: #00e6ff; /* Cian brillante */
+    margin-bottom: 25px;
+    font-weight: 600;
+    line-height: 1.5;
+    text-shadow: 0 0 8px rgba(0, 230, 255, 0.3);
+}
+
+#mensajeConfirmacion .close {
+    color: #00e6ff;
+}
+
+/* Media Queries para responsividad (ajustes para el nuevo diseño) */
+@media (max-width: 1024px) {
+    .titulo-calendario {
+        font-size: 2.5rem;
+    }
+    #calendar {
+        max-width: 90%;
+        padding: 30px 25px;
+    }
+    .fc-toolbar-title {
+        font-size: 2rem;
+    }
+    .fc-button {
+        font-size: 0.95em;
+        padding: 0.6em 1.2em;
+    }
+    .modal-content {
+        min-width: 400px; /* Ajuste para pantallas medianas */
+        padding: 25px 35px;
+    }
+    #formReserva input,
+    #formReserva textarea {
+        padding: 12px;
+        font-size: 0.9em;
+        width: calc(100% - 28px);
+    }
+    #formReserva button {
+        padding: 12px;
+        font-size: 1.05rem;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .titulo-calendario {
+        font-size: 2rem;
+        margin-top: 25px;
+        margin-bottom: 15px;
+        letter-spacing: 2px;
+    }
+    #calendar {
+        margin: 15px auto;
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+    .fc-toolbar-chunk {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+    .fc-toolbar-title {
+        font-size: 1.6rem;
+        margin-bottom: 10px;
+    }
+    .fc-button-group {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    .fc-button {
+        flex-grow: 1;
+        margin: 0;
+        padding: 0.5em 0.8em;
+        font-size: 0.85em;
+    }
+    .fc-col-header-cell {
+        font-size: 0.95em;
+        padding: 8px 0;
+    }
+    .fc-daygrid-day-number {
+        font-size: 0.95em;
+        padding: 5px;
+    }
+    .fc-event {
+        font-size: 0.8em;
+        padding: 3px 5px;
+        margin-bottom: 2px;
+    }
+    .modal-content {
+        min-width: unset;
+        padding: 25px 30px;
+    }
+    #formReserva label {
+        font-size: 0.95em;
+        margin-top: 10px;
+        margin-bottom: 5px;
+    }
+    #formReserva input,
+    #formReserva textarea {
+        padding: 10px;
+        font-size: 0.85em;
+        margin-bottom: 12px;
+        width: calc(100% - 24px);
+    }
+    #formReserva button {
+        font-size: 0.95rem;
+        padding: 12px;
+        margin-top: 15px;
+    }
+    #textoConfirmacion {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+    }
+    .close {
+        font-size: 2rem;
+        right: 15px; top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .titulo-calendario {
+        font-size: 1.6rem;
+        letter-spacing: 1.5px;
+    }
+    #calendar {
+        margin: 10px auto;
+        padding: 15px 10px;
+        border-radius: 10px;
+    }
+    .fc-toolbar-title {
+        font-size: 1.3rem;
+    }
+    .fc-button {
+        font-size: 0.75em;
+        padding: 0.4em 0.6em;
+    }
+    .modal-content {
+        padding: 20px;
+    }
+    #formReserva input,
+    #formReserva textarea {
+        padding: 8px;
+        width: calc(100% - 20px);
+    }
+    #formReserva button {
+        font-size: 0.85rem;
+        padding: 10px;
+    }
+    .close {
+        font-size: 1.8rem;
+    }
+    #textoConfirmacion {
+        font-size: 0.95rem;
+    }
+}
+/* --- NUEVO: Estilos para el botón "Volver al Home" --- */
+.back-home-container {
+    text-align: left; /* Alinea el botón a la izquierda */
+    margin: 30px auto 0 auto; /* Espacio superior y centrado horizontal */
+    max-width: 950px; /* Coincide con el ancho máximo del calendario */
+    padding-left: 15px; /* Pequeño padding si el max-width es menor que la ventana */
+}
+
+.btn-back-home {
+    display: inline-flex; /* Permite alinear el icono y texto */
+    align-items: center;
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%); /* Tu degradado azul consistente */
+    color: #fff;
+    border: none;
+    border-radius: 10px; /* Bordes redondeados */
+    padding: 12px 25px; /* Buen padding para clic */
+    font-size: 1em; /* Tamaño de fuente estándar */
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 191, 255, 0.2); /* Sombra suave */
+    letter-spacing: 0.5px;
+    gap: 8px; /* Espacio entre el icono y el texto si usas uno */
+}
+
+.btn-back-home:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%); /* Invertir degradado en hover */
+    transform: translateY(-2px); /* Pequeña elevación */
+    box-shadow: 0 6px 18px rgba(0, 191, 255, 0.3); /* Sombra más pronunciada */
+}
+
+/* Media Queries para el botón */
+@media (max-width: 768px) {
+    .back-home-container {
+        text-align: center; /* Centrar el botón en móviles */
+        padding-left: 0;
+        margin-top: 20px;
+    }
+    .btn-back-home {
+        font-size: 0.9em;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .btn-back-home {
+        width: 90%; /* Ocupar casi todo el ancho en móviles pequeños */
+        justify-content: center; /* Centrar texto y flecha */
+    }
+}
+
+/* Resto de tu calendario.css... */
+/* ... (El resto del CSS de calendario.css que ya tienes) ... */
+
+
+.footer {
+  background-color: #000;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 30px 30px;
+  font-family: 'Roboto', Arial, sans-serif;
+  min-height: 300px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+  margin: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-section h2 {
+  margin: 25px 0 10px;
+  font-size: 20px;
+  color: white;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #d2b48c;
+  margin: 0;
+}
+
+.logo_1 {
+  height: 150px;
+  object-fit: contain;
+  border-radius: 5%;
+}
+
+.descripcion {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.social-icons i {
+  font-size: 24px;
+  color: #d2b48c;
+  transition: color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #ffffff;
+}
+
+/* Sección de WhatsApp */
+.contacto-whatsapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+.whatsapp-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+  gap: 5px;
+}
+
+.whatsapp-logo {
+  width: 160px;
+  margin: -5px 0 10px;
+}
+
+.texto-whatsapp {
+  font-size: 14px;
+  color: #d2b48c;
+  margin-bottom: 5px;
+}
+
+.btn-whatsapp {
+  background-color: #0074cc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.btn-whatsapp:hover {
+  background-color: #005fa3;
+}
+
+.sena-logo {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  width: 70px;
+}
+
+/* ---------------------------------------------------- */
+/* CSS DEL ENCABEZADO DE sobre_nosotros.css AGREGADO AQUÍ */
+/* ---------------------------------------------------- */
+
+/* ENCABEZADO */
+header.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000000aa; /* Transparencia para ver el fondo */
+  padding: 16px 30px;
+  border-bottom: 3px solid #00bfff; /* Borde inferior azul de tu marca */
+  flex-wrap: wrap;
+  border-radius: 0 0 20px 20px; /* Bordes redondeados inferiores */
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra para que se vea flotante */
+}
+
+/* Logo */
+.logo {
+  height: 70px;
+  object-fit: contain;
+  border-radius: 5%;
+}
+/* Barra de búsqueda */
+.search-bar {
+  flex: 1 1 300px;
+  max-width: 700px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo ligeramente transparente */
+  color: #333; /* Texto oscuro */
+}
+.search-bar::placeholder {
+  color: #888;
+}
+
+/* Links del header */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.nav-links a:hover {
+  color: #00bfff; /* Color azul al pasar el mouse */
+  text-shadow: 0 0 8px rgba(0, 191, 255, 0.6); /* Pequeña sombra de brillo */
+}
+
+/* Botón de reserva */
+.btn-reserva {
+  background-color: #00bfff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 191, 255, 0.3); /* Sombra para el botón */
+}
+
+.btn-reserva:hover {
+  background-color: #009ccc;
+  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.5); /* Sombra más pronunciada en hover */
+}
+
+/* RESPONSIVE DESIGN for header */
+@media (max-width: 1024px) {
+  header.navbar {
+    flex-direction: column;
+    padding: 10px 20px;
+    align-items: center;
+  }
+  .search-bar {
+    margin: 10px 0;
+    width: 90%;
+  }
+  .nav-links {
+    margin: 10px 0;
+  }
+  .btn-reserva {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    height: 60px;
+  }
+  .search-bar {
+    padding: 8px 12px;
+  }
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+  .btn-reserva {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Estilos del modal de selección de barberos */
+#modalBarberos {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+#modalBarberos .modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+#contenedorBarberos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+/* Tarjeta individual del barbero */
+.tarjeta-barbero {
+  width: 160px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.3s;
+  background-color: #f9f9f9;
+}
+
+.tarjeta-barbero:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+}
+
+.tarjeta-barbero img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 8px;
+}
+
+.tarjeta-barbero p {
+  margin: 0;
+  font-weight: bold;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Botón para abrir selección de barberos */
+#abrirModalBarberos {
+  background-color: #222;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 5px;
+}
+
+#abrirModalBarberos:hover {
+  background-color: #444;
+}
+

@@ -1,0 +1,809 @@
+/* Home_admin.css */
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; 
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: linear-gradient(120deg, #232526 0%, #414345 100%);
+    font-family: 'Segoe UI', Arial, sans-serif;
+    color: #f0f0f0;
+}
+
+/* Este div es el contenedor principal que usa flexbox para la navegación y el contenido */
+
+
+
+
+/* Barra lateral fija */
+nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    height: 100vh;
+    background: linear-gradient(120deg, #111c2b 60%, #232526 100%);
+    z-index: 100;
+    overflow: auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav img {
+    width: 180px; /* más grande */
+    margin-bottom: 36px;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+    transition: transform 0.2s;
+}
+
+nav img:hover {
+    transform: scale(1.06) rotate(-2deg);
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+nav ul li {
+    color: #fff;
+    padding: 20px 0 20px 44px;
+    font-size: 1.18rem;
+    letter-spacing: 1px;
+    transition: background 0.22s, color 0.22s, padding-left 0.22s;
+    cursor: pointer;
+    border-left: 4px solid transparent;
+    user-select: none;
+}
+
+nav ul li:not(:first-child):hover {
+    background: #182a42;
+    color: #00e6ff;
+    border-left: 4px solid #00e6ff;
+    padding-left: 54px;
+}
+
+nav ul li:first-child { /* Estilo para el primer elemento del menú (el título "Menú") */
+    background: none;
+    color: #fff;
+    cursor: default;
+    padding-bottom: 0;
+}
+
+/* Added active state for menu items */
+nav ul li.active {
+    background: #182a42;
+    color: #00e6ff;
+    border-left: 4px solid #00e6ff;
+    font-weight: bold;
+}
+
+
+main {
+    margin-left: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 40px 3vw 40px 3vw;
+    background: transparent;
+    position: relative;
+}
+
+section {
+    margin-bottom: 48px;
+    background-color: #2e2e2e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    color: #f0f0f0;
+    display: none;
+    animation: fadeIn 0.7s ease-out;
+}
+
+.fadeIn {
+    animation: fadeIn 0.7s;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(30px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+h2 {
+    color: #00bfff;
+    font-size: 1.7rem;
+    margin-bottom: 22px;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 1.5px;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0,191,255,0.08);
+}
+
+/* --- ESTILOS PARA LOS FORMULARIOS DE BÚSQUEDA GENÉRICOS --- */
+section form {
+    margin-bottom: 18px;
+    display: flex;
+    gap: 0;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+section form input[type="text"] {
+    padding: 12px 18px;
+    border-radius: 18px 0 0 18px;
+    border: 2px solid #00bfff;
+    font-size: 1.08rem;
+    outline: none;
+    background: #f7fbff;
+    transition: border 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px rgba(0,191,255,0.09);
+    width: 260px;
+    max-width: 100%;
+    color: #333;
+}
+section form input[type="text"]:focus {
+    border: 2px solid #0099ff;
+    box-shadow: 0 4px 16px rgba(0,191,255,0.13);
+    background: #eaf6fb;
+}
+
+section form button[type="submit"] {
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 0 18px 18px 0;
+    padding: 12px 32px;
+    font-size: 1.08rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,191,255,0.13);
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    margin-left: -2px;
+}
+section form button[type="submit"]:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+    transform: scale(1.05);
+    box-shadow: 0 4px 18px rgba(0,191,255,0.18);
+}
+/* --- FIN ESTILOS FORMULARIOS DE BÚSQUEDA --- */
+
+
+.boton-crear {
+    display: inline-block;
+    margin-bottom: 18px;
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 14px 44px;
+    font-size: 1.15rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 2px 14px rgba(0,191,255,0.13);
+    letter-spacing: 0.7px;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.boton-crear:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+    transform: scale(1.06);
+    box-shadow: 0 6px 22px rgba(0,191,255,0.18);
+}
+
+/* --- ESTILOS PARA TABLAS EN GENERAL --- */
+table {
+    margin-top: 18px;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #1f1f1f 60%, #2e2e2e 100%);
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    overflow: hidden;
+    animation: fadeIn 0.8s;
+}
+
+th, td {
+    padding: 16px 20px;
+    text-align: center;
+    border-color: #3b3b3b;
+}
+
+th {
+    background: linear-gradient(90deg, #0d324d 60%, #15466d 100%);
+    color: #00e6ff;
+    font-weight: bold;
+    font-size: 1.08rem;
+    border-bottom: 2px solid #00bfff;
+    letter-spacing: 1.5px;
+}
+
+tr {
+    border-bottom: 1px solid #2a2a2a;
+    transition: background 0.18s;
+}
+
+tr:hover {
+    background: #3a3a3a;
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+td {
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+/* --- ESTILOS MEJORADOS PARA BOTONES DE ACCIÓN EN TABLAS (Editar/Eliminar) --- */
+
+/* Estilo general para todos los botones de acción dentro de tablas */
+table button,
+table a.eliminar-item-btn { /* Incluimos a.eliminar-item-btn para retrocompatibilidad si aún tienes enlaces */
+    display: inline-flex; /* Usamos flexbox para centrar contenido si el texto es muy corto */
+    align-items: center;
+    justify-content: center;
+    text-decoration: none; /* Asegura que los <a> no se vean como enlaces */
+    padding: 10px 22px; /* Aumenta el padding para un "touch target" más grande */
+    border-radius: 25px; /* Bordes más redondeados para un look moderno (píldora) */
+    margin: 0 5px; /* Más espacio entre botones */
+    font-size: 0.95rem; /* Fuente ligeramente más pequeña para botones dentro de tabla */
+    font-weight: 700; /* Un poco menos bold para un look más refinado */
+    cursor: pointer;
+    transition: all 0.25s ease-out; /* Transiciones más suaves y elegantes */
+    border: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Sombra inicial más suave */
+    letter-spacing: 0.5px; /* Espaciado de letras sutil */
+    text-transform: uppercase; /* Texto en mayúsculas para un look más "action" */
+}
+
+/* Efecto Hover para todos los botones de acción */
+table button:hover,
+table a.eliminar-item-btn:hover {
+    transform: translateY(-2px); /* Pequeño levantamiento */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.35); /* Sombra más pronunciada al pasar el ratón */
+}
+
+/* Estilo para el botón de EDITAR (editar-item-btn) */
+.editar-item-btn {
+    background: linear-gradient(90deg, #00e6ff 0%, #00bfff 100%); /* Degradado cian a azul, brillante */
+    color: #1a1a1a; /* Texto casi negro para alto contraste */
+}
+.editar-item-btn:active { /* Efecto al hacer clic */
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background: linear-gradient(90deg, #00bfff 0%, #00e6ff 100%); /* Invierte el degradado al hacer click */
+}
+
+/* Estilo para el botón de ELIMINAR (eliminar-item-btn) */
+.eliminar-item-btn { 
+    background: linear-gradient(90deg, #ff6b6b 0%, #eb4d4b 100%); /* Degradado rosa/rojo vibrante */
+    color: #fff; /* Texto blanco */
+}
+.eliminar-item-btn:active { /* Efecto al hacer clic */
+    transform: translateY(0);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background: linear-gradient(90deg, #eb4d4b 0%, #ff6b6b 100%); /* Invierte el degradado al hacer click */
+}
+
+
+/* --- ESTILOS PARA IMÁGENES DE PERFIL EN TABLAS --- */
+.tabla-foto-perfil {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 2px 8px rgba(0,191,255,0.10);
+    border: 2px solid #eaf6fb;
+}
+
+/* --- ESTILOS PARA BOTONES DE ORDENAR HISTORIAL --- */
+.ordenar-historial-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ordenar-historial-btn[data-orden="-inicio"],
+.ordenar-historial-btn[data-orden="inicio"] {
+    background-color: #3b3b3b;
+    color: white;
+}
+
+.ordenar-historial-btn:hover:not(:disabled) {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.ordenar-historial-btn:disabled {
+    background-color: #007bff;
+    color: white;
+    cursor: default;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    pointer-events: none;
+}
+
+.ordenar-botones-container {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+
+/* Media Queries para diseño responsivo */
+@media (max-width: 1200px) {
+    table {
+        width: 98vw;
+    }
+    nav {
+        width: 120px;
+    }
+    nav ul li {
+        font-size: 0.95rem;
+        padding-left: 10px;
+    }
+}
+
+@media (max-width: 900px) {
+    main {
+        padding: 10px !important;
+    }
+    table {
+        font-size: 0.92rem;
+    }
+    th, td {
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 700px) {
+    nav {
+        display: none;
+    }
+    main {
+        padding: 8px !important;
+    }
+    table {
+        width: 100vw;
+        font-size: 0.88rem;
+    }
+    .boton-crear {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 1rem;
+    }
+}
+
+/* Estilos para el scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    background: #232526;
+}
+::-webkit-scrollbar-thumb {
+    background: #00bfff;
+    border-radius: 8px;
+}
+
+/* --- ESTILOS PARA LA SECCIÓN DE CONFIGURACIÓN --- */
+
+#configuracion-section {
+    background: linear-gradient(135deg, #182a42 0%, #111c2b 100%);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    margin-bottom: 48px;
+    animation: fadeIn 0.8s ease-out;
+    color: #f0f0f0;
+}
+
+#configuracion-section h2 {
+    color: #00e6ff;
+    font-size: 2.2rem;
+    margin-bottom: 35px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-shadow: 0 4px 15px rgba(0, 230, 255, 0.3);
+}
+
+#configuracion-section p {
+    color: #b0c4de;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    margin-bottom: 45px;
+    text-align: center;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
+}
+
+#configuracion-section form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 35px 45px;
+    border: 1px solid #2f4f6d;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2a3a50 0%, #202e40 100%);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    align-items: stretch;
+}
+
+#configuracion-section form:last-of-type {
+    margin-bottom: 0;
+}
+
+#configuracion-section form:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    transform: translateY(-6px);
+}
+
+#configuracion-section label {
+    font-size: 1.2rem;
+    color: #e0e6ff;
+    margin-bottom: 15px;
+    font-weight: 700;
+    display: block;
+    letter-spacing: 0.9px;
+    text-transform: capitalize;
+}
+
+#configuracion-section input[type="text"],
+#configuracion-section input[type="email"] {
+    width: calc(100% - 34px);
+    padding: 18px;
+    border: 2px solid #4a6a8b;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    margin-bottom: 35px;
+    background-color: #3b506b;
+    color: #e0e6ff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+#configuracion-section input[type="text"]:focus,
+#configuracion-section input[type="email"]:focus {
+    border-color: #00e6ff;
+    box-shadow: 0 0 0 6px rgba(0, 230, 255, 0.4);
+    outline: none;
+}
+
+#configuracion-section button[type="submit"] {
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 191, 255, 0.25);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    align-self: center;
+    margin-top: 25px;
+    letter-spacing: 0.8px;
+    width: 100%;
+    max-width: 350px;
+}
+
+#configuracion-section button[type="submit"]:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 191, 255, 0.45);
+}
+
+/* Media Queries específicas para la sección de configuración */
+@media (max-width: 768px) {
+    #configuracion-section {
+        padding: 25px;
+    }
+    #configuracion-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    #configuracion-section p {
+        font-size: 1.05rem;
+        margin-bottom: 35px;
+    }
+    #configuracion-section form {
+        padding: 25px 30px;
+    }
+    #configuracion-section input[type="text"],
+    #configuracion-section input[type="email"] {
+        width: calc(100% - 28px);
+        padding: 14px;
+    }
+    #configuracion-section label {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+    #configuracion-section button[type="submit"] {
+        max-width: 100%;
+        padding: 14px 25px;
+        font-size: 1.05rem;
+        margin-top: 20px;
+    }
+}
+
+/* --- ESTILOS PARA LA SECCIÓN DE HORARIO --- */
+
+#horario-section {
+    background: linear-gradient(135deg, #182a42 0%, #111c2b 100%);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    margin-bottom: 48px;
+    animation: fadeIn 0.8s ease-out;
+    color: #e0e6ff;
+}
+
+#horario-section h2 {
+    color: #00e6ff;
+    font-size: 2.2rem;
+    margin-bottom: 35px;
+    text-align: center;
+    font-weight: 800;
+    letter-spacing: 2.5px;
+    text-shadow: 0 4px 15px rgba(0, 230, 255, 0.3);
+}
+
+#horario-section h3 {
+    color: #00bfff;
+    font-size: 1.6rem;
+    margin-top: 40px;
+    margin-bottom: 25px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+/* Estilos para el formulario de edición de horario */
+#horario-section .form-horario {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 30px;
+    padding: 35px 45px;
+    border: 1px solid #2f4f6d;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #2a3a50 0%, #202e40 100%);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    align-items: stretch;
+}
+
+#horario-section .form-horario:hover {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+    transform: translateY(-6px);
+}
+
+#horario-section label {
+    font-size: 1.2rem;
+    color: #e0e6ff;
+    margin-bottom: 15px;
+    font-weight: 700;
+    display: block;
+    letter-spacing: 0.9px;
+    text-transform: capitalize;
+}
+
+#horario-section select,
+#horario-section input[type="time"] {
+    width: calc(100% - 34px);
+    padding: 18px;
+    border: 2px solid #4a6a8b;
+    border-radius: 14px;
+    font-size: 1.1rem;
+    margin-bottom: 35px;
+    background-color: #3b506b;
+    color: #e0e6ff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23e0e6ff%22%20d%3D%22M287%2C197.973L146.2%2C57.173L5.4%2C197.973H287z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 15px top 50%;
+    background-size: 12px auto;
+}
+
+#horario-section select:focus,
+#horario-section input[type="time"]:focus {
+    border-color: #00e6ff;
+    box-shadow: 0 0 0 6px rgba(0, 230, 255, 0.4);
+    outline: none;
+}
+
+/* Estilo para los botones de submit del formulario de horario */
+#horario-section .form-horario button[type="submit"] {
+    background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 14px;
+    padding: 16px 40px;
+    font-size: 1.15rem;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0, 191, 255, 0.25);
+    transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    align-self: center;
+    margin-top: 25px;
+    letter-spacing: 0.8px;
+    width: 100%;
+    max-width: 350px;
+}
+
+#horario-section .form-horario button[type="submit"]:hover {
+    background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 191, 255, 0.45);
+}
+
+/* Estilos para la tabla de horarios */
+.tabla-horarios {
+    margin-top: 30px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    background: linear-gradient(135deg, #2a3a50 0%, #202e40 100%);
+    border-radius: 18px;
+    box-shadow: 0 6px 32px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    animation: fadeIn 0.8s;
+}
+
+.tabla-horarios th,
+.tabla-horarios td {
+    padding: 18px 25px;
+    text-align: center;
+    color: #e0e6ff;
+    font-size: 1.05rem;
+}
+
+.tabla-horarios th {
+    background: linear-gradient(90deg, #2f4f6d 60%, #3b506b 100%);
+    color: #00e6ff;
+    font-weight: bold;
+    font-size: 1.15rem;
+    border-bottom: 2px solid #4a6a8b;
+    letter-spacing: 0.8px;
+}
+
+.tabla-horarios tr {
+    border-bottom: 1px solid #2f4f6d;
+    transition: background 0.18s;
+}
+
+.tabla-horarios tr:hover {
+    background: #3b506b;
+}
+
+.tabla-horarios tr:last-child {
+    border-bottom: none;
+}
+
+/* Media Queries específicas para la sección de horario */
+@media (max-width: 768px) {
+    #horario-section {
+        padding: 25px;
+    }
+    #horario-section h2 {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+    #horario-section .form-horario {
+        padding: 25px 30px;
+    }
+    #horario-section select,
+    #horario-section input[type="time"] {
+        width: calc(100% - 28px);
+        padding: 14px;
+    }
+    #horario-section label {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+    }
+    #horario-section .form-horario button[type="submit"] {
+        max-width: 100%;
+        padding: 14px 25px;
+        font-size: 1.05rem;
+        margin-top: 20px;
+    }
+    .tabla-horarios th,
+    .tabla-horarios td {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    .tabla-horarios th {
+        font-size: 1.05rem;
+    }
+}
+
+/* ===========================================================
+   Modal de Descripción de Cita (prefijo: desc-)
+   =========================================================== */
+
+/* Capa oscura */
+.desc-modal {
+  position: fixed;
+  inset: 0;                         /* top:0 right:0 bottom:0 left:0 */
+  background: rgba(0, 0, 0, 0.55);
+  display: none;                    /* se muestra con display:flex */
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;                    /* + que el resto de modales */
+}
+
+/* Caja */
+.desc-modal__box {
+  background: #111;
+  color: #fff;
+  max-width: 500px;
+  width: 90%;
+  max-height: 75vh;
+  padding: 1.5rem 2rem;
+  border-radius: 14px;
+  overflow-y: auto;                 /* scroll interno si es muy larga */
+  box-shadow: 0 0 30px rgba(0, 0, 0, .45);
+  animation: descFade .4s ease-out;
+}
+
+/* Botón cerrar (X) */
+.desc-modal__close {
+  font-size: 1.4rem;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  color: #fff;
+  border: none;
+  background: transparent;
+}
+
+/* Animación */
+@keyframes descFade {
+  from { opacity: 0; transform: translateY(15px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+/* Botón “Ver” dentro de la tarjeta */
+.btn-ver-desc {
+  background: #00bfff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: .85rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn-ver-desc:hover { background: #00a6d6; }

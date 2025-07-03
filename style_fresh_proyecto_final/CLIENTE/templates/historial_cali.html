@@ -1,0 +1,214 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> historial_calificaciones </title>
+    <link rel="stylesheet" href="{% static 'css/style_1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/historial_cali.css' %}">
+    <link rel="stylesheet" href="{% static 'css/calificacion.css' %}">
+</head>
+<body>
+    <!-- HEADER -->
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+    <nav class="nav-links">
+      <a href="{% url 'home_cliente' %}">Inicio</a>
+    </nav>
+  </header
+
+  <div class="contenedor-cards-cali">
+    <h2 class="titulo-cali">Mi Historial de Calificaciones</h2>
+    {% if calificaciones %}
+      {% for cal in calificaciones %}
+        <div class="card-cali">
+          <div class="card-cali-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="card-cali-titulo">{{ cal.evento.titulo }}</span>
+            <span class="card-cali-fecha">{{ cal.evento.inicio|date:"Y-m-d H:i" }}</span>
+          </div>
+          <div class="card-cali-cliente" style="margin-top: 8px;">
+            <strong>Cliente:</strong> {{ cal.cliente.persona.nombre }} {{ cal.cliente.persona.apellido }}
+          </div>
+          <div class="card-cali-barbero" style="margin-top: 2px;">
+            <strong>Barbero:</strong> {{ cal.evento.barbero.persona.nombre }} {{ cal.evento.barbero.persona.apellido }}
+          </div>
+          <div class="card-cali-estrellas" style="margin-top: 10px;">
+            {% for i in "12345"|make_list %}
+              {% if forloop.counter <= cal.puntuacion %}
+                <span class="estrella-cali">&#9733;</span>
+              {% else %}
+                <span class="estrella-cali estrella-cali-off">&#9733;</span>
+              {% endif %}
+            {% endfor %}
+          </div>
+          <div class="card-cali-comentario" style="margin-top: 10px;">
+            <strong>Comentario:</strong> {{ cal.comentario|default:"Sin comentario" }}
+          </div>
+          {% if cal.no_molestar %}
+            <div class="card-cali-no-molestar">
+              <span class="no-molestar">No molestar</span>
+            </div>
+          {% endif %}
+          <button class="btn-editar-cali"onclick="abrirModalEditar({{ cal.id }}, {{ cal.puntuacion }}, '{{ cal.comentario|escapejs }}')">Editar</button>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p style="text-align:center;">No tienes calificaciones registradas.</p>
+    {% endif %}
+  </div>
+
+  <div class="paginacion-cali">
+  {% if calificaciones.has_previous %}
+    <a href="?page={{ calificaciones.previous_page_number }}">&laquo;</a>
+  {% endif %}
+  {% for num in calificaciones.paginator.page_range %}
+    {% if calificaciones.number == num %}
+      <span class="pagina-activa">{{ num }}</span>
+    {% else %}
+      <a href="?page={{ num }}">{{ num }}</a>
+    {% endif %}
+  {% endfor %}
+  {% if calificaciones.has_next %}
+    <a href="?page={{ calificaciones.next_page_number }}">&raquo;</a>
+  {% endif %}
+</div>
+
+  <div id="modalEditarCalificacion" class="modal-calificacion" style="display:none;">
+    <div class="modal-content">
+      <h2>Editar Calificación</h2>
+      <div id="estrellasEditar" class="estrellas">
+        {% for i in "12345"|make_list %}
+          <span class="estrella" data-valor="{{ forloop.counter }}"></span>
+        {% endfor %}
+      </div>
+      <textarea id="comentarioEditar" placeholder="Edita tu comentario"></textarea>
+      <div class="modal-botones">
+        <button id="btnGuardarEdicion" class="btn-enviar">Guardar</button>
+        <button onclick="cerrarModalEditar()" class="btn-no-molestar">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-section">
+      <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Fresh Style Logo" class="logo_1" />
+      <p class="descripcion">Barbería de tiempo completo, que esperas para vivir una excelente experiencia.</p>
+      <p><strong>LUN-VIER:</strong> 09:00 am - 9:00 pm</p>
+      <p><strong>SÁB-DOM:</strong> 09:00 am - 8:00 pm</p>
+    </div>
+    <div class="footer-section">
+      <h2>Ubicación</h2>
+      <p>Nos ubicamos en el barrio<br>nueva aventura en Popayán, Cauca</p>
+      <h2>Contáctanos</h2>
+      <p>Teléfono: 57 314 6380511</p>
+      <p>Email: kcamilo664@gmail.com</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+    <div class="footer-section">
+      <div class="whatsapp-contenido">
+        <img src="{% static 'img/FOOTER/whasa.png' %}" class="whatsapp-logo" alt="WhatsApp">
+        <h3 class="texto-whatsapp">¿Preguntas?</h3>
+        <p class="texto-whatsapp">Agregue a WhatsApp y envíe consultas para obtener una respuesta instantánea.</p>
+        <a href="#" class="btn-whatsapp">IR AL CHAT</a>
+      </div>
+      <img src="{% static 'img/FOOTER/sena.png' %}" class="sena-logo" alt="SENA">
+    </div>
+  </footer>
+
+  <script src="{% static 'JS/calificacion_modal.js' %}"></script>
+  <script>
+let calificacionIdEditar = null;
+let puntuacionEditar = 0;
+
+function abrirModalEditar(id, puntuacion, comentario) {
+  calificacionIdEditar = id;
+  puntuacionEditar = puntuacion;
+  document.getElementById('modalEditarCalificacion').style.display = 'flex';
+  document.getElementById('comentarioEditar').value = comentario || '';
+  actualizarEstrellasEditar();
+}
+
+function cerrarModalEditar() {
+  document.getElementById('modalEditarCalificacion').style.display = 'none';
+}
+
+// Manejo de estrellas en el modal de edición
+const estrellasEditar = document.getElementById('estrellasEditar');
+if (estrellasEditar) {
+  estrellasEditar.querySelectorAll('.estrella').forEach((star, idx) => {
+    star.addEventListener('mouseenter', function () {
+      actualizarEstrellasEditar(idx + 1);
+    });
+    star.addEventListener('mouseleave', function () {
+      actualizarEstrellasEditar();
+    });
+    star.addEventListener('click', function () {
+      puntuacionEditar = idx + 1;
+      actualizarEstrellasEditar();
+    });
+  });
+}
+
+function actualizarEstrellasEditar(hoverValor = 0) {
+  if (!estrellasEditar) return;
+  estrellasEditar.querySelectorAll('.estrella').forEach((star, idx) => {
+    if ((hoverValor && idx < hoverValor) || (!hoverValor && idx < puntuacionEditar)) {
+      star.innerHTML = '&#9733;';
+      star.classList.add('selected');
+    } else {
+      star.innerHTML = '&#9734;';
+      star.classList.remove('selected');
+    }
+  });
+}
+
+// Guardar edición
+document.getElementById('btnGuardarEdicion').onclick = function () {
+  if (!puntuacionEditar) {
+    alert('Por favor selecciona una puntuación.');
+    return;
+  }
+  fetch('/cliente/editar_calificacion/', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken') },
+    body: JSON.stringify({
+      calificacion_id: calificacionIdEditar,
+      puntuacion: puntuacionEditar,
+      comentario: document.getElementById('comentarioEditar').value
+    })
+  })
+    .then(response => response.json())
+    .then(data => {
+      cerrarModalEditar();
+      location.reload(); // Recarga para ver el cambio
+    })
+    .catch(error => {
+      alert('Error al editar la calificación');
+      console.error(error);
+    });
+};
+
+// Función para obtener CSRF token
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+  </script>
+</body>
+</html>

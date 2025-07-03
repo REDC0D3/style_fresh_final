@@ -1,0 +1,523 @@
+/* modal_perfil.css - Estilos para un modal y formularios AÚN más pequeños, con diseño de neón y ojitos */
+
+/* Estilos globales del modal */
+.modal-perfil {
+  display: none; /* Oculto por defecto, JS lo muestra */
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95); /* Fondo muy oscuro para contraste y enfoque */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease-in-out, visibility 0.4s ease-in-out;
+}
+
+.modal-perfil.show {
+  opacity: 1;
+  visibility: visible;
+  display: flex;
+}
+
+/* Contenido del modal - ¡AÚN más pequeño! */
+.modal-content-perfil {
+  background-color: #1a1a1a; /* Fondo sólido oscuro */
+  padding: 20px 25px; /* Reducido drásticamente para un modal muy compacto */
+  border-radius: 8px; /* Bordes aún más pequeños */
+  width: 90%;
+  max-width: 400px; /* ¡CLAVE! Ancho máximo muy reducido para un modal ultra-compacto */
+  position: relative;
+  box-shadow:
+    0 0 15px rgba(0, 230, 255, 0.5), /* Sombra de neón más contenida */
+    0 0 30px rgba(0, 191, 255, 0.2), /* Sombra difusa más contenida */
+    0 8px 25px rgba(0, 0, 0, 0.6); /* Sombra de profundidad */
+  border: 1px solid #00ffff; /* Borde cian brillante */
+  overflow: hidden;
+  transform: scale(0.85) translateY(-40px); /* Animación de entrada más pronunciada */
+  opacity: 0;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+}
+
+.modal-perfil.show .modal-content-perfil {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* Botón de cerrar (X) */
+.close-button {
+  color: #00ffff;
+  font-size: 22px; /* Más pequeño */
+  font-weight: bold;
+  position: absolute;
+  top: 8px; /* Ajustado */
+  right: 12px; /* Ajustado */
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.5);
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #fff;
+  text-decoration: none;
+  transform: rotate(90deg) scale(1.05);
+}
+
+/* ---------- TÍTULOS Y TEXTOS ---------- */
+.modal-content-perfil h2 {
+  color: #00ffff;
+  text-align: center;
+  font-size: 1.6rem; /* Más pequeño */
+  font-weight: 900;
+  text-shadow:
+    0 0 8px rgba(0, 255, 255, 0.7),
+    0 0 15px rgba(0, 191, 255, 0.5);
+  margin-bottom: 18px; /* Ajustado */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif;
+}
+
+.modal-content-perfil form p {
+  color: #a0eaff;
+  text-align: center;
+  margin-bottom: 12px; /* Más pequeño */
+  font-size: 0.75rem; /* Aún más pequeño */
+  line-height: 1.2;
+  font-style: italic;
+  opacity: 0.9;
+  text-shadow: 0 0 1px rgba(0, 230, 255, 0.1);
+}
+
+/* ---------- CAMPOS Y ENTRADAS (INPUTS, TEXTAREAS, SELECTS) - ¡Más pequeños aún! ---------- */
+.modal-content-perfil input[type="text"],
+.modal-content-perfil input[type="tel"],
+.modal-content-perfil input[type="email"],
+.modal-content-perfil input[type="password"],
+.modal-content-perfil select,
+.modal-content-perfil textarea {
+  width: 100%;
+  background-color: #10101a;
+  border: 1px solid #00bfff;
+  color: #e0f2f7;
+  padding: 8px 12px; /* Reducido */
+  border-radius: 5px; /* Más pequeños */
+  font-size: 0.85rem; /* Más pequeño */
+  box-sizing: border-box;
+  margin-bottom: 10px; /* Más pequeño */
+  box-shadow: inset 0 0 5px rgba(0, 191, 255, 0.1), 0 0 2px rgba(0, 191, 255, 0.03); /* Sombras más sutiles */
+  transition: all 0.25s ease;
+}
+
+.modal-content-perfil input::placeholder,
+.modal-content-perfil textarea::placeholder {
+  color: #88d0ff;
+  opacity: 0.7;
+}
+
+.modal-content-perfil input:focus,
+.modal-content-perfil select:focus,
+.modal-content-perfil textarea:focus {
+  border-color: #00ffff;
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.7), inset 0 0 6px rgba(0, 255, 255, 0.3);
+  background-color: #05050a;
+  outline: none;
+}
+
+.modal-content-perfil form label {
+  display: block;
+  margin-bottom: 6px; /* Más pequeño */
+  color: #a0eaff;
+  font-weight: 700;
+  text-align: left;
+  font-size: 0.8rem; /* Más pequeño */
+  text-shadow: 0 0 1px rgba(0, 230, 255, 0.1);
+}
+
+/* ---------- CONTRASEÑAS - Layout que funciona en formularios.css ---------- */
+.password-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px; /* Espacio de formularios.css */
+  margin-bottom: 12px; /* Margen de formularios.css */
+  justify-content: space-between; /* Para distribuir los elementos */
+}
+
+.password-container {
+  position: relative;
+  /* Flex para 2 elementos en una fila, como en formularios.css */
+  flex: 1; /* Permite que cada contenedor tome el espacio disponible */
+  min-width: 150px; /* Reducido de 200px para el modal más pequeño, pero flexible */
+  max-width: calc(50% - 6px); /* Para asegurar que solo 2 quepan en una fila con 12px de gap */
+}
+
+/* Específicamente para el 3er password-container (Confirmar Nueva Contraseña) */
+.password-group .password-container:last-child {
+    flex: 1 1 100%; /* Ocupa todo el ancho */
+    max-width: 250px; /* Ancho específico para el campo central */
+    margin: 0 auto; /* Centrarlo */
+    margin-top: 5px; /* Pequeño margen superior */
+}
+
+.password-container input {
+  margin-bottom: 0;
+  padding-right: 40px; /* Padding ajustado como en formularios.css */
+  width: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 10px; /* Posición ajustada como en formularios.css */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #00e6ff; /* Color cian de formularios.css */
+  font-size: 1.05rem; /* Tamaño de ícono de formularios.css */
+  transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+  text-shadow: 0 0 4px rgba(0, 230, 255, 0.3);
+  /* Remover !important y z-index; confiamos en que FontAwesome 6 y el Kit lo manejarán */
+  /* display: block !important; */
+  /* visibility: visible !important; */
+  /* z-index: 10; */
+}
+
+.toggle-password:hover {
+  color: #fff;
+  transform: translateY(-50%) scale(1.05); /* Escala ajustada de formularios.css */
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5), 0 0 2px rgba(0, 230, 255, 0.6);
+}
+
+/* ---------- PREVISUALIZACIÓN DE IMAGEN ---------- */
+.current-image-preview {
+  text-align: center;
+  margin-top: 10px; /* Reducido */
+  margin-bottom: 10px; /* Reducido */
+}
+
+.current-image-preview img {
+  width: 70px; /* Más pequeño */
+  height: 70px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.4), inset 0 0 5px rgba(0, 255, 255, 0.2);
+  transition: all 0.25s ease;
+}
+
+.current-image-preview img:hover {
+  transform: scale(1.02) rotate(0.5deg);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.6), inset 0 0 6px rgba(0, 255, 255, 0.3);
+  border-color: #fff;
+}
+
+/* ---------- ESTILOS ESPECÍFICOS PARA EL INPUT FILE (Foto de Perfil) ---------- */
+input[type="file"] {
+  display: none;
+}
+
+input[type="file"] + label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(90deg, #333 0%, #222 100%);
+  color: #e0f2f7;
+  padding: 6px 12px; /* Reducido */
+  border-radius: 5px; /* Más pequeño */
+  font-size: 0.85rem; /* Más pequeño */
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid #555;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3); /* Sombra más sutil */
+  transition: all 0.25s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-right: 6px; /* Reducido */
+  white-space: nowrap;
+}
+
+input[type="file"] + label:hover {
+  background: linear-gradient(90deg, #444 0%, #333 100%);
+  color: #fff;
+  border-color: #777;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
+  transform: translateY(-1px);
+}
+
+.file-name-display {
+    color: #e0f2f7;
+    font-size: 0.8rem; /* Más pequeño */
+    font-style: italic;
+    opacity: 0.8;
+    text-shadow: 0 0 1px rgba(0, 230, 255, 0.1);
+}
+
+.file-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Reducido */
+    flex-wrap: wrap;
+    gap: 6px; /* Reducido */
+}
+
+/* ---------- MENSAJES DE FORMULARIO (Django) ---------- */
+.form-messages {
+    display: none; /* Por defecto, oculto */
+    margin-bottom: 10px; /* Reducido */
+    padding: 6px 10px; /* Reducido */
+    border-radius: 5px; /* Más pequeño */
+    font-size: 0.8em; /* Más pequeño */
+    text-align: center;
+    font-weight: 600;
+    line-height: 1.2; /* Más compacto */
+    max-height: 60px; /* Más pequeño */
+    overflow-y: auto;
+    border: 1px solid;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Sombra más sutil */
+}
+
+.form-messages:not(:empty) { /* Mostrar solo si tiene contenido */
+    display: block;
+}
+
+/* Estilos específicos para Django messages */
+.form-messages ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.form-messages li {
+    margin-bottom: 3px; /* Más pequeño */
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.1); /* Más sutil */
+}
+
+.form-messages li:last-child {
+    margin-bottom: 0;
+}
+
+.form-messages .error {
+  background-color: #3d0a0a;
+  color: #ff9999;
+  border-color: #ff4d4d;
+  box-shadow: 0 0 6px rgba(255, 77, 77, 0.4); /* Más sutil */
+}
+
+.form-messages .success {
+  background-color: #103c1b;
+  color: #99ff99;
+  border-color: #4dff4d;
+  box-shadow: 0 0 6px rgba(77, 255, 77, 0.4);
+}
+
+/* Estilos para feedback de contraseña en tiempo real (eliminados del HTML, estas reglas son redundantes) */
+/* No hay #password-feedback en HTML, así que estos selectores no encontrarán elementos */
+
+/* ---------- BOTONES DEL FORMULARIO ---------- */
+.form-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* Reducido */
+  margin-top: 20px; /* Reducido */
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 8px 18px; /* Reducido */
+  border-radius: 5px; /* Más pequeños */
+  font-size: 0.85rem; /* Más pequeño */
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 48%;
+  max-width: 180px; /* Ancho máximo más pequeño para botones */
+}
+
+.confirm-btn {
+  background: linear-gradient(90deg, #00bfff 0%, #007bff 100%);
+  color: white;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  border: 1px solid #00e6ff;
+  box-shadow: 0 0 10px rgba(0, 191, 255, 0.4);
+}
+
+.confirm-btn:hover {
+  background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+}
+
+.cancel-btn {
+  background: linear-gradient(90deg, #666 0%, #444 100%);
+  color: #f0f0f0;
+  border: 1px solid #888;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.cancel-btn:hover {
+  background: linear-gradient(90deg, #888 0%, #666 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+
+/* ---------- RESPONSIVE ---------- */
+/* Estos media queries se ajustarán aún más al nuevo tamaño base */
+@media (max-width: 768px) {
+  .modal-content-perfil {
+    padding: 15px 20px;
+    max-width: 95%;
+    border-radius: 6px;
+    box-shadow: 0 0 15px rgba(0, 230, 255, 0.3);
+  }
+
+  .close-button {
+    font-size: 1.2rem;
+    top: 6px;
+    right: 10px;
+  }
+
+  .modal-content-perfil h2 {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+    letter-spacing: 0.6px;
+  }
+
+  .modal-content-perfil form p {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+
+  .modal-content-perfil input[type="text"],
+  .modal-content-perfil input[type="tel"],
+  .modal-content-perfil input[type="email"],
+  .modal-content-perfil input[type="password"],
+  .modal-content-perfil select,
+  .modal-content-perfil textarea {
+    padding: 6px 10px;
+    font-size: 0.75rem;
+    margin-bottom: 8px;
+    border-radius: 3px;
+  }
+
+  .modal-content-perfil form label {
+    font-size: 0.75rem;
+    margin-bottom: 3px;
+  }
+
+  .password-group {
+    flex-direction: column; /* Apilar en pantallas pequeñas para mejor legibilidad */
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .password-container {
+      flex: 1 1 100%;
+      min-width: unset;
+  }
+  .password-group .password-container:last-child { /* Asegurar que el último también ocupe 100% en móvil */
+      max-width: 100%;
+      margin: 0;
+      margin-top: 4px;
+  }
+
+  .password-container input {
+    padding-right: 30px;
+  }
+
+  .toggle-password {
+    font-size: 0.85rem;
+    right: 6px;
+  }
+
+  .current-image-preview img {
+    width: 60px;
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .file-input-container {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      margin-bottom: 10px;
+  }
+  input[type="file"] + label {
+      width: 100%;
+      text-align: center;
+      margin-right: 0;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+  }
+  .file-name-display {
+      width: 100%;
+      text-align: left;
+      padding-left: 4px;
+      font-size: 0.7rem;
+  }
+
+  .form-messages,
+  #password-feedback { /* #password-feedback ya no se usa, pero se mantiene para que la regla no falle */
+    font-size: 0.7em;
+    padding: 5px 8px;
+    margin-bottom: 8px;
+  }
+
+  .form-buttons {
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 15px;
+  }
+
+  .confirm-btn,
+  .cancel-btn {
+    width: 100%;
+    padding: 7px 15px;
+    font-size: 0.8rem;
+    letter-spacing: 0.4px;
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-content-perfil {
+    padding: 12px 12px;
+    border-radius: 5px;
+  }
+  .modal-content-perfil h2 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+  .close-button {
+    font-size: 1rem;
+    top: 6px;
+    right: 8px;
+  }
+  .modal-content-perfil input[type="text"],
+  .modal-content-perfil input[type="tel"],
+  .modal-content-perfil input[type="email"],
+  .modal-content-perfil input[type="password"],
+  .modal-content-perfil select,
+  .modal-content-perfil textarea {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+  .current-image-preview img {
+    width: 50px;
+    height: 50px;
+  }
+  .form-messages,
+  #password-feedback { /* #password-feedback ya no se usa, pero se mantiene para que la regla no falle */
+    padding: 4px 6px;
+  }
+  .confirm-btn, .cancel-btn {
+    font-size: 0.75rem;
+    padding: 6px 12px;
+  }
+}

@@ -1,0 +1,132 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Editor de Avatar - Notionists</title>
+  <link rel="stylesheet" href="{% static 'css/Avatar.css' %}">
+</head>
+<body>
+
+  <!-- ENCABEZADO -->
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+    
+    <nav class="nav-links">
+      <a href="#">Sobre Nosotros</a>
+    </nav>
+
+    <a href="{% url 'home_cliente' %}" class="btn-reserva">Inicio</a>
+  </header>
+
+  <!-- CONTENEDOR FLEX SOLO PARA EL CONTENIDO PRINCIPAL -->
+  <main class="container">
+
+    <!-- VISTA PREVIA DEL AVATAR -->
+    <section class="preview">
+      <h2>Crea tu avatar</h2>
+      <img id="avatarImage" src="" alt="avatar generado" />
+      <div class="action-buttons">
+        <button id="randomizeAvatar">🎲 Aleatorio</button>
+        <button id="saveAvatar">💾 Guardar</button>
+      </div>
+    </section>
+
+    <!-- CONTROLES DE PERSONALIZACIÓN -->
+    <section class="controls">
+
+      <h2>MODIFICA TU ROSTRO</h2>
+
+      <div class="section" id="section-brows">
+        <h3>Cejas</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="brows">←</button>
+          <div class="carousel-track" id="brows-track"></div>
+          <button class="carousel-btn next" data-part="brows">→</button>
+        </div>
+      </div>
+
+      <div class="section" id="section-eyes">
+        <h3>Ojos</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="eyes">←</button>
+          <div class="carousel-track" id="eyes-track"></div>
+          <button class="carousel-btn next" data-part="eyes">→</button>
+        </div>
+      </div>
+
+      <div class="section" id="section-nose">
+        <h3>Nariz</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="nose">←</button>
+          <div class="carousel-track" id="nose-track"></div>
+          <button class="carousel-btn next" data-part="nose">→</button>
+        </div>
+      </div>
+
+      <div class="section" id="section-lips">
+        <h3>Labios</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="lips">←</button>
+          <div class="carousel-track" id="lips-track"></div>
+          <button class="carousel-btn next" data-part="lips">→</button>
+        </div>
+      </div>
+
+      <h2>MODIFICA TU ESTILO</h2>
+
+      <div class="section" id="section-hair">
+        <h3>Cabello</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="hair">←</button>
+          <div class="carousel-track" id="hair-track"></div>
+          <button class="carousel-btn next" data-part="hair">→</button>
+        </div>
+      </div>
+
+      <div class="section" id="section-beard">
+        <h3>Barba</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="beard">←</button>
+          <div class="carousel-track" id="beard-track"></div>
+          <button class="carousel-btn next" data-part="beard">→</button>
+        </div>
+      </div>
+
+      <h2>ACCESORIOS</h2>
+
+      <div class="section" id="section-glasses">
+        <h3>Gafas</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="glasses">←</button>
+          <div class="carousel-track" id="glasses-track"></div>
+          <button class="carousel-btn next" data-part="glasses">→</button>
+        </div>
+      </div>
+
+      <div class="section" id="section-gesture">
+        <h3>Gesto</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="gesture">←</button>
+          <div class="carousel-track" id="gesture-track"></div>
+          <button class="carousel-btn next" data-part="gesture">→</button>
+        </div>
+      </div>
+
+      <h2>MODIFICA TU CUERPO</h2>
+
+      <div class="section" id="section-body">
+        <h3>Camisa</h3>
+        <div class="carousel">
+          <button class="carousel-btn prev" data-part="body">←</button>
+          <div class="carousel-track" id="body-track"></div>
+          <button class="carousel-btn next" data-part="body">→</button>
+        </div>
+      </div>
+
+    </section>
+  </main>
+
+  <script src="{% static 'js/Avatar.js' %}"></script>
+</body>
+</html>

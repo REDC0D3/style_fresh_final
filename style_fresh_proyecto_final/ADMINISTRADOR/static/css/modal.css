@@ -1,0 +1,195 @@
+/* modal.css - ¡La versión EXTRA COMPACTA y "Bien Chimba" con botones juntos y letra pequeña ARREGLADA y MÁS LARGOS! */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.25s ease-in-out;
+}
+
+.modal.modal-active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 1;
+}
+
+.modal-content {
+    background: linear-gradient(145deg, #2e2e2e 0%, #171717 100%);
+    padding: 25px 35px;
+    border-radius: 15px;
+    border: 1px solid #00efff;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5), inset 0 0 6px rgba(0, 239, 255, 0.15);
+    width: 75%;
+    max-width: 480px;
+    position: relative;
+    text-align: center;
+    transform: perspective(1000px) translateY(-40px) rotateX(5deg);
+    opacity: 0;
+    transition: transform 0.35s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.35s ease-out;
+}
+
+.modal.modal-active .modal-content {
+    transform: perspective(1000px) translateY(0) rotateX(0deg);
+    opacity: 1;
+}
+
+.modal-content h2 {
+    color: #00e6ff;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 1.2px;
+    text-shadow: 0 0 15px rgba(0, 230, 255, 0.5), 0 0 5px rgba(0, 230, 255, 0.2);
+}
+
+.modal-content h2 .cliente-nombre {
+    color: #f0f8ff;
+    font-weight: 900;
+}
+
+.close-button {
+    color: #00e6ff;
+    font-size: 35px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+    transition: color 0.25s ease, transform 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    text-shadow: 0 0 5px rgba(0, 230, 255, 0.4);
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #fff;
+    text-decoration: none;
+    transform: rotate(270deg) scale(1.0);
+}
+
+#createModalFormContainer form,
+#updateModalFormContainer form {
+    display: none;
+}
+
+/* ESTILO PARA EL CONTENEDOR DE BOTONES DENTRO DE LOS FORMULARIOS (NUEVO DIV EN HTML) */
+.form-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Estilo para el modal de eliminación (que solo tiene botones) */
+#form-eliminar-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+
+/* Ajuste para los botones dentro de los contenedores .form-buttons y #form-eliminar-item */
+.modal-content .confirm-btn,
+.modal-content .cancel-btn,
+.modal-content .close-modal-btn,
+.modal-content .close-update-modal-btn {
+    flex: 1 1 48%; /* Permite que cada botón intente ocupar casi la mitad del espacio */
+    min-width: 140px; /* **Aumentado para hacerlo más largo** */
+    max-width: 220px; /* **Aumentado para hacerlo más largo** */
+    padding: 10px 15px; /* **Padding vertical ligeramente reducido para una altura más compacta, pero el horizontal se mantiene para la longitud** */
+    border-radius: 10px;
+    font-size: 0.85rem; /* **¡Fuente de botón aún más pequeña!** */
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.7px; /* **Espaciado de letras ligeramente reducido para acomodar el texto más pequeño** */
+    transform: scale(1);
+    margin: 0;
+}
+
+.modal-content .confirm-btn {
+    background: linear-gradient(90deg, #00bfff 0%, #007bff 100%);
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    border: 1px solid #00e6ff;
+}
+
+.modal-content .confirm-btn:hover {
+    background: linear-gradient(90deg, #007bff 0%, #0056b3 100%);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 191, 255, 0.4);
+}
+
+.modal-content .cancel-btn,
+.modal-content .close-modal-btn,
+.modal-content .close-update-modal-btn {
+    background: linear-gradient(90deg, #666 0%, #444 100%);
+    color: #f0f0f0;
+    border: 1px solid #888;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content .cancel-btn:hover,
+.modal-content .close-modal-btn:hover,
+.modal-content .close-update-modal-btn:hover {
+    background: linear-gradient(90deg, #888 0%, #666 100%);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments para modales */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 18px 20px;
+        max-width: 90%;
+        border-radius: 12px;
+    }
+
+    .modal-content h2 {
+        font-size: 1.6rem;
+        margin-bottom: 18px;
+    }
+
+    .close-button {
+        font-size: 30px;
+        top: 8px;
+        right: 15px;
+    }
+
+    /* En móviles, los botones pueden apilarse si no hay suficiente espacio */
+    #form-eliminar-item,
+    .form-buttons {
+        flex-direction: column; /* Apilar en pantallas muy pequeñas */
+        gap: 8px;
+        margin-top: 18px;
+    }
+
+    .modal-content .confirm-btn,
+    .modal-content .cancel-btn,
+    .modal-content .close-modal-btn,
+    .modal-content .close-update-modal-btn {
+        padding: 10px 15px;
+        font-size: 0.8rem; /* Fuente más pequeña para móviles también */
+        max-width: 100%;
+        min-width: unset;
+        border-radius: 8px;
+    }
+}

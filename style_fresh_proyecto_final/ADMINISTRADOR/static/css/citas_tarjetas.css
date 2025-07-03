@@ -1,0 +1,261 @@
+/* ======================================================================
+   CSS Variables
+   ====================================================================== */
+:root {
+    /* Colors */
+    --primary-blue:          #00bfff;  /* Deep Sky Blue   */
+    --secondary-blue:        #00e6ff;  /* Cyan            */
+    --dark-bg:               #1a1a1a;
+    --card-bg-start:         #1f1f1f;
+    --card-bg-end:           #2e2e2e;
+    --card-no-citas-start:   #3d3d3d;
+    --card-no-citas-end:     #505050;
+    --text-light:            #f0f0f0;
+    --text-medium:           #e0e0e0;
+    --text-darker:           #ccc;
+    --border-color:          #444;
+    --button-bg:             #333;
+    --button-hover-bg:       #555;
+    --shadow-light:          rgba(0,0,0,.30);
+    --shadow-medium:         rgba(0,0,0,.40);
+    --shadow-heavy:          rgba(0,0,0,.50);
+
+    /* Spacing */
+    --gap-size:              32px;            /* ⬅  Debe coincidir con JS */
+    --padding-card:          28px 22px;
+    --margin-section-top:    30px;
+    --margin-carrusel:       20px auto 40px;
+
+    /* Sizes */
+    --card-width-desktop:          280px;     /* ancho fijo de cada tarjeta */
+    --card-min-height-desktop:     300px;
+    --button-size:                 46px;
+
+    /* Transitions */
+    --transition-fast:        .3s ease;
+    --transition-medium:      .5s ease-in-out;
+
+    /* Border-radius */
+    --border-radius-card:     16px;
+    --border-radius-button:   50%;
+}
+
+/* ======================================================================
+   General Typography
+   ====================================================================== */
+h2{
+    text-align:center;
+    margin-top:var(--margin-section-top);
+    color:var(--primary-blue);
+    font:800 2.2rem 'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    letter-spacing:1px;
+}
+h3{
+    color:var(--secondary-blue);
+    font:700 1.6rem 'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;
+    margin:var(--margin-section-top) 0 15px;
+    text-align:center;
+    letter-spacing:.8px;
+}
+
+/* ======================================================================
+   Carousel Container
+   ====================================================================== */
+.carrusel-container{
+    position:relative;
+    width:100%;
+    max-width:1000px;
+    margin:var(--margin-carrusel);
+    overflow:hidden;                      /* oculta las tarjetas fuera de vista */
+    padding:10px;
+    box-sizing:border-box;
+}
+
+/* ======================================================================
+   Carousel Track
+   ====================================================================== */
+.carrusel-track{
+    display:flex;
+    gap:var(--gap-size);                  /* ⬅  Misma separación que JS */
+    transition:transform var(--transition-medium);
+    will-change:transform;
+    padding-bottom:10px;
+}
+
+/* ======================================================================
+   Carousel Card
+   ====================================================================== */
+.carrusel-card{
+    flex:0 0 var(--card-width-desktop);   /* ni crece ni se encoge */
+    max-width:var(--card-width-desktop);  /* cinturón de seguridad */
+    width:var(--card-width-desktop);
+    min-width:0;                          /* evita overflow extraños */
+
+    background:linear-gradient(135deg,
+                var(--card-bg-start) 60%,
+                var(--card-bg-end)   100%);
+    border-radius:var(--border-radius-card);
+    box-shadow:0 6px 20px var(--shadow-medium);
+    padding:var(--padding-card);
+    min-height:var(--card-min-height-desktop);
+
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    word-break:break-word;
+    overflow:hidden;
+    color:var(--text-light);
+    transition:transform var(--transition-fast),
+               box-shadow var(--transition-fast);
+}
+.carrusel-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 36px var(--shadow-heavy);
+}
+.carrusel-card h4{
+    width:100%;
+    margin:0 0 15px;
+    text-align:center;
+    color:var(--secondary-blue);
+    font-size:1.3rem;
+}
+
+/* —— Tarjeta “Sin citas” —— */
+.carrusel-card.no-citas-card{
+    background:linear-gradient(135deg,
+                var(--card-no-citas-start) 60%,
+                var(--card-no-citas-end)   100%);
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    font-style:italic;
+    color:var(--text-darker);
+}
+.carrusel-card.no-citas-card h4{
+    color:var(--primary-blue);
+    margin-bottom:10px;
+}
+.carrusel-card.no-citas-card p{
+    font-size:.9em;
+}
+
+/* —— Lista de detalles dentro de la tarjeta —— */
+.reserva-info{
+    list-style:none;
+    margin:0;
+    padding:0;
+    width:100%;
+}
+.reserva-info li{
+    display:flex;
+    align-items:center;
+    margin-bottom:10px;
+    font-size:.95rem;
+    color:var(--text-medium);
+}
+.reserva-info li:last-child{margin-bottom:0;}
+.reserva-info .icon{
+    margin-right:8px;
+    min-width:20px;
+    text-align:center;
+    font-size:1.1em;
+    color:var(--secondary-blue);
+}
+.reserva-info strong{
+    margin-left:5px;
+    color:var(--primary-blue);
+}
+
+/* Texto largo separado debajo */
+.evento-card{
+    margin-top:10px;
+    padding-top:14px;
+    border-top:1px solid var(--border-color);
+    font-size:.95rem;
+    line-height:1.4;
+    color:var(--text-medium);
+    overflow-wrap:break-word;
+}
+
+/* ======================================================================
+   Carousel Navigation Buttons
+   ====================================================================== */
+.carrusel-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:var(--button-size);
+    height:var(--button-size);
+    background:var(--button-bg);
+    color:var(--primary-blue);
+    border:none;
+    border-radius:var(--border-radius-button);
+    font-size:1.6rem;
+    display:flex;justify-content:center;align-items:center;
+    cursor:pointer;
+    box-shadow:0 4px 12px var(--shadow-light);
+    transition:background var(--transition-fast),
+               transform  var(--transition-fast);
+    user-select:none;
+    z-index:2;
+}
+.carrusel-btn.prev{left:-10px;}
+.carrusel-btn.next{right:-10px;}
+.carrusel-btn:hover{
+    background:var(--button-hover-bg);
+    transform:translateY(-50%) scale(1.05);
+}
+.carrusel-btn:active{
+    transform:translateY(-50%) scale(.98);
+}
+
+/* ======================================================================
+   Responsive Tweaks
+   ====================================================================== */
+/* Tablets */
+@media(max-width:768px){
+    :root{
+        --gap-size:24px;
+        --card-width-desktop:calc(50% - 12px); /* 2-tarjetas */
+        --button-size:40px;
+        --card-min-height-desktop:280px;
+    }
+    .carrusel-container{padding:10px 30px;margin:15px auto 30px;}
+    .carrusel-btn.prev{left:5px;}
+    .carrusel-btn.next{right:5px;}
+    h2{font-size:1.8rem;} h3{font-size:1.3rem;}
+}
+/* Phones */
+@media(max-width:600px){
+    :root{
+        --gap-size:20px;
+        --card-width-desktop:90vw;        /* 1-tarjeta */
+        --button-size:36px;
+        --card-min-height-desktop:250px;
+    }
+    .carrusel-card{
+        margin:0 auto;
+        min-height:var(--card-min-height-desktop);
+        padding:20px 15px;
+    }
+    .carrusel-container{padding:10px;margin:10px auto 20px;}
+    .carrusel-btn.prev{left:-5px;}
+    .carrusel-btn.next{right:-5px;}
+    .carrusel-btn{font-size:1.4rem;}
+    h2{font-size:1.6rem;} h3{font-size:1.2rem;}
+    .carrusel-card h4{font-size:1.1rem;}
+    .reserva-info li{font-size:.85em;}
+}
+
+/* ======================================================================
+   Accessibility (focus)
+   ====================================================================== */
+.carrusel-btn:focus-visible{
+    outline:2px solid var(--primary-blue);
+    outline-offset:3px;
+}
+.carrusel-card:focus-within{
+    box-shadow:0 0 0 3px var(--primary-blue),
+               0 12px 36px var(--shadow-heavy);
+    transform:translateY(-4px);
+}

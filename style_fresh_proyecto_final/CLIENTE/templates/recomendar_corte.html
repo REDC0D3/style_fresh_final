@@ -1,0 +1,263 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Diseña tu Corte - Fresh Style</title>
+  <link rel="stylesheet" href="{% static 'css/form_corte.css' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/1.png' %}">
+  <link rel="stylesheet" href="{% static 'css/style_1.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .btn-escuchar {
+    background-color: #1e88e5;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(30, 136, 229, 0.3);
+    transition: transform 0.2s ease, background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-escuchar:hover {
+    background-color: #1565c0;
+    transform: scale(1.03);
+  }
+
+  .btn-escuchar:active {
+    transform: scale(0.98);
+  }
+
+  .btn-escuchar::before {
+    content: "🔊";
+    font-size: 1.2rem;
+  }
+
+    /* Spinner de carga */
+    .spinner {
+      border: 4px solid #ccc;
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Animación del modal */
+    .modal-content {
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .preview-img {
+      display: block;
+      margin-top: 0.5rem;
+      max-width: 100%;
+      width: 250px;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+    <h1 class="title">Barbero El Chato AI</h1>
+  </header>
+
+  <div class="header-con-logo">
+    <h2 class="titulo"> Hola soy Chato soy una IA que te va a dar tu mejor version</h2>
+    <p class="subtitulo">por favor Sube tus fotos y deja todo en mis manos que te voy a dejar bonito</p>
+  </div>
+
+  <form id="form-corte" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label>📸 Aqui una foto de frente:</label>
+    <input type="file" name="frente" accept="image/*" required>
+
+    <label>📸 Aqui una foto tu Izquierdo:</label>
+    <input type="file" name="lado_izq" accept="image/*" required>
+
+    <label>📸 Aqui una foto tu Lado Derecho:</label>
+    <input type="file" name="lado_der" accept="image/*" required>
+
+    <label>📸 Aqui una foto tu parte de Atrás:</label>
+    <input type="file" name="atras" accept="image/*" required>
+
+    <button type="submit" id="btn-enviar">¿Empiezo a trabajar?</button>
+    <div id="cargando" style="display: none;">
+      <span class="spinner"></span> estoy genarando mis consejo, dejame pensar...
+    </div>
+
+    <p class="consejo">💡 Consejo: Asegúrate de tener buena luz y fondo claro para una mejor recomendación.</p>
+  </form>
+
+  <div class="resultado-modal" id="recomendacion" style="display: none;">
+    <div class="modal-content">
+      <h3 class="titulo-recomendacion">Aqui mis consejo, vas a quedar muy facha </h3>
+      <div id="recomendacion-contenido"></div>
+      <button onclick="leerTexto()" class="btn-escuchar">Escuchar recomendación</button>
+      <button id="btn-ir-calendario"
+              class="btn-reservar"
+              style="display:none; margin-top:1rem;">
+        ¡Reservar este corte!
+      </button>
+      <button onclick="cerrarModal()" class="btn-cerrar">Cerrar</button>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <a href="{% url 'home_cliente' %}" class="btn-volver">Volver al inicio</a>
+  </div>
+
+ <script>
+    let lecturaActiva = false;
+    let instanciaLectura = null;
+
+    function leerTexto() {
+      // Si ya está leyendo, detenemos
+      if (lecturaActiva && speechSynthesis.speaking) {
+        speechSynthesis.cancel();
+        lecturaActiva = false;
+        actualizarTextoBoton();
+        return;
+      }
+
+      const texto = document.getElementById("recomendacion-contenido").innerText;
+      const speech = new SpeechSynthesisUtterance(texto);
+
+      const voces = speechSynthesis.getVoices();
+      const vozChimba = voces.find(v =>
+        v.lang.includes("es") && v.name.toLowerCase().includes("google")
+      );
+
+      if (vozChimba) {
+        speech.voice = vozChimba;
+      }
+
+      speech.lang = "es-CO";
+      speech.rate = 1;
+      speech.pitch = 1;
+
+      instanciaLectura = speech;
+      lecturaActiva = true;
+      actualizarTextoBoton();
+
+      // Cuando termina de hablar
+      speech.onend = () => {
+        lecturaActiva = false;
+        actualizarTextoBoton();
+      };
+
+      // Si ocurre error al leer
+      speech.onerror = () => {
+        lecturaActiva = false;
+        actualizarTextoBoton();
+      };
+
+      speechSynthesis.speak(speech);
+    }
+
+    function actualizarTextoBoton() {
+      const btn = document.querySelector('.btn-escuchar');
+      if (!btn) return;
+      btn.innerText = lecturaActiva ? '✋ Detener lectura' : '🔊 Escuchar recomendación';
+    }
+  </script>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ----- 1. previews ----- */
+      const previews = { /* …igual que antes… */ };
+
+      /* ----- 2. enviar imágenes y recibir recomendación ----- */
+      const form      = document.getElementById('form-corte');
+      const modal     = document.getElementById('recomendacion');
+      const contenido = document.getElementById('recomendacion-contenido');
+      const cargando  = document.getElementById('cargando');
+      const btnIrCalendario = document.getElementById('btn-ir-calendario');
+
+      /* —— auxiliar: mini-Markdown → HTML —— */
+      function miniMarkdown(str){
+        return str
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') // **negrita**
+          .replace(/^\s*[-*]\s+/gm, '• ')                   // * ó - → •
+          .replace(/\n/g, '<br>');                          // saltos de línea
+      }
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        cargando.style.display = 'flex';
+
+        const formData = new FormData(form);
+        fetch("{% url 'recomendacion_corte' %}", {
+          method: 'POST',
+          body:   formData,
+          headers:{'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value}
+        })
+        .then(r => r.json())
+        .then(data => {
+          cargando.style.display = 'none';
+          contenido.innerHTML = '';
+
+          if (data.recomendacion){
+            /* —— aquí aplicamos miniMarkdown —— */
+            contenido.innerHTML = miniMarkdown(data.recomendacion);
+
+            btnIrCalendario.style.display = 'inline-block';
+            btnIrCalendario.onclick = () => {
+              localStorage.setItem('recomendacionCorte', data.recomendacion);
+              window.location.href = '/cliente/calendario/';
+            };
+          }else{
+            contenido.innerHTML =
+              `<strong style="color:red">⚠️ ${data.error || 'Ocurrió un error.'}</strong>`;
+          }
+          modal.style.display = 'flex';
+        })
+        .catch(err=>{
+          cargando.style.display='none';
+          contenido.innerHTML=
+            '<strong style="color:red">❌ Error al enviar las imágenes.</strong>';
+          modal.style.display='flex';
+          console.error(err);
+        });
+      });
+    });
+
+    function cerrarModal(){
+      document.getElementById('recomendacion').style.display = 'none';
+    }
+  </script>
+  <script>
+    // Forzar carga de voces
+    if (speechSynthesis.onvoiceschanged !== undefined) {
+      speechSynthesis.onvoiceschanged = () => {
+        console.log("✅ Voces cargadas");
+      };
+    }
+  </script>
+
+
+
+
+</body>
+</html>

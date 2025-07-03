@@ -1,0 +1,653 @@
+/* JUAN ESTEBAN Y KEVIN */
+
+/* FONDO GENERAL */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background: url("../img/PRIMERA_PARTE/fondo_pa.png") no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  position: relative;
+}
+
+/* Capa oscura sobre el fondo */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Capa más oscura para el contraste */
+  z-index: -1;
+}
+
+/* ENCABEZADO */
+header.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000000aa; /* Transparencia para ver el fondo */
+  padding: 16px 30px;
+  border-bottom: 3px solid #00bfff; /* Borde inferior azul de tu marca */
+  flex-wrap: wrap;
+  border-radius: 0 0 20px 20px; /* Bordes redondeados inferiores */
+  position: relative;
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra para que se vea flotante */
+}
+
+/* Logo */
+.logo {
+  height: 70px;
+  object-fit: contain;
+  border-radius: 5%;
+}
+/* Barra de búsqueda */
+.search-bar {
+  flex: 1 1 300px;
+  max-width: 700px;
+  padding: 10px 15px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  margin: 10px 20px;
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo ligeramente transparente */
+  color: #333; /* Texto oscuro */
+}
+.search-bar::placeholder {
+  color: #888;
+}
+
+/* Links del header */
+.nav-links {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s, text-shadow 0.3s;
+}
+
+.nav-links a:hover {
+  color: #00bfff; /* Color azul al pasar el mouse */
+  text-shadow: 0 0 8px rgba(0, 191, 255, 0.6); /* Pequeña sombra de brillo */
+}
+
+/* Botón de reserva */
+.btn-reserva {
+  background-color: #00bfff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 12px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 191, 255, 0.3); /* Sombra para el botón */
+}
+
+.btn-reserva:hover {
+  background-color: #009ccc;
+  box-shadow: 0 4px 15px rgba(0, 191, 255, 0.5); /* Sombra más pronunciada en hover */
+}
+
+
+/* --- ESTILOS ESPECÍFICOS PARA LA PÁGINA SOBRE NOSOTROS --- */
+
+/* Contenedor principal del contenido, para centrarlo y darle márgenes */
+.sobre-nosotros-container {
+    flex: 1; /* Permite que el contenedor crezca y ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    max-width: 900px;
+    margin: 40px auto;
+    /* Eliminamos el background, border y box-shadow de aquí para que el fondo general sea el dominante */
+    background-color: transparent;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.sobre-nosotros-container h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    line-height: 1.2;
+    text-transform: uppercase;
+    color: #00bfff;
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 191, 255, 0.6);
+}
+
+.sobre-nosotros-container p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #e0e6ff;
+    margin-bottom: 20px;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    /* Cada párrafo de descripción tiene su propio fondo y sombra sutil */
+    background-color: rgba(14, 20, 23, 0.9); /* Fondo oscuro con transparencia */
+    padding: 25px 35px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.1);
+    border: 1px solid rgba(0, 191, 255, 0.3);
+}
+.sobre-nosotros-container p:last-of-type {
+    margin-bottom: 0; /* Eliminar margen inferior del último párrafo si hay varios */
+}
+
+
+/* --- ESTILOS PARA LA INFORMACIÓN DE CONTACTO SUPERIOR (¡CHIMBA SIN CUADRO!) --- */
+.info-contacto-superior {
+    /* No tiene fondo ni bordes para integrarse fluidamente */
+    background-color: transparent;
+    border-radius: 0;
+    padding: 0;
+    margin-top: 50px; /* Espacio superior para separarlo del texto principal */
+    border: none;
+    box-shadow: none;
+    width: 100%;
+    max-width: 700px; /* Limita el ancho para que la información no se estire demasiado */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.info-contacto-superior h2 {
+    font-size: 2.5rem;
+    color: #00e6ff; /* Cian brillante para el título de contacto */
+    margin-bottom: 30px;
+    text-shadow: 0 0 15px rgba(0, 230, 255, 0.6);
+    letter-spacing: 1.5px;
+}
+
+.info-contacto-superior p {
+    font-size: 1.2rem; /* Información de contacto más grande y legible */
+    color: #e0e6ff;
+    margin-bottom: 18px; /* Espacio entre cada línea de información */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centrar el contenido de cada línea */
+    gap: 15px; /* Más espacio entre ícono y texto */
+    /* Cada línea de contacto tiene su propio fondo y sombra sutil */
+    background-color: rgba(26, 42, 63, 0.7); /* Fondo oscuro sutil */
+    padding: 15px 25px;
+    border-radius: 10px; /* Bordes redondeados sutiles */
+    box-shadow: 0 2px 10px rgba(0, 191, 255, 0.1); /* Sombra sutil con toque azul */
+    border: 1px solid rgba(0, 191, 255, 0.1); /* Borde muy suave */
+    transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    width: 100%; /* Ocupa todo el ancho disponible */
+    max-width: 450px; /* Límite para que no sean demasiado anchas */
+}
+
+.info-contacto-superior p:hover {
+    background-color: rgba(0, 191, 255, 0.1); /* Fondo azulado sutil en hover */
+    box-shadow: 0 4px 20px rgba(0, 191, 255, 0.3); /* Sombra más pronunciada en hover */
+    transform: translateY(-3px); /* Efecto de levantamiento */
+}
+
+.info-contacto-superior p i {
+    font-size: 1.5rem; /* Íconos un poco más grandes */
+    color: #00bfff; /* Color azul de tu marca */
+    text-shadow: 0 0 8px rgba(0, 191, 255, 0.6); /* Brillo para los íconos */
+}
+
+.info-contacto-superior p a {
+    color: #00bfff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s, text-shadow 0.3s;
+}
+
+.info-contacto-superior p a:hover {
+    color: #00e6ff;
+    text-shadow: 0 0 8px rgba(0, 230, 255, 0.6);
+}
+
+.social-icons-header {
+    margin-top: 35px; /* Más espacio superior para separar de la info de contacto */
+    display: flex;
+    gap: 35px; /* Más espacio entre íconos de redes sociales */
+}
+
+.social-icons-header a {
+    font-size: 3rem; /* ¡Íconos de redes sociales más grandes y prominentes! */
+    color: #00bfff;
+    transition: color 0.3s, transform 0.3s, text-shadow 0.3s;
+    text-shadow: 0 0 10px rgba(0, 191, 255, 0.4); /* Sombra sutil */
+}
+
+.social-icons-header a:hover {
+    color: #00e6ff;
+    transform: scale(1.15); /* Efecto de escala más pronunciado */
+    text-shadow: 0 0 20px rgba(0, 230, 255, 0.8); /* Brillo fuerte en hover */
+}
+
+
+/* --- ESTILOS GENERALES PARA LAS SECCIONES DE CONTENIDO INFERIORES --- */
+.section-content {
+    padding: 80px 20px;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Fondo oscuro con transparencia para las secciones */
+    border-top: 1px solid rgba(0, 191, 255, 0.3); /* Línea divisoria sutil */
+    border-bottom: 1px solid rgba(0, 191, 255, 0.3);
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(0, 191, 255, 0.1);
+}
+
+.section-content:last-of-type {
+    margin-bottom: 0;
+}
+
+.section-content h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #00e6ff;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px rgba(0, 230, 255, 0.5);
+}
+
+.section-content p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #c7d2e2;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+}
+
+/* --- ESTILOS PARA LA SECCIÓN DE MISIÓN Y VISIÓN (CARDS) --- */
+.mission-vision-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    background-color: rgba(14, 20, 23, 0.85); /* Fondo un poco más oscuro */
+    border-radius: 20px;
+    padding: 60px 20px;
+    box-shadow: 0 8px 30px rgba(0, 191, 255, 0.2);
+}
+
+.mission-vision-section .card {
+    background-color: #1a2a3f;
+    border: 1px solid #00bfff;
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 450px;
+    flex: 1 1 45%;
+    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mission-vision-section .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 191, 255, 0.3);
+}
+
+.mission-vision-section .card h3 {
+    font-size: 1.8rem;
+    color: #00bfff;
+    margin-bottom: 15px;
+    letter-spacing: 1px;
+    font-weight: 700;
+}
+
+.mission-vision-section .card p {
+    font-size: 1.05rem;
+    color: #e0e6ff;
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* --- ESTILOS PARA ¿POR QUÉ ELEGIRNOS? (GRID DE CARACTERÍSTICAS) --- */
+.why-choose-us-section {
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 191, 255, 0.2);
+}
+
+.features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.feature-item {
+    background-color: #1a2a3f;
+    border: 1px solid #00bfff;
+    border-radius: 15px;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 191, 255, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 191, 255, 0.3);
+}
+
+.feature-icon {
+    font-size: 3.5rem;
+    color: #00e6ff;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(0, 230, 255, 0.5);
+}
+
+.feature-item h4 {
+    font-size: 1.5rem;
+    color: #00bfff;
+    margin-bottom: 10px;
+    letter-spacing: 0.8px;
+    font-weight: 700;
+}
+
+.feature-item p {
+    font-size: 1rem;
+    color: #c7d2e2;
+    line-height: 1.5;
+    margin-bottom: 0;
+}
+
+
+.footer {
+  background-color: #000;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 40px 30px 30px;
+  font-family: 'Roboto', Arial, sans-serif;
+  min-height: 300px;
+  position: relative;
+  z-index: 1;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 250px;
+  margin: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.footer-section h2 {
+  margin: 25px 0 10px;
+  font-size: 20px;
+  color: white;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #d2b48c;
+  margin: 0;
+}
+
+.logo_1 {
+  height: 150px;
+  object-fit: contain;
+  border-radius: 5%;
+}
+
+.descripcion {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.social-icons i {
+  font-size: 24px;
+  color: #d2b48c;
+  transition: color 0.3s ease;
+}
+
+.social-icons i:hover {
+  color: #ffffff;
+}
+
+/* Sección de WhatsApp */
+.contacto-whatsapp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  position: relative;
+}
+
+.whatsapp-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -5px;
+  gap: 5px;
+}
+
+.whatsapp-logo {
+  width: 160px;
+  margin: -5px 0 10px;
+}
+
+.texto-whatsapp {
+  font-size: 14px;
+  color: #d2b48c;
+  margin-bottom: 5px;
+}
+
+.btn-whatsapp {
+  background-color: #0074cc;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.btn-whatsapp:hover {
+  background-color: #005fa3;
+}
+
+.sena-logo {
+  position: absolute;
+  bottom: 10px;
+  right: 20px;
+  width: 70px;
+}
+
+
+/* --- RESPONSIVE DESIGN (Actualizado para todos los elementos) --- */
+@media (max-width: 1024px) {
+  header.navbar {
+    flex-direction: column;
+    padding: 10px 20px;
+    align-items: center;
+  }
+  .search-bar {
+    margin: 10px 0;
+    width: 90%;
+  }
+  .nav-links {
+    margin: 10px 0;
+  }
+  .btn-reserva {
+    margin-top: 10px;
+  }
+
+  .sobre-nosotros-container,
+  .section-content {
+    padding: 40px 15px;
+    margin: 20px auto;
+  }
+  .sobre-nosotros-container h1 {
+    font-size: 2.8rem;
+  }
+  .sobre-nosotros-container p { /* Para los párrafos iniciales */
+      font-size: 1.1rem;
+      padding: 20px 25px;
+  }
+
+  .info-contacto-superior {
+      margin-top: 40px;
+      padding: 0; /* Reinicia padding para el contenedor */
+      width: 95%; /* Ajusta el ancho para pantallas medianas */
+  }
+  .info-contacto-superior h2 {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+  }
+  .info-contacto-superior p { /* Para las líneas de información de contacto */
+      font-size: 1.05rem;
+      padding: 12px 20px;
+      margin-bottom: 12px;
+      gap: 10px;
+  }
+  .info-contacto-superior p i {
+      font-size: 1.2rem;
+  }
+  .social-icons-header {
+      margin-top: 25px;
+      gap: 25px;
+  }
+  .social-icons-header a {
+      font-size: 2.5rem;
+  }
+
+  .section-content h2 {
+    font-size: 2.5rem;
+  }
+  .section-content p {
+    font-size: 1rem;
+  }
+  .mission-vision-section .card {
+      flex: 1 1 80%;
+      max-width: 500px;
+  }
+  .features-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  }
+  .main-footer {
+      padding: 25px 15px;
+  }
+  .footer-logo {
+      height: 70px;
+  }
+  .footer-brand p {
+      font-size: 0.85rem;
+  }
+  .footer-social-simple a {
+      font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo {
+    height: 60px;
+  }
+  .search-bar {
+    padding: 8px 12px;
+  }
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+  .btn-reserva {
+    padding: 8px 15px;
+    font-size: 0.9rem;
+  }
+
+  .sobre-nosotros-container,
+  .section-content {
+    padding: 30px 10px;
+    border-radius: 15px;
+  }
+  .sobre-nosotros-container h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  .sobre-nosotros-container p { /* Para los párrafos iniciales */
+      font-size: 0.95rem;
+      line-height: 1.6;
+      padding: 15px 20px;
+  }
+
+  .info-contacto-superior {
+      margin-top: 30px;
+  }
+  .info-contacto-superior h2 {
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+  }
+  .info-contacto-superior p { /* Para las líneas de información de contacto */
+      font-size: 0.95rem;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      gap: 8px;
+  }
+  .info-contacto-superior p i {
+      font-size: 1.1rem;
+  }
+  .social-icons-header {
+      margin-top: 20px;
+      gap: 20px;
+  }
+  .social-icons-header a {
+      font-size: 2rem;
+  }
+
+  .section-content h2 {
+    font-size: 1.8rem;
+  }
+  .section-content p {
+    font-size: 0.9rem;
+  }
+  .mission-vision-section .card {
+      padding: 20px;
+  }
+  .feature-icon {
+      font-size: 3rem;
+  }
+  .feature-item h4 {
+      font-size: 1.3rem;
+  }
+  .main-footer {
+      padding: 20px 10px;
+  }
+  .footer-logo {
+      height: 60px;
+  }
+  .footer-brand p {
+      font-size: 0.8rem;
+  }
+  .footer-social-simple a {
+      font-size: 1.2rem;
+  }
+}

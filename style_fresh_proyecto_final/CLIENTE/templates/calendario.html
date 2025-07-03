@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calendario de Citas</title>
+  <link rel="stylesheet" href="{% static 'css/calendario.css' %}">
+  <link rel="icon" type="static/img/1.png" href="{% static 'img/1.png' %}">
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <meta name="user-data" content="{{ user_data }}">
+  <meta name="barberos-data" content="{{ barberos }}">
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800;900&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+    <nav class="nav-links">
+      <a href="{% url 'home_cliente' %}">Inicio</a>
+    </nav>
+  </header>
+
+  <h1 class="titulo-calendario">Calendario de Citas</h1>
+
+  <div id='calendar'></div>
+
+  <div id="reservaModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="cerrarModal">&times;</span>
+      <h3>Reservar Cita</h3>
+      <form id="formReserva">
+        <input type="text" id="nombre_display" name="nombre_display" disabled style="display:none;">
+
+        <div id="telefono_group">
+          <label for="telefono">Teléfono:</label>
+          <input type="tel" id="telefono" name="telefono">
+        </div>
+
+        <!-- BOTÓN PARA ABRIR MODAL DE BARBEROS -->
+        <label>Seleccionar Barbero:</label>
+        <button type="button" id="abrirModalBarberos">Elegir Barbero</button>
+        <p id="barberoSeleccionadoTexto" style="margin-top: 5px; font-weight: bold;"></p>
+        <input type="hidden" id="barberoSeleccionado" name="barbero">
+
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" required>
+
+        <label for="horaInicio">Hora de Inicio:</label>
+        <input type="time" id="horaInicio" name="horaInicio" required>
+
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" name="descripcion" rows="3"></textarea>
+
+        <button type="submit">Confirmar Reserva</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL DE BARBEROS -->
+  <div id="modalBarberos" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close" id="cerrarModalBarberos">&times;</span>
+      <h3>Selecciona un Barbero</h3>
+      <div id="contenedorBarberos" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+    </div>
+  </div>
+
+  <div id="mensajeConfirmacion" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="close" id="cerrarMensaje">&times;</span>
+      <p id="textoConfirmacion"></p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-section">
+      <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Fresh Style Logo" class="logo_1" />
+      <p class="descripcion">Barberia de tiempo completo, que esperas para vivir una excelente experiencia.</p>
+      <p><strong>LUN-VIER:</strong> 09:00 am - 9:00 pm</p>
+      <p><strong>SÁB-DOM:</strong> 09:00 am - 8:00 pm</p>
+    </div>
+
+    <div class="footer-section">
+      <h2>Ubicación</h2>
+      <p>Nos ubicamos en el barrio<br>nueva aventura en Popayán Cauca</p>
+      <h2>Contáctanos a</h2>
+      <p>NUMERO TELEFONICO: 57 314 6380511</p>
+      <p>CORREO: kcamilo664@gmail.com</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fas fa-times"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+
+    <div class="footer-section">
+      <div class="whatsapp-contenido">
+        <img src="{% static 'img/FOOTER/whasa.png' %}" class="whatsapp-logo" alt="WhatsApp">
+        <h3 class="texto-whatsapp">¿Preguntas?</h3>
+        <p class="texto-whatsapp">Agreguenos en WhatsApp y envíe consultas para obtener una respuesta instantánea.</p>
+        <a href="#" class="btn-whatsapp">IR AL CHAT</a>
+      </div>
+      <img src="{% static 'img/FOOTER/sena.png' %}" class="sena-logo" alt="SENA">
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/locales/es.js"></script>
+  <script src="{% static 'JS/calendario.js' %}"></script>
+</body>
+</html>

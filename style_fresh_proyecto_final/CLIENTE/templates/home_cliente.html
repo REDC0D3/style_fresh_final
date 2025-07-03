@@ -1,0 +1,230 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio Cliente - Fresh Style</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'css/style_1.css' %}">
+  <link rel="stylesheet" href="{% static 'css/home_cliente.css' %}">
+  <link rel="stylesheet" href="{% static 'css/calificacion.css' %}">
+  <link rel="stylesheet" href="{% static 'css/perfil.css' %}">
+  <link rel="stylesheet" href="{% static 'css/modal_perfil.css' %}"> {# Asegúrate de que este CSS contenga los estilos para tu formulario #}
+  <link rel="icon" type="image/png" href="{% static 'img/Icono.png' %}">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap" rel="stylesheet">
+  {# ¡CLAVE! Enlace al CSS de FontAwesome 6.0.0 para que coincida con home_admin.html #}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-1ycn6IcaQQ40NZMfz7SSLw+tFqD1eGJRLaC/z0U7/J/6Z2M+kK/xK5vG/R5a5e3B/x/e8+o+wF+wF/A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+
+  <header class="navbar">
+    <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Logo Fresh Style" class="logo">
+    <nav class="nav-links">
+      <a href="#">Sobre Nosotros</a>
+    </nav>
+    <div class="header-perfil">
+      <button class="btn-perfil" onclick="toggleMenuPerfil()" aria-expanded="false">
+        <img src="{% if cliente.foto_perfil %}{{ cliente.foto_perfil.url }}{% else %}{% static 'img/default_profile.png' %}{% endif %}" alt="Foto de perfil" class="foto-perfil">
+        <span class="nombre-perfil">
+        Mr {{ cliente.nombre }} {{ cliente.apellido }}<br>
+        <small class="rol-usuario">Cliente</small>
+        </span>
+
+        <span class="flecha">&#9662;</span>
+      </button>
+      <div id="menuPerfil" class="menu-perfil">
+        <a href="#" onclick="abrirEditarPerfilClienteModal(); return false;">Editar perfil</a>
+        <a href="{% url 'logout' %}">Cerrar sesión</a> {# ¡Este es el enlace que llama a la función de cerrar sesión! #}
+      </div>
+  </div>
+
+  </header>
+
+  
+
+  <main class="cliente-container">
+    <h1 class="cliente-titulo">BIENVENIDO</h1>
+    <div class="tarjetas-cliente">
+
+      <a href="{% url 'calendario' %}" class="tarjeta-cliente">
+        <img src="{% static 'img/reserva.png' %}" alt="Reserva" class="icono-tarjeta">
+        <div class="tarjeta-overlay">
+          <p>Reserva tu Cita</p>
+        </div>
+      </a>
+
+      <a href="{% url 'formulario_recomendacion' %}" class="tarjeta-cliente">
+        <img src="{% static 'img/corte.png' %}" alt="Elegir corte" class="icono-tarjeta">
+        <div class="tarjeta-overlay">
+          <p>🔥 Recomendación Fresh</p>
+        </div>
+      </a>
+
+      <a href="{% url 'historial_cliente' %}" class="tarjeta-cliente">
+        <img src="{% static 'img/citas.png' %}" alt="Citas asignadas" class="icono-tarjeta">
+        <div class="tarjeta-overlay">
+          <p>Citas Asignadas</p>
+        </div>
+      </a>
+
+      <a href="{% url 'historial_calificaciones' %}" class="tarjeta-cliente">
+        <img src="{% static 'img/calificacion.png' %}" alt="Calificaciones" class="icono-tarjeta">
+        <div class="tarjeta-overlay">
+          <p>Calificaciones el servicio</p>
+        </div>
+      </a>
+      <a href="{% url 'avatar' %}" class="tarjeta-cliente">
+        <img src="{% static 'img/avatar.png' %}" alt="Avatar" class="icono-tarjeta">
+        <div class="tarjeta-overlay">
+          <p>Crear Avatar</p>
+        </div>
+      </a>
+
+    </div>
+  </main>
+
+  <div id="modalCalificacion" class="modal-calificacion" style="display:none;">
+    <div class="modal-content">
+      <h2>Califica tu última cita</h2>
+      <div id="estrellas" class="estrellas">
+        <span class="estrella" data-valor="1">&#9734;</span>
+        <span class="estrella" data-valor="2">&#9734;</span>
+        <span class="estrella" data-valor="3">&#9734;</span>
+        <span class="estrella" data-valor="4">&#9734;</span>
+        <span class="estrella" data-valor="5">&#9734;</span>
+      </div>
+      <textarea id="comentarioCalificacion" placeholder="Comentario (opcional)"></textarea>
+      <div class="modal-botones">
+        <button id="btnGuardarCalificacion" class="btn-enviar">Guardar</button>
+        <button type="button" class="btn-no-molestar">No molestar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="editarPerfilClienteModal"
+     class="modal modal-perfil"> {# El modal ya no se abre automáticamente #}
+  <div class="modal-content modal-content-perfil">
+    <span class="close-button" id="closeEditarPerfilClienteModal">&times;</span>
+    <h2>Editando Perfil...</h2> {# Título consistente #}
+
+    <div id="form-messages" class="form-messages">
+      {% if messages %}
+        <ul id="form-messages-list" class="messages">
+          {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <form id="form-editar-perfil-cliente"
+          method="POST"
+          action="{% url 'editar_perfil_cliente' %}"
+          enctype="multipart/form-data">
+      {% csrf_token %}
+
+      {# Campos de texto normales #}
+      <input type="text" name="nombre" id="update_cliente_nombre" placeholder="Nombre" value="{{ form_data.nombre|default:cliente.nombre }}" required>
+      <input type="text" name="apellido" id="update_cliente_apellido" placeholder="Apellido" value="{{ form_data.apellido|default:cliente.apellido }}" required>
+      <input type="tel" name="telefono" id="update_cliente_telefono" placeholder="Teléfono" value="{{ form_data.telefono|default:cliente.telefono }}" required>
+      <input type="text" name="username" id="update_cliente_username" placeholder="Nombre De Usuario" value="{{ form_data.username|default:cliente.username }}" required>
+      <input type="email" name="email" id="update_cliente_email" placeholder="Correo electrónico" class="full-width" value="{{ form_data.email|default:cliente.email }}" required>
+      
+      <p>Deja las contraseñas en blanco si no deseas cambiarlas.</p>
+
+      <div class="password-group full-width">
+      <!-- Contraseña actual -->
+      <div class="password-container">
+        <input type="password" name="old_password"
+              id="update_cliente_old_password"
+              placeholder="Contraseña Actual"
+              value="{{ form_data.old_password|default:'' }}">
+        <i class="fas fa-eye toggle-password"
+          data-target="update_cliente_old_password"
+          aria-label="Mostrar contraseña actual"></i>
+      </div>
+
+      <!-- Nueva contraseña -->
+      <div class="password-container">
+        <input type="password" name="new_password"
+              id="update_cliente_new_password"
+              placeholder="Nueva Contraseña"
+              value="{{ form_data.new_password|default:'' }}">
+        <i class="fas fa-eye toggle-password"
+          data-target="update_cliente_new_password"
+          aria-label="Mostrar nueva contraseña"></i>
+      </div>
+
+      <!-- Confirmar nueva contraseña -->
+      <div class="password-container">
+        <input type="password" name="new_password2"
+              id="update_cliente_new_password2"
+              placeholder="Confirmar Nueva Contraseña"
+              value="{{ form_data.new_password2|default:'' }}">
+        <i class="fas fa-eye toggle-password"
+          data-target="update_cliente_new_password2"
+          aria-label="Mostrar confirmación de nueva contraseña"></i>
+      </div>
+    </div>
+
+
+      {# Contenedor para el input de archivo y su label/display #}
+      <label for="editar_cliente_foto_perfil">Foto de Perfil:</label>
+      <div class="file-input-container">
+          <input type="file" name="foto_perfil" id="editar_cliente_foto_perfil" accept="image/*">
+          <label for="editar_cliente_foto_perfil">Seleccionar archivo</label>
+          <span class="file-name-display">Sin archivos seleccionados</span>
+      </div>
+
+      {% if cliente.foto_perfil %}
+      <div class="current-image-preview">
+        <img id="update_cliente_current_photo" src="{{ cliente.foto_perfil.url }}" alt="Foto actual"> {# ID para JavaScript #}
+      </div>
+      {% endif %}
+
+      <div class="form-buttons">
+        <button type="submit" class="confirm-btn">Comfirmar</button> {# Texto del botón ajustado #}
+        <button type="button" class="cancel-btn" id="cancelarEditarPerfilClienteBtn">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+  <footer class="footer">
+    <div class="footer-section">
+      <img src="{% static 'img/PRIMERA_PARTE/home_1.png' %}" alt="Fresh Style Logo" class="logo_1" />
+      <p class="descripcion">Barbería de tiempo completo, que esperas para vivir una excelente experiencia.</p>
+      <p><strong>LUN-VIER:</strong> 09:00 am - 9:00 pm</p>
+      <p><strong>SÁB-DOM:</strong> 09:00 am - 8:00 pm</p>
+    </div>
+    <div class="footer-section">
+      <h2>Ubicación</h2>
+      <p>Nos ubicamos en el barrio<br>nueva aventura en Popayán, Cauca</p>
+      <p>Teléfono: 57 314 6380511</p>
+      <p>Email: kcamilo664@gmail.com</p>
+      <div class="social-icons">
+        <i class="fab fa-facebook"></i>
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+    <div class="footer-section">
+      <div class="whatsapp-contenido">
+        <img src="{% static 'img/FOOTER/whasa.png' %}" class="whatsapp-logo" alt="WhatsApp">
+        <h3 class="texto-whatsapp">¿Preguntas?</h3>
+        <p>Agregue a WhatsApp y envíe consultas para obtener una respuesta instantánea.</p>
+        <a href="#" class="btn-whatsapp">IR AL CHAT</a>
+      </div>
+      <img src="{% static 'img/FOOTER/sena.png' %}" class="sena-logo" alt="SENA">
+    </div>
+  </footer>
+
+  <script src="{% static 'JS/calificacion_modal.js' %}"></script>
+  <script src="{% static 'JS/modal_perfil.js' %}"></script>
+  {# ¡CLAVE! Aquí reintroducimos el FontAwesome Kit Script #}
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+/* CONTENEDOR PRINCIPAL DE TARJETAS */
+.tarjetas-cliente {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 30px;
+  padding: 40px 20px;
+  background: transparent; /* Fondo oscuro */
+  border-radius: 20px;
+}
+
+
+
+
+/* TARJETA INDIVIDUAL CON IMAGEN DE FONDO */
+.tarjeta-cliente {
+  position: relative;
+  width: 220px;
+  height: 280px;
+  background-color: #ff0000;
+  border: 2px solid #1E90FF;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+/* EFECTO HOVER */
+.tarjeta-cliente:hover {
+
+  transform: translateY(-7px);
+  box-shadow: 0 8px 25px rgba(30, 144, 255, 0.5);
+}
+
+/* IMAGEN COMO FONDO */
+.tarjeta-cliente .icono-tarjeta {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* CAPA OSCURA PARA QUE SE LEA EL TEXTO */
+.tarjeta-overlay {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  padding: 20px 50px;
+  background: rgba(0, 0, 0, 0.6);
+  text-align: center;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+/* TEXTO DE LA TARJETA */
+.tarjeta-overlay p {
+  font-size: 17px;
+  font-weight: bold;
+  color: #1E90FF;
+  margin: 0;
+}
+
+/* TÍTULO DEL HOME DE CLIENTE */
+.cliente-titulo {
+  background-color: black;  /* Fondo oscuro semitransparente */
+  padding: 15px 30px;
+  display: inline-block;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 70px;
+  font-weight: 900;
+  text-shadow: 1px 1px 3px #1E90FF;
+}
+
+
+
+.cliente-container {
+  background: transparent;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .tarjetas-cliente {
+    grid-template-columns: 1fr; /* Solo una tarjeta por fila */
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cliente-titulo {
+  animation: fadeInUp 1s ease;
+}

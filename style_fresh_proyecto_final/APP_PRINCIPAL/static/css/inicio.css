@@ -1,0 +1,274 @@
+/* RESET BÁSICO */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Font-family: 'Bebas Neue', sans-serif; Si no la tienes importada, usa una de respaldo como Arial o sans-serif */
+  font-family: Arial, sans-serif; /* Usamos una fuente más común como respaldo */
+}
+
+/* CUERPO DE LA PÁGINA */
+body {
+  background-image: url("../img/Inicio_sesion/fondo_ini.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  backdrop-filter: brightness(0.6); /* Oscurece el fondo */
+  background-repeat: no-repeat; /* Asegurarse de que no se repita */
+}
+
+/* CONTENEDOR PRINCIPAL */
+.container {
+  background-color: rgba(0, 0, 0, 0.75); /* Un poco más opaco para mayor contraste */
+  border-radius: 20px;
+  display: flex;
+  padding: 40px; /* Aumenta el padding interno */
+  gap: 60px; /* Aumenta el espacio entre las secciones izquierda y derecha */
+  max-width: 1200px; /* Aumenta un poco el ancho máximo */
+  width: 90%; /* Hace que sea más responsivo en anchos menores */
+  color: white;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.9); /* Sombra más pronunciada */
+}
+
+/* SECCIÓN IZQUIERDA */
+.left {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 20px; /* Un poco de padding a la derecha */
+}
+
+.left img {
+  width: 280px; /* Ajusta el tamaño del logo, similar al registro */
+  margin-left: 0; /* Elimina el margen negativo si ya no es necesario */
+  margin-bottom: 30px; /* Más espacio debajo del logo */
+}
+
+.left h1 {
+  font-size: 3.5rem; /* Un poco más grande */
+  margin-bottom: 15px;
+  line-height: 1.1; /* Ajusta el espacio entre líneas */
+}
+
+.left p {
+  font-size: 1.2rem; /* Un poco más grande */
+  margin-bottom: 40px; /* Más espacio debajo del párrafo */
+}
+
+.left .socials i {
+  font-size: 2.2rem; /* Íconos más grandes */
+  margin-right: 20px;
+  transition: transform 0.3s ease, color 0.3s ease;
+  cursor: pointer;
+  color: #fff; /* Color inicial de los íconos */
+}
+
+.left .socials i:hover {
+  transform: scale(1.3); /* Un poco más grande al pasar el mouse */
+  color: #00ccff; /* Color vibrante al pasar el mouse */
+}
+
+/* SECCIÓN DERECHA - FORMULARIO */
+.right {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra verticalmente el contenido del lado derecho */
+}
+
+.right h2 {
+  text-align: center;
+  margin-bottom: 30px; /* Más espacio debajo del título del formulario */
+  font-size: 2.8rem; /* Título del formulario más grande */
+  color: #00bfff;
+  text-shadow: 0 0 10px rgba(0, 191, 255, 0.7); /* Pequeña sombra de texto para resaltarlo */
+}
+
+form {
+  display: flex; /* Mantén flexbox para una columna simple */
+  flex-direction: column;
+  gap: 20px; /* Más espacio entre los campos */
+}
+
+/* CONTENEDOR DE INPUTS CON ÍCONO */
+.input-icon {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08); /* Fondo ligeramente visible */
+  border-radius: 12px; /* Bordes más redondeados */
+  padding: 10px 18px; /* Ajustado para el nuevo padding del input */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde suave */
+  position: relative; /* Importante para posicionar el ojo dentro */
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.input-icon:focus-within { /* Estilo cuando el input dentro está enfocado */
+  border-color: #00ccff;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.input-icon img {
+  width: 28px; /* Íconos un poco más grandes */
+  height: 28px;
+  margin-right: 15px; /* Más espacio entre ícono y texto */
+  opacity: 0.8; /* Un poco más visible */
+  filter: invert(100%) brightness(150%); /* Hace los íconos blancos y más brillantes si son oscuros */
+}
+
+.input-icon input {
+  flex: 1; /* Ocupa el espacio restante */
+  border: none; /* Elimina el borde del input interno */
+  outline: none;
+  font-size: 1.1rem; /* Fuente un poco más grande */
+  color: white; /* Color de texto blanco */
+  background: transparent; /* Fondo transparente para que el input-icon controle el fondo */
+  padding: 0; /* Elimina padding interno del input, ya lo maneja el padre */
+}
+
+.input-icon input::placeholder {
+  color: rgba(255, 255, 255, 0.6); /* Placeholder más visible */
+}
+
+/* CONTENEDOR ESPECÍFICO PARA LA CONTRASEÑA (si se necesita un margen extra) */
+.password-container {
+    margin-bottom: 5px; /* Espacio debajo del campo de contraseña, antes de "recordar/olvidar" */
+}
+
+/* ESTILO DEL OJO */
+.toggle-password {
+  position: absolute;
+  right: 18px; /* Alinea con el padding del input-icon */
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.7); /* Color del ojo */
+  font-size: 1.2rem; /* Tamaño del ojo */
+  transition: color 0.3s ease;
+}
+
+.toggle-password:hover {
+  color: #00ccff; /* Color al pasar el mouse por el ojo */
+}
+
+
+.remember-forgot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem; /* Un poco más grande */
+  color: #ccc;
+  margin-top: 10px; /* Un poco de espacio arriba */
+  margin-bottom: 25px; /* Más espacio antes de los botones */
+}
+
+.remember-forgot label {
+    cursor: pointer;
+}
+
+.remember-forgot input[type="checkbox"] {
+    margin-right: 8px; /* Espacio entre checkbox y texto */
+    accent-color: #00bfff; /* Color del checkbox moderno */
+    width: 16px; /* Tamaño del checkbox */
+    height: 16px;
+    vertical-align: middle; /* Alinea con el texto */
+}
+
+.remember-forgot a {
+  color: #00bfff; /* Color del enlace */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.remember-forgot a:hover {
+  color: #00ccff; /* Color al pasar el mouse */
+  text-decoration: underline;
+}
+
+/* BOTONES */
+button {
+  padding: 18px; /* Más padding para botones más grandes */
+  border: none;
+  border-radius: 15px; /* Bordes más redondeados */
+  background: linear-gradient(90deg, #007bff, #00ccff); /* Degradado más atractivo */
+  color: white;
+  font-size: 1.4rem; /* Texto más grande */
+  font-weight: bold; /* Texto en negrita */
+  cursor: pointer;
+  transition: background 0.4s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 123, 255, 0.4); /* Sombra para efecto 3D */
+  letter-spacing: 1px; /* Espaciado entre letras */
+  margin-bottom: 2px; /* ¡Ajustado a 2px para pegarlos casi por completo! */
+}
+
+button:hover {
+  background: linear-gradient(90deg, #00ccff, #007bff); /* Invierte el degradado al pasar el mouse */
+  transform: translateY(-3px); /* Pequeño levantamiento al pasar el mouse */
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.6); /* Sombra más grande al pasar el mouse */
+}
+
+/* Estilo específico para el botón "Volver" */
+.btn-volver {
+  background: none; /* Sin fondo de color */
+  border: 2px solid #00bfff; /* Borde azul */
+  color: #00bfff; /* Texto azul */
+  box-shadow: none; /* Sin sombra por defecto */
+  margin-top: 2px; /* ¡Ajustado a 2px para pegarlo casi por completo! */
+}
+
+.btn-volver:hover {
+  background: rgba(0, 191, 255, 0.1); /* Fondo muy suave al pasar el mouse */
+  border-color: #00ccff; /* Borde más brillante */
+  color: #00ccff; /* Texto más brillante */
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3);
+}
+
+/* MENSAJES DE ERROR/ÉXITO (reutilizando estilos del registro) */
+.error {
+  color: #fff;
+  background: #e74c3c;
+  padding: 12px 25px; /* Más padding */
+  border-radius: 10px; /* Más redondeado */
+  margin-top: 15px; /* Espacio arriba del mensaje */
+  margin-bottom: 20px; /* Espacio abajo del mensaje */
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+/* RESPONSIVE DESIGN (BÁSICO) */
+@media (max-width: 992px) {
+  .container {
+    flex-direction: column; /* Apila las secciones en pantallas pequeñas */
+    gap: 30px;
+    padding: 30px;
+  }
+
+  .left, .right {
+    width: 100%; /* Ambas secciones ocupan el 100% */
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .left img {
+    margin: 0 auto 20px auto; /* Centra el logo */
+  }
+
+  .left .socials {
+    display: flex;
+    justify-content: center;
+  }
+
+  .form {
+    /* flex-direction: column; ya es el default */
+    gap: 15px;
+  }
+
+  .input-icon, .password-container, .remember-forgot, button, .error {
+    width: 100%; /* Asegura que tomen el 100% del ancho disponible */
+  }
+}

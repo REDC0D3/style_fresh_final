@@ -1,0 +1,556 @@
+/* General Body Styling */
+body {
+    background: linear-gradient(135deg, #1A1A2E 0%, #1F2833 50%, #2A3845 100%); /* Consistent melo background */
+    font-family: 'Poppins', 'Segoe UI', Arial, sans-serif; /* Modern font */
+    margin: 0;
+    padding: 0;
+    color: #E0E0E0; /* Light text for dark background */
+    min-height: 100vh; /* Ensure body takes full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    /* Removed align-items: center; and justify-content: flex-start; from body
+       because the header is full-width and main-content will handle its own alignment.
+       The footer will push to the bottom with margin-top: auto. */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* ENCABEZADO */
+header.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #000000ee; /* Slightly more opaque background */
+  padding: 16px 30px;
+  border-bottom: 3px solid #00bfff;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+  border-radius: 0 0 20px 20px;
+  position: sticky; /* Make the header sticky at the top */
+  top: 0; /* Stick to the top */
+  width: 100%; /* Ensure it takes full width */
+  box-sizing: border-box; /* Include padding in width */
+  z-index: 100; /* Ensure it stays on top of other content */
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4); /* Add subtle shadow */
+}
+
+/* Logo */
+.logo {
+  height: 60px; /* Slightly smaller for better fit in header */
+  object-fit: contain;
+  border-radius: 5%;
+  margin-right: 15px; /* Space between logo and search bar */
+}
+
+/* Barra de búsqueda */
+.search-bar {
+  flex: 1 1 250px; /* Allow it to grow, but with a smaller base for smaller screens */
+  max-width: 400px; /* Max width for search bar */
+  padding: 10px 15px;
+  border-radius: 25px; /* More rounded search bar */
+  border: 1px solid #00bfff; /* Blue border */
+  background-color: #1A1A2E; /* Dark background */
+  color: #E0E0E0; /* Light text */
+  outline: none;
+  margin: 5px 20px; /* Adjust margin for smaller screens */
+  transition: all 0.3s ease;
+}
+.search-bar::placeholder {
+    color: #B0C4DE; /* Lighter placeholder text */
+}
+.search-bar:focus {
+    border-color: #00e6ff;
+    box-shadow: 0 0 0 3px rgba(0, 230, 255, 0.4);
+    background-color: #2A3845;
+}
+
+/* Links del header */
+.nav-links {
+  display: flex;
+  gap: 25px; /* Increased gap between links */
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin: 0 20px; /* Adjust margin */
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600; /* Slightly less bold */
+  font-size: 1.05em;
+  transition: color 0.3s ease;
+  padding: 5px 0; /* Add vertical padding for clickable area */
+  position: relative;
+}
+
+.nav-links a::after { /* Underline effect on hover */
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: #00bfff;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+.nav-links a:hover {
+    color: #00bfff; /* Change color on hover */
+}
+
+
+/* Botón de reserva */
+.btn-reserva {
+  background: linear-gradient(90deg, #00bfff 60%, #0099ff 100%); /* Consistent gradient */
+  color: white;
+  padding: 12px 25px; /* More generous padding */
+  border-radius: 15px; /* More rounded */
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05em;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3); /* Subtle shadow */
+}
+
+.btn-reserva:hover {
+  background: linear-gradient(90deg, #0099ff 0%, #00bfff 100%);
+  transform: translateY(-2px); /* Slight lift */
+  box-shadow: 0 6px 15px rgba(0, 191, 255, 0.5); /* More pronounced shadow */
+}
+
+/* Main content wrapper to prevent overlap with fixed header */
+.main-content {
+    padding-top: 120px; /* Adjust based on your header's height + desired top margin */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+
+/* Page Title (Adjusted margin-top to account for main-content padding) */
+h2 {
+    text-align: center;
+    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #64FFDA;
+    margin-top: 0; /* Reset margin-top here, as padding-top on main-content handles it */
+    margin-bottom: 30px;
+    letter-spacing: 3px;
+    text-shadow: 0 0 15px rgba(100, 255, 218, 0.4);
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0;
+    box-shadow: none;
+}
+
+/* Table Container (Keep as is, but adjusted margin-top) */
+table {
+    margin: 0 auto 40px auto; /* Adjust margin-top to 0, use margin-bottom to space from footer */
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 90%;
+    max-width: 800px;
+    background: rgba(1, 19, 44, 0.85);
+    border-radius: 18px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6);
+    overflow: hidden;
+    border: 1px solid rgba(100, 255, 218, 0.2);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    animation: fadeInScale 0.7s ease-out forwards;
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Table Headers and Data Cells - Common Styles (Keep as is) */
+th, td {
+    padding: 18px 25px;
+    text-align: center;
+    color: #E0E0E0;
+    font-size: 1.05rem;
+}
+
+/* Table Headers Specific Styles (Keep as is) */
+th {
+    background: linear-gradient(90deg, #1F456F 0%, #163255 100%);
+    color: #64FFDA;
+    font-weight: 700;
+    font-size: 1.15rem;
+    border-bottom: 2px solid #0F3460;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+}
+
+/* Table Rows Specific Styles (Keep as is) */
+tr {
+    transition: background 0.2s ease-in-out;
+}
+
+tr:nth-child(even) {
+    background-color: rgba(1, 19, 44, 0.7);
+}
+
+tr:hover {
+    background: rgba(42, 56, 69, 0.7);
+    box-shadow: inset 0 0 10px rgba(100, 255, 218, 0.1);
+}
+
+tr:last-child {
+    border-bottom: none;
+}
+
+/* Table Data Cells Specific Styles (Keep as is) */
+td {
+    color: #B0C4DE;
+    border-bottom: 1px solid rgba(15, 52, 96, 0.5);
+}
+
+/* Specific styling for the "No hay horarios registrados." message (Keep as is) */
+td[colspan="3"] {
+    padding: 40px 20px;
+    font-style: italic;
+    color: #B0C4DE;
+    background-color: rgba(1, 19, 44, 0.9);
+    border-radius: 0 0 18px 18px;
+}
+
+
+/* --- START OF IMPROVED FOOTER STYLES --- */
+
+.footer {
+  background-color: #000;
+  color: white;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: flex-start;
+  padding: 40px 30px;
+  font-family: 'Roboto', Arial, sans-serif;
+  min-height: 300px;
+  position: relative;
+  z-index: 1;
+  margin-top: auto; /* Pushes footer to the bottom of the viewport */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 280px;
+  max-width: 350px;
+  margin: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+.footer-section h2 {
+  margin: 25px 0 10px;
+  font-size: 20px;
+  color: white;
+  text-shadow: none;
+  letter-spacing: normal;
+  text-transform: none;
+  font-weight: normal;
+}
+
+.footer-section p {
+  font-size: 14px;
+  line-height: 1.4;
+  color: #d2b48c;
+  margin: 0;
+  white-space: normal;
+}
+
+.logo_1 {
+  height: 150px;
+  object-fit: contain;
+  border-radius: 5%;
+  margin-bottom: 10px;
+}
+
+.descripcion {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #ccc;
+}
+
+/* Time information adjustments */
+.footer-section p strong {
+    color: #fff;
+    font-weight: bold;
+}
+.footer-section p:last-of-type {
+    margin-bottom: 0;
+}
+
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.social-icons i {
+  font-size: 28px;
+  color: #d2b48c;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+.social-icons i:hover {
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* WhatsApp Section (within footer-section) */
+.whatsapp-contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.whatsapp-logo {
+  width: 120px;
+  margin: 0 0 5px;
+}
+
+.texto-whatsapp {
+  font-size: 14px;
+  color: #d2b48c;
+  margin-bottom: 5px;
+}
+
+.btn-whatsapp {
+  background-color: #0074cc;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-bottom: 0;
+  font-size: 14px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.btn-whatsapp:hover {
+  background-color: #005fa3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.sena-logo {
+  position: relative;
+  bottom: unset;
+  right: unset;
+  width: 80px;
+  margin-top: 20px;
+  align-self: center;
+}
+
+.footer-content {
+    width: 100%;
+    text-align: center;
+    padding-top: 15px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    margin-top: 25px;
+    color: #ccc;
+    font-size: 0.85em;
+    padding-bottom: 10px;
+}
+
+
+/* --- Media Queries for Responsiveness --- */
+
+@media (max-width: 1024px) {
+    /* Navbar adjustments */
+    header.navbar {
+        padding: 12px 20px;
+    }
+    .logo {
+        height: 50px;
+    }
+    .search-bar {
+        margin: 5px 10px;
+    }
+    .nav-links {
+        gap: 15px;
+        margin: 0 10px;
+    }
+    .btn-reserva {
+        padding: 10px 20px;
+    }
+
+    /* Main content adjustment */
+    .main-content {
+        padding-top: 110px; /* Adjust padding-top for slightly smaller header */
+    }
+
+    .footer-section {
+        min-width: 200px;
+        margin: 15px;
+    }
+    .footer {
+        padding: 30px 20px;
+    }
+    .logo_1 {
+        height: 120px;
+    }
+    .whatsapp-logo {
+        width: 100px;
+    }
+    .sena-logo {
+        width: 70px;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* Navbar adjustments for mobile */
+    header.navbar {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center;
+        padding: 15px 10px;
+    }
+    .logo {
+        margin-bottom: 10px; /* Space below logo when stacked */
+        margin-right: 0;
+    }
+    .search-bar {
+        width: 90%; /* Take more width */
+        margin: 10px 0;
+        max-width: unset; /* Remove max-width constraint */
+    }
+    .nav-links {
+        margin: 10px 0;
+        width: 100%;
+        justify-content: center;
+    }
+    .nav-links a {
+        padding: 8px 10px;
+        font-size: 1em;
+    }
+    .btn-reserva {
+        width: 90%; /* Make button full width */
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    /* Main content adjustment for mobile */
+    .main-content {
+        padding-top: 220px; /* Significantly increased padding-top for stacked header */
+    }
+
+    h2 {
+        font-size: 2.2rem;
+        margin-top: 40px;
+        margin-bottom: 25px;
+    }
+    table {
+        width: 95%;
+        border-radius: 15px;
+        margin: 20px auto;
+    }
+    th, td {
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    th {
+        font-size: 1.05rem;
+    }
+
+    .footer {
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 10px;
+        gap: 20px;
+    }
+    .footer-section {
+        min-width: unset;
+        max-width: 90%;
+        margin: 10px 0;
+        padding: 15px;
+        background-color: rgba(10, 10, 10, 0.8);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+    .footer-section:last-of-type {
+        padding-bottom: 30px;
+        position: relative;
+    }
+    .sena-logo {
+        position: absolute;
+        bottom: 10px;
+        right: 10px;
+        margin-top: 0;
+    }
+    .whatsapp-contenido {
+        justify-content: flex-start;
+    }
+    .footer-section h2 {
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .main-content {
+        padding-top: 250px; /* Further increase padding for very small screens */
+    }
+    h2 {
+        font-size: 1.8rem;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        letter-spacing: 2px;
+    }
+    table {
+        width: 98%;
+        border-radius: 10px;
+        margin: 15px auto;
+    }
+    th, td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+    }
+    th {
+        font-size: 0.95rem;
+    }
+
+    /* Footer adjustments for very small mobiles */
+    .footer-section {
+        padding: 10px;
+    }
+    .logo_1 {
+        height: 100px;
+    }
+    .whatsapp-logo {
+        width: 80px;
+    }
+    .btn-whatsapp {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
+    .sena-logo {
+        width: 60px;
+        bottom: 5px;
+        right: 5px;
+    }
+    .footer-section p {
+        font-size: 13px;
+    }
+    .footer-section h2 {
+        font-size: 18px;
+    }
+}
