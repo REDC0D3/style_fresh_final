@@ -1,0 +1,1 @@
+web: gunicorn STYLE_FREESH.wsgi:application
