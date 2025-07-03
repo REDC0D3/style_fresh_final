@@ -1,18 +1,15 @@
 import os
 from pathlib import Path
-import dj_database_url  # asegúrate de ponerlo en tu requirements.txt
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-a2-9ik8it2#2n!587%*^2*f3umabsb9ir(e+y*eh(+43$(=6pe')
-
-# Debug solo en local
+# --- Seguridad ---
+SECRET_KEY = os.environ.get("SECRET_KEY", "django-insecure-a2-9ik8it2#2n!587%*^2*f3umabsb9ir(e+y*eh(+43$(=6pe")
 DEBUG = os.environ.get("DEBUG", "True") == "True"
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
-
-# Application definition
+# --- Aplicaciones ---
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -24,12 +21,13 @@ INSTALLED_APPS = [
     'BARBERO',
     'CLIENTE',
     'ADMINISTRADOR',
-    'whitenoise.runserver_nostatic',  # Para producción
+    'whitenoise.runserver_nostatic',  # WhiteNoise en dev
 ]
 
+# --- Middleware ---
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # Importante
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise en producción
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -40,6 +38,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'STYLE_FREESH.urls'
 
+# --- Templates ---
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -57,7 +56,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'STYLE_FREESH.wsgi.application'
 
-# DATABASES: usa SQLite en local y Postgres en producción
+# --- Base de datos (SQLite local, Postgres en producción) ---
 DATABASES = {
     'default': dj_database_url.config(
         default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
@@ -65,7 +64,7 @@ DATABASES = {
     )
 }
 
-# Password validation
+# --- Validación de contraseñas ---
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -73,22 +72,23 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
+# --- Internacionalización ---
 LANGUAGE_CODE = 'es-co'
 TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_TZ = True
 
-# STATIC + MEDIA para producción
+# --- Archivos estáticos y media ---
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # ← donde Render recolecta
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]  # desarrollo
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')    # producción
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-AUTH_USER_MODEL = 'APP_PRINCIPAL.Usuario'
-
-# WhiteNoise (sirve archivos .css, .js, .png, etc.)
+# --- WhiteNoise para servir archivos estáticos ---
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# --- Usuario personalizado ---
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+AUTH_USER_MODEL = 'APP_PRINCIPAL.Usuario'
